@@ -1,555 +1,782 @@
-.github/workflows/build.yml.before-remove-vendor-dlkm:592:      # Build vendor_dlkm as EROFS with LZ4HC compression.
-.github/workflows/build.yml.before-remove-vendor-dlkm:597:      - name: Build vendor_dlkm.img
-.github/workflows/build.yml.before-remove-vendor-dlkm:627:            echo "ERROR: No kernel modules were produced."
-.github/workflows/build.yml.before-remove-vendor-dlkm:632:          echo "Kernel modules found: $KO_COUNT"
-.github/workflows/build.yml.before-remove-vendor-dlkm:642:          echo "===== BUILD EROFS ====="
-.github/workflows/build.yml.before-remove-vendor-dlkm:672:          # Make the image exactly the size of the real partition.
-.github/workflows/build.yml.before-remove-vendor-dlkm:697:      - name: Verify raw kernel files
-.github/workflows/build.yml.before-remove-vendor-dlkm:733:      # CLONE ANYKERNEL3
-.github/workflows/build.yml.before-remove-vendor-dlkm:736:      - name: Clone osm0sis AnyKernel3
-.github/workflows/build.yml.before-remove-vendor-dlkm:742:            https://github.com/osm0sis/AnyKernel3.git \
-.github/workflows/build.yml.before-remove-vendor-dlkm:743:            AnyKernel3
-.github/workflows/build.yml.before-remove-vendor-dlkm:745:          test -f AnyKernel3/tools/ak3-core.sh
-.github/workflows/build.yml.before-remove-vendor-dlkm:746:          test -f AnyKernel3/META-INF/com/google/android/update-binary
-.github/workflows/build.yml.before-remove-vendor-dlkm:748:          echo "osm0sis AnyKernel3: PASS"
-.github/workflows/build.yml.before-remove-vendor-dlkm:751:      # PREPARE ANYKERNEL3
-.github/workflows/build.yml.before-remove-vendor-dlkm:754:      - name: Prepare AnyKernel3
-.github/workflows/build.yml.before-remove-vendor-dlkm:758:          cd AnyKernel3
-.github/workflows/build.yml.before-remove-vendor-dlkm:796:          echo "===== ANYKERNEL3 FILES ====="
-.github/workflows/build.yml.before-remove-vendor-dlkm:807:      # ANYKERNEL3 INSTALLER
-.github/workflows/build.yml.before-remove-vendor-dlkm:810:      - name: Configure AnyKernel3 installer
-.github/workflows/build.yml.before-remove-vendor-dlkm:814:          cat > AnyKernel3/anykernel.sh <<'AK3EOF'
-.github/workflows/build.yml.before-remove-vendor-dlkm:815:          # AnyKernel3 installer
-.github/workflows/build.yml.before-remove-vendor-dlkm:817:          # KernelSU-Next Legacy + SUSFS v2.3.0
-.github/workflows/build.yml.before-remove-vendor-dlkm:820:          kernel.string=Realme 9 Pro LineageOS-23.2
-.github/workflows/build.yml.before-remove-vendor-dlkm:879:          chmod 755 AnyKernel3/anykernel.sh
-.github/workflows/build.yml.before-remove-vendor-dlkm:881:          test -x AnyKernel3/anykernel.sh
-.github/workflows/build.yml.before-remove-vendor-dlkm:883:          echo "AnyKernel3 installer configured."
-.github/workflows/build.yml.before-remove-vendor-dlkm:886:      # VERIFY ANYKERNEL3 CONTENT
-.github/workflows/build.yml.before-remove-vendor-dlkm:889:      - name: Verify AnyKernel3 package content
-.github/workflows/build.yml.before-remove-vendor-dlkm:893:          test -f AnyKernel3/Image
-.github/workflows/build.yml.before-remove-vendor-dlkm:894:          test -f AnyKernel3/dtb
-.github/workflows/build.yml.before-remove-vendor-dlkm:895:          test -f AnyKernel3/dtbo.img
-.github/workflows/build.yml.before-remove-vendor-dlkm:896:          test -f AnyKernel3/vendor_dlkm.img
-.github/workflows/build.yml.before-remove-vendor-dlkm:898:          if [ -f AnyKernel3/Image.gz ]; then
-.github/workflows/build.yml.before-remove-vendor-dlkm:899:            echo "ERROR: Image.gz exists in AnyKernel3."
-.github/workflows/build.yml.before-remove-vendor-dlkm:903:          if [ -f AnyKernel3/Image-dtb.gz ]; then
-.github/workflows/build.yml.before-remove-vendor-dlkm:904:            echo "ERROR: Image-dtb.gz exists in AnyKernel3."
-.github/workflows/build.yml.before-remove-vendor-dlkm:908:          if [ -f AnyKernel3/Image-dtb ]; then
-.github/workflows/build.yml.before-remove-vendor-dlkm:909:            echo "ERROR: Image-dtb exists in AnyKernel3."
-.github/workflows/build.yml.before-remove-vendor-dlkm:913:          echo "AnyKernel3 contents: PASS"
-.github/workflows/build.yml.before-remove-vendor-dlkm:919:      - name: Create AnyKernel3 flashable ZIP
-.github/workflows/build.yml.before-remove-vendor-dlkm:923:          cd AnyKernel3
-.github/workflows/build.yml.before-remove-vendor-dlkm:926:            ../AnyKernel3-Realme-SM6375.zip \
-.github/workflows/build.yml.before-remove-vendor-dlkm:935:          test -s AnyKernel3-Realme-SM6375.zip
-.github/workflows/build.yml.before-remove-vendor-dlkm:937:          echo "===== ANYKERNEL3 ZIP ====="
-.github/workflows/build.yml.before-remove-vendor-dlkm:938:          ls -lh AnyKernel3-Realme-SM6375.zip
-.github/workflows/build.yml.before-remove-vendor-dlkm:944:      - name: Validate final AnyKernel3 ZIP
-.github/workflows/build.yml.before-remove-vendor-dlkm:948:          ZIP="AnyKernel3-Realme-SM6375.zip"
-.github/workflows/build.yml.before-remove-vendor-dlkm:980:          echo " ANYKERNEL3 PACKAGE VALIDATION: PASS"
-.github/workflows/build.yml.before-remove-vendor-dlkm:984:      # BUILD INFO
-.github/workflows/build.yml.before-remove-vendor-dlkm:987:      - name: Generate build information
-.github/workflows/build.yml.before-remove-vendor-dlkm:992:            echo "Kernel: Realme SM6375"
-.github/workflows/build.yml.before-remove-vendor-dlkm:998:            echo "KernelSU: KernelSU-Next Legacy"
-.github/workflows/build.yml.before-remove-vendor-dlkm:1000:            echo "Defconfig: vendor/holi-qgki_defconfig"
-.github/workflows/build.yml.before-remove-vendor-dlkm:1002:            echo "Kernel files:"
-.github/workflows/build.yml.before-remove-vendor-dlkm:1008:            echo "AnyKernel3:"
-.github/workflows/build.yml.before-remove-vendor-dlkm:1009:            ls -lh AnyKernel3-Realme-SM6375.zip
-.github/workflows/build.yml.before-remove-vendor-dlkm:1010:          } > artifacts/build-info.txt
-.github/workflows/build.yml.before-remove-vendor-dlkm:1016:      - name: Upload kernel artifacts
-.github/workflows/build.yml.before-remove-vendor-dlkm:1019:          name: Realme-SM6375-Kernel
-.github/workflows/build.yml.before-remove-vendor-dlkm:1023:            AnyKernel3-Realme-SM6375.zip
-.github/workflows/build.yml.before-remove-vendor-dlkm:1024:            artifacts/build-info.txt
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:1:name: Realme SM6375 Kernel - Proton Clang + KSU-Next + SUSFS
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:13:  build:
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:14:    name: Build Realme SM6375 Kernel
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:20:      DEFCONFIG: vendor/holi-qgki_defconfig
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:21:      KERNEL_NAME: Realme-SM6375-Kernel
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:22:      KSU_VERSION: KernelSU-Next Legacy
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:29:      KBUILD_BUILD_USER: github-actions
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:30:      KBUILD_BUILD_HOST: github-actions
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:49:      - name: Install build dependencies
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:58:            build-essential \
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:116:      - name: Verify KernelSU-Next
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:120:          test -d KernelSU-Next/kernel
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:121:          test -L drivers/kernelsu
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:122:          test "$(readlink drivers/kernelsu)" = "../KernelSU-Next/kernel"
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:124:          echo "KernelSU-Next: OK"
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:140:          grep -q 'obj-$(CONFIG_KSU_SUSFS) += susfs.o' fs/Makefile
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:145:      # VERIFY KSU MANUAL HOOKS
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:148:      - name: Verify KernelSU manual hooks
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:153:          grep -n -C 3 'ksu_handle_faccessat' fs/open.c
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:156:          echo "===== kernel/reboot.c ====="
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:157:          grep -n -C 3 'ksu_handle_sys_reboot' kernel/reboot.c
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:159:          grep -q 'ksu_handle_faccessat' fs/open.c
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:160:          grep -q 'ksu_handle_sys_reboot' kernel/reboot.c
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:162:          echo "KSU manual hooks: PASS"
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:164:      - name: Verify KernelSU manual hook integration
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:168:          echo "===== KernelSU hook implementation ====="
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:171:            'ksu_handle_faccessat' \
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:172:            KernelSU-Next/kernel/feature/sucompat.c
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:175:            'ksu_handle_sys_reboot' \
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:176:            KernelSU-Next/kernel/supercall/supercall.c
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:179:          echo "===== Kernel manual hook integration ====="
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:182:            'ksu_handle_faccessat' \
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:186:            'ksu_handle_sys_reboot' \
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:187:            kernel/reboot.c
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:190:            'ksu_handle_faccessat' \
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:191:            KernelSU-Next/kernel/feature/sucompat.c)"
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:194:            'ksu_handle_sys_reboot' \
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:195:            KernelSU-Next/kernel/supercall/supercall.c)"
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:198:            'ksu_handle_faccessat' \
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:202:            'ksu_handle_sys_reboot' \
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:203:            kernel/reboot.c)"
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:206:          echo "KernelSU manual hook integration: PASS"
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:209:      # GENERATE DEFCONFIG
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:212:      - name: Generate defconfig
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:216:          make \
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:224:            KBUILD_DEFCONFIG="$DEFCONFIG" \
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:225:            defconfig
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:228:      # OLDDEFCONFIG
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:231:      - name: Run olddefconfig
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:235:          make \
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:243:            olddefconfig
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:249:      - name: Verify KSU and SUSFS configuration
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:255:          echo "===== KSU CONFIG ====="
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:257:          grep '^CONFIG_KSU=' "$CONFIG"
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:258:          grep '^CONFIG_KSU_MANUAL_HOOK=' "$CONFIG"
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:263:          grep '^CONFIG_KSU_SUSFS=' "$CONFIG"
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:264:          grep '^CONFIG_KSU_SUSFS_SUS_PATH=' "$CONFIG"
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:265:          grep '^CONFIG_KSU_SUSFS_SUS_MOUNT=' "$CONFIG"
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:266:          grep '^CONFIG_KSU_SUSFS_SUS_KSTAT=' "$CONFIG"
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:267:          grep '^CONFIG_KSU_SUSFS_SPOOF_UNAME=' "$CONFIG"
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:268:          grep '^CONFIG_KSU_SUSFS_ENABLE_LOG=' "$CONFIG"                                               .github/workflows/build.yml.before-final-vendor-dlkm-cleanup:269:          grep '^CONFIG_KSU_SUSFS_HIDE_KSU_SUSFS_SYMBOLS=' "$CONFIG"                                   .github/workflows/build.yml.before-final-vendor-dlkm-cleanup:270:          grep '^CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=' "$CONFIG"                              .github/workflows/build.yml.before-final-vendor-dlkm-cleanup:271:          grep '^CONFIG_KSU_SUSFS_OPEN_REDIRECT=' "$CONFIG"                                            .github/workflows/build.yml.before-final-vendor-dlkm-cleanup:272:          grep '^CONFIG_KSU_SUSFS_SUS_MAP=' "$CONFIG"
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:275:          CONFIG_KSU=y
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:276:          CONFIG_KSU_MANUAL_HOOK=y             .github/workflows/build.yml.before-final-vendor-dlkm-cleanup:277:          CONFIG_KSU_SUSFS=y                   .github/workflows/build.yml.before-final-vendor-dlkm-cleanup:278:          CONFIG_KSU_SUSFS_SUS_PATH=y          .github/workflows/build.yml.before-final-vendor-dlkm-cleanup:279:          CONFIG_KSU_SUSFS_SUS_MOUNT=y         .github/workflows/build.yml.before-final-vendor-dlkm-cleanup:280:          CONFIG_KSU_SUSFS_SUS_KSTAT=y         .github/workflows/build.yml.before-final-vendor-dlkm-cleanup:281:          CONFIG_KSU_SUSFS_SPOOF_UNAME=y       .github/workflows/build.yml.before-final-vendor-dlkm-cleanup:282:          CONFIG_KSU_SUSFS_ENABLE_LOG=y        .github/workflows/build.yml.before-final-vendor-dlkm-cleanup:283:          CONFIG_KSU_SUSFS_HIDE_KSU_SUSFS_SYMBOLS=y
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:284:          CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=y                                               .github/workflows/build.yml.before-final-vendor-dlkm-cleanup:285:          CONFIG_KSU_SUSFS_OPEN_REDIRECT=y     .github/workflows/build.yml.before-final-vendor-dlkm-cleanup:286:          CONFIG_KSU_SUSFS_SUS_MAP=y           .github/workflows/build.yml.before-final-vendor-dlkm-cleanup:297:          echo "KSU/SUSFS CONFIGURATION: PASS" .github/workflows/build.yml.before-final-vendor-dlkm-cleanup:300:      # BUILD IMAGE + DTBS                     .github/workflows/build.yml.before-final-vendor-dlkm-cleanup:303:      - name: Build Image, DTBs and Modules    .github/workflows/build.yml.before-final-vendor-dlkm-cleanup:307:          make \                               .github/workflows/build.yml.before-final-vendor-dlkm-cleanup:391:      - name: Build or locate dtbo.img         .github/workflows/build.yml.before-final-vendor-dlkm-cleanup:419:            echo "Building Oscar dtbo.img from generated DTBO files."
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:491:      # BUILD KERNEL MODULES
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:494:      - name: Build kernel modules
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:500:          make \
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:560:          echo "===== KERNEL RELEASE ====="
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:569:          echo "===== CLEAN BUILD TREE ====="
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:576:      - name: Verify raw kernel files
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:610:      # CLONE ANYKERNEL3
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:613:      - name: Clone osm0sis AnyKernel3
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:619:            https://github.com/osm0sis/AnyKernel3.git \                                                .github/workflows/build.yml.before-final-vendor-dlkm-cleanup:620:            AnyKernel3                         .github/workflows/build.yml.before-final-vendor-dlkm-cleanup:622:          test -f AnyKernel3/tools/ak3-core.sh .github/workflows/build.yml.before-final-vendor-dlkm-cleanup:623:          test -f AnyKernel3/META-INF/com/google/android/update-binary
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:625:          echo "osm0sis AnyKernel3: PASS"
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:628:      # PREPARE ANYKERNEL3
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:631:      - name: Prepare AnyKernel3
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:635:          cd AnyKernel3
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:670:          echo "===== ANYKERNEL3 FILES ====="
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:680:      # ANYKERNEL3 INSTALLER
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:683:      - name: Configure AnyKernel3 installer
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:687:          cat > AnyKernel3/anykernel.sh <<'AK3EOF'                                                     .github/workflows/build.yml.before-final-vendor-dlkm-cleanup:688:          # AnyKernel3 installer               .github/workflows/build.yml.before-final-vendor-dlkm-cleanup:690:          # KernelSU-Next Legacy + SUSFS v2.3.0.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:693:          kernel.string=Realme 9 Pro LineageOS-23.2
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:738:          chmod 755 AnyKernel3/anykernel.sh
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:740:          test -x AnyKernel3/anykernel.sh
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:742:          echo "AnyKernel3 installer configured."                                                      .github/workflows/build.yml.before-final-vendor-dlkm-cleanup:745:      # VERIFY ANYKERNEL3 CONTENT
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:748:      - name: Verify AnyKernel3 package content
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:752:          test -f AnyKernel3/Image
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:753:          test -f AnyKernel3/dtb
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:754:          test -f AnyKernel3/dtbo.img
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:756:          if [ -f AnyKernel3/Image.gz ]; then
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:757:            echo "ERROR: Image.gz exists in AnyKernel3."                                               .github/workflows/build.yml.before-final-vendor-dlkm-cleanup:761:          if [ -f AnyKernel3/Image-dtb.gz ]; then
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:762:            echo "ERROR: Image-dtb.gz exists in AnyKernel3."                                           .github/workflows/build.yml.before-final-vendor-dlkm-cleanup:766:          if [ -f AnyKernel3/Image-dtb ]; then .github/workflows/build.yml.before-final-vendor-dlkm-cleanup:767:            echo "ERROR: Image-dtb exists in AnyKernel3."
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:771:          echo "AnyKernel3 contents: PASS"
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:777:      - name: Create AnyKernel3 flashable ZIP
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:781:          cd AnyKernel3
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:784:            ../AnyKernel3-Realme-SM6375.zip \
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:793:          test -s AnyKernel3-Realme-SM6375.zip
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:795:          echo "===== ANYKERNEL3 ZIP ====="
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:796:          ls -lh AnyKernel3-Realme-SM6375.zip  .github/workflows/build.yml.before-final-vendor-dlkm-cleanup:802:      - name: Validate final AnyKernel3 ZIP    .github/workflows/build.yml.before-final-vendor-dlkm-cleanup:806:          ZIP="AnyKernel3-Realme-SM6375.zip"   .github/workflows/build.yml.before-final-vendor-dlkm-cleanup:838:          echo " ANYKERNEL3 PACKAGE VALIDATION: PASS"
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:842:      # BUILD INFO
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:845:      - name: Generate build information
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:850:            echo "Kernel: Realme SM6375"
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:856:            echo "KernelSU: KernelSU-Next Legacy"                                                      .github/workflows/build.yml.before-final-vendor-dlkm-cleanup:858:            echo "Defconfig: vendor/holi-qgki_defconfig"
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:860:            echo "Kernel files:"
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:865:            echo "AnyKernel3:"
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:866:            ls -lh AnyKernel3-Realme-SM6375.zip
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:867:          } > artifacts/build-info.txt
-.github/workflows/build.yml.before-final-vendor-dlkm-cleanup:873:      - name: Upload kernel artifacts          .github/workflows/build.yml.before-final-vendor-dlkm-cleanup:876:          name: Realme-SM6375-Kernel           .github/workflows/build.yml.before-final-vendor-dlkm-cleanup:880:            AnyKernel3-Realme-SM6375.zip       .github/workflows/build.yml.before-final-vendor-dlkm-cleanup:881:            artifacts/build-info.txt           .github/workflows/build.yml.before-shell-list-fix:1:name: Realme SM6375 Kernel - Proton Clang + KSU-Next + SUSFS.github/workflows/build.yml.before-shell-list-fix:13:  build:
-.github/workflows/build.yml.before-shell-list-fix:14:    name: Build Realme SM6375 Kernel
-.github/workflows/build.yml.before-shell-list-fix:20:      DEFCONFIG: vendor/holi-qgki_defconfig
-.github/workflows/build.yml.before-shell-list-fix:21:      KERNEL_NAME: Realme-SM6375-Kernel
-.github/workflows/build.yml.before-shell-list-fix:22:      KSU_VERSION: KernelSU-Next Legacy
-.github/workflows/build.yml.before-shell-list-fix:29:      KBUILD_BUILD_USER: github-actions
-.github/workflows/build.yml.before-shell-list-fix:30:      KBUILD_BUILD_HOST: github-actions
-.github/workflows/build.yml.before-shell-list-fix:49:      - name: Install build dependencies
-.github/workflows/build.yml.before-shell-list-fix:58:            build-essential \
-.github/workflows/build.yml.before-shell-list-fix:116:      - name: Verify KernelSU-Next
-.github/workflows/build.yml.before-shell-list-fix:120:          test -d KernelSU-Next/kernel
-.github/workflows/build.yml.before-shell-list-fix:121:          test -L drivers/kernelsu
-.github/workflows/build.yml.before-shell-list-fix:122:          test "$(readlink drivers/kernelsu)" = "../KernelSU-Next/kernel"
-.github/workflows/build.yml.before-shell-list-fix:124:          echo "KernelSU-Next: OK"
-.github/workflows/build.yml.before-shell-list-fix:140:          grep -q 'obj-$(CONFIG_KSU_SUSFS) += susfs.o' fs/Makefile                                                .github/workflows/build.yml.before-shell-list-fix:145:      # VERIFY KSU MANUAL HOOKS
-.github/workflows/build.yml.before-shell-list-fix:148:      - name: Verify KernelSU manual hooks
-.github/workflows/build.yml.before-shell-list-fix:153:          grep -n -C 3 'ksu_handle_faccessat' fs/open.c
-.github/workflows/build.yml.before-shell-list-fix:156:          echo "===== kernel/reboot.c ====="              .github/workflows/build.yml.before-shell-list-fix:157:          grep -n -C 3 'ksu_handle_sys_reboot' kernel/reboot.c
-.github/workflows/build.yml.before-shell-list-fix:159:          grep -q 'ksu_handle_faccessat' fs/open.c
-.github/workflows/build.yml.before-shell-list-fix:160:          grep -q 'ksu_handle_sys_reboot' kernel/reboot.c
-.github/workflows/build.yml.before-shell-list-fix:162:          echo "KSU manual hooks: PASS"
-.github/workflows/build.yml.before-shell-list-fix:164:      - name: Verify KernelSU manual hook integration     .github/workflows/build.yml.before-shell-list-fix:168:          echo "===== KernelSU hook implementation =====" .github/workflows/build.yml.before-shell-list-fix:171:            'ksu_handle_faccessat' \                      .github/workflows/build.yml.before-shell-list-fix:172:            KernelSU-Next/kernel/feature/sucompat.c       .github/workflows/build.yml.before-shell-list-fix:175:            'ksu_handle_sys_reboot' \                     .github/workflows/build.yml.before-shell-list-fix:176:            KernelSU-Next/kernel/supercall/supercall.c    .github/workflows/build.yml.before-shell-list-fix:179:          echo "===== Kernel manual hook integration ====="
-.github/workflows/build.yml.before-shell-list-fix:182:            'ksu_handle_faccessat' \
-.github/workflows/build.yml.before-shell-list-fix:186:            'ksu_handle_sys_reboot' \
-.github/workflows/build.yml.before-shell-list-fix:187:            kernel/reboot.c
-.github/workflows/build.yml.before-shell-list-fix:190:            'ksu_handle_faccessat' \
-.github/workflows/build.yml.before-shell-list-fix:191:            KernelSU-Next/kernel/feature/sucompat.c)"
-.github/workflows/build.yml.before-shell-list-fix:194:            'ksu_handle_sys_reboot' \
-.github/workflows/build.yml.before-shell-list-fix:195:            KernelSU-Next/kernel/supercall/supercall.c)"
-.github/workflows/build.yml.before-shell-list-fix:198:            'ksu_handle_faccessat' \
-.github/workflows/build.yml.before-shell-list-fix:202:            'ksu_handle_sys_reboot' \
-.github/workflows/build.yml.before-shell-list-fix:203:            kernel/reboot.c)"
-.github/workflows/build.yml.before-shell-list-fix:206:          echo "KernelSU manual hook integration: PASS"
-.github/workflows/build.yml.before-shell-list-fix:209:      # GENERATE DEFCONFIG
-.github/workflows/build.yml.before-shell-list-fix:212:      - name: Generate defconfig
-.github/workflows/build.yml.before-shell-list-fix:216:          make \
-.github/workflows/build.yml.before-shell-list-fix:224:            KBUILD_DEFCONFIG="$DEFCONFIG" \
-.github/workflows/build.yml.before-shell-list-fix:225:            defconfig
-.github/workflows/build.yml.before-shell-list-fix:228:      # OLDDEFCONFIG                                      .github/workflows/build.yml.before-shell-list-fix:231:      - name: Run olddefconfig                            .github/workflows/build.yml.before-shell-list-fix:235:          make \                                          .github/workflows/build.yml.before-shell-list-fix:243:            olddefconfig                                  .github/workflows/build.yml.before-shell-list-fix:249:      - name: Verify KSU and SUSFS configuration          .github/workflows/build.yml.before-shell-list-fix:255:          echo "===== KSU CONFIG ====="                   .github/workflows/build.yml.before-shell-list-fix:257:          grep '^CONFIG_KSU=' "$CONFIG"                   .github/workflows/build.yml.before-shell-list-fix:258:          grep '^CONFIG_KSU_MANUAL_HOOK=' "$CONFIG"
-.github/workflows/build.yml.before-shell-list-fix:263:          grep '^CONFIG_KSU_SUSFS=' "$CONFIG"
-.github/workflows/build.yml.before-shell-list-fix:264:          grep '^CONFIG_KSU_SUSFS_SUS_PATH=' "$CONFIG"
-.github/workflows/build.yml.before-shell-list-fix:265:          grep '^CONFIG_KSU_SUSFS_SUS_MOUNT=' "$CONFIG"
-.github/workflows/build.yml.before-shell-list-fix:266:          grep '^CONFIG_KSU_SUSFS_SUS_KSTAT=' "$CONFIG"
-.github/workflows/build.yml.before-shell-list-fix:267:          grep '^CONFIG_KSU_SUSFS_SPOOF_UNAME=' "$CONFIG"
-.github/workflows/build.yml.before-shell-list-fix:268:          grep '^CONFIG_KSU_SUSFS_ENABLE_LOG=' "$CONFIG"
-.github/workflows/build.yml.before-shell-list-fix:269:          grep '^CONFIG_KSU_SUSFS_HIDE_KSU_SUSFS_SYMBOLS=' "$CONFIG"                                              .github/workflows/build.yml.before-shell-list-fix:270:          grep '^CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=' "$CONFIG"
-.github/workflows/build.yml.before-shell-list-fix:271:          grep '^CONFIG_KSU_SUSFS_OPEN_REDIRECT=' "$CONFIG"                                                       .github/workflows/build.yml.before-shell-list-fix:272:          grep '^CONFIG_KSU_SUSFS_SUS_MAP=' "$CONFIG"     .github/workflows/build.yml.before-shell-list-fix:275:          CONFIG_KSU=y                                    .github/workflows/build.yml.before-shell-list-fix:276:          CONFIG_KSU_MANUAL_HOOK=y
-.github/workflows/build.yml.before-shell-list-fix:277:          CONFIG_KSU_SUSFS=y
-.github/workflows/build.yml.before-shell-list-fix:278:          CONFIG_KSU_SUSFS_SUS_PATH=y
-.github/workflows/build.yml.before-shell-list-fix:279:          CONFIG_KSU_SUSFS_SUS_MOUNT=y
-.github/workflows/build.yml.before-shell-list-fix:280:          CONFIG_KSU_SUSFS_SUS_KSTAT=y
-.github/workflows/build.yml.before-shell-list-fix:281:          CONFIG_KSU_SUSFS_SPOOF_UNAME=y
-.github/workflows/build.yml.before-shell-list-fix:282:          CONFIG_KSU_SUSFS_ENABLE_LOG=y
-.github/workflows/build.yml.before-shell-list-fix:283:          CONFIG_KSU_SUSFS_HIDE_KSU_SUSFS_SYMBOLS=y
-.github/workflows/build.yml.before-shell-list-fix:284:          CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=y
-.github/workflows/build.yml.before-shell-list-fix:285:          CONFIG_KSU_SUSFS_OPEN_REDIRECT=y
-.github/workflows/build.yml.before-shell-list-fix:286:          CONFIG_KSU_SUSFS_SUS_MAP=y
-.github/workflows/build.yml.before-shell-list-fix:297:          echo "KSU/SUSFS CONFIGURATION: PASS"
-.github/workflows/build.yml.before-shell-list-fix:300:      # BUILD IMAGE + DTBS
-.github/workflows/build.yml.before-shell-list-fix:303:      - name: Build Image, DTBs and Modules
-.github/workflows/build.yml.before-shell-list-fix:307:          make \
-.github/workflows/build.yml.before-shell-list-fix:391:      - name: Build or locate dtbo.img
-.github/workflows/build.yml.before-shell-list-fix:419:            echo "Building Oscar dtbo.img from generated DTBO files."                                             .github/workflows/build.yml.before-shell-list-fix:491:      # BUILD KERNEL MODULES                              .github/workflows/build.yml.before-shell-list-fix:494:      - name: Build kernel modules                        .github/workflows/build.yml.before-shell-list-fix:500:          make \                                          .github/workflows/build.yml.before-shell-list-fix:560:          echo "===== KERNEL RELEASE ====="               .github/workflows/build.yml.before-shell-list-fix:569:          echo "===== CLEAN BUILD TREE ====="             .github/workflows/build.yml.before-shell-list-fix:576:      - name: Verify raw kernel files                     .github/workflows/build.yml.before-shell-list-fix:610:      # CLONE ANYKERNEL3                                  .github/workflows/build.yml.before-shell-list-fix:613:      - name: Clone osm0sis AnyKernel3                    .github/workflows/build.yml.before-shell-list-fix:619:            https://github.com/osm0sis/AnyKernel3.git \   .github/workflows/build.yml.before-shell-list-fix:620:            AnyKernel3                                    .github/workflows/build.yml.before-shell-list-fix:622:          test -f AnyKernel3/tools/ak3-core.sh            .github/workflows/build.yml.before-shell-list-fix:623:          test -f AnyKernel3/META-INF/com/google/android/update-binary
-.github/workflows/build.yml.before-shell-list-fix:625:          echo "osm0sis AnyKernel3: PASS"
-.github/workflows/build.yml.before-shell-list-fix:628:      # PREPARE ANYKERNEL3
-.github/workflows/build.yml.before-shell-list-fix:631:      - name: Prepare AnyKernel3
-.github/workflows/build.yml.before-shell-list-fix:635:          cd AnyKernel3
-.github/workflows/build.yml.before-shell-list-fix:670:          echo "===== ANYKERNEL3 FILES ====="
-.github/workflows/build.yml.before-shell-list-fix:680:      # ANYKERNEL3 INSTALLER
-.github/workflows/build.yml.before-shell-list-fix:683:      - name: Configure AnyKernel3 installer
-.github/workflows/build.yml.before-shell-list-fix:687:          cat > AnyKernel3/anykernel.sh <<'AK3EOF'
-.github/workflows/build.yml.before-shell-list-fix:688:          # AnyKernel3 installer
-.github/workflows/build.yml.before-shell-list-fix:690:          # KernelSU-Next Legacy + SUSFS v2.3.0
-.github/workflows/build.yml.before-shell-list-fix:693:          kernel.string=Realme 9 Pro LineageOS-23.2
-.github/workflows/build.yml.before-shell-list-fix:738:          chmod 755 AnyKernel3/anykernel.sh
-.github/workflows/build.yml.before-shell-list-fix:740:          test -x AnyKernel3/anykernel.sh
-.github/workflows/build.yml.before-shell-list-fix:742:          echo "AnyKernel3 installer configured."         .github/workflows/build.yml.before-shell-list-fix:745:      # VERIFY ANYKERNEL3 CONTENT                         .github/workflows/build.yml.before-shell-list-fix:748:      - name: Verify AnyKernel3 package content
-.github/workflows/build.yml.before-shell-list-fix:752:          test -f AnyKernel3/Image
-.github/workflows/build.yml.before-shell-list-fix:753:          test -f AnyKernel3/dtb                          .github/workflows/build.yml.before-shell-list-fix:754:          test -f AnyKernel3/dtbo.img                     .github/workflows/build.yml.before-shell-list-fix:756:          if [ -f AnyKernel3/Image.gz ]; then             .github/workflows/build.yml.before-shell-list-fix:757:            echo "ERROR: Image.gz exists in AnyKernel3."  .github/workflows/build.yml.before-shell-list-fix:761:          if [ -f AnyKernel3/Image-dtb.gz ]; then         .github/workflows/build.yml.before-shell-list-fix:762:            echo "ERROR: Image-dtb.gz exists in AnyKernel3."
-.github/workflows/build.yml.before-shell-list-fix:766:          if [ -f AnyKernel3/Image-dtb ]; then
-.github/workflows/build.yml.before-shell-list-fix:767:            echo "ERROR: Image-dtb exists in AnyKernel3."
-.github/workflows/build.yml.before-shell-list-fix:771:          echo "AnyKernel3 contents: PASS"
-.github/workflows/build.yml.before-shell-list-fix:777:      - name: Create AnyKernel3 flashable ZIP
-.github/workflows/build.yml.before-shell-list-fix:781:          cd AnyKernel3
-.github/workflows/build.yml.before-shell-list-fix:784:            ../AnyKernel3-Realme-SM6375.zip \
-.github/workflows/build.yml.before-shell-list-fix:793:          test -s AnyKernel3-Realme-SM6375.zip
-.github/workflows/build.yml.before-shell-list-fix:795:          echo "===== ANYKERNEL3 ZIP ====="
-.github/workflows/build.yml.before-shell-list-fix:796:          ls -lh AnyKernel3-Realme-SM6375.zip
-.github/workflows/build.yml.before-shell-list-fix:802:      - name: Validate final AnyKernel3 ZIP
-.github/workflows/build.yml.before-shell-list-fix:806:          ZIP="AnyKernel3-Realme-SM6375.zip"
-.github/workflows/build.yml.before-shell-list-fix:837:          echo " ANYKERNEL3 PACKAGE VALIDATION: PASS"
-.github/workflows/build.yml.before-shell-list-fix:841:      # BUILD INFO
-.github/workflows/build.yml.before-shell-list-fix:844:      - name: Generate build information
-.github/workflows/build.yml.before-shell-list-fix:849:            echo "Kernel: Realme SM6375"
-.github/workflows/build.yml.before-shell-list-fix:855:            echo "KernelSU: KernelSU-Next Legacy"
-.github/workflows/build.yml.before-shell-list-fix:857:            echo "Defconfig: vendor/holi-qgki_defconfig"
-.github/workflows/build.yml.before-shell-list-fix:859:            echo "Kernel files:"
-.github/workflows/build.yml.before-shell-list-fix:864:            echo "AnyKernel3:"
-.github/workflows/build.yml.before-shell-list-fix:865:            ls -lh AnyKernel3-Realme-SM6375.zip
-.github/workflows/build.yml.before-shell-list-fix:866:          } > artifacts/build-info.txt
-.github/workflows/build.yml.before-shell-list-fix:872:      - name: Upload kernel artifacts
-.github/workflows/build.yml.before-shell-list-fix:875:          name: Realme-SM6375-Kernel
-.github/workflows/build.yml.before-shell-list-fix:879:            AnyKernel3-Realme-SM6375.zip
-.github/workflows/build.yml.before-shell-list-fix:880:            artifacts/build-info.txt                      .github/workflows/build.yml.before-dangling-slash-fix:1:name: Realme SM6375 Kernel - Proton Clang + KSU-Next + SUSFS
-.github/workflows/build.yml.before-dangling-slash-fix:13:  build:
-.github/workflows/build.yml.before-dangling-slash-fix:14:    name: Build Realme SM6375 Kernel
-.github/workflows/build.yml.before-dangling-slash-fix:20:      DEFCONFIG: vendor/holi-qgki_defconfig
-.github/workflows/build.yml.before-dangling-slash-fix:21:      KERNEL_NAME: Realme-SM6375-Kernel
-.github/workflows/build.yml.before-dangling-slash-fix:22:      KSU_VERSION: KernelSU-Next Legacy
-.github/workflows/build.yml.before-dangling-slash-fix:29:      KBUILD_BUILD_USER: github-actions
-.github/workflows/build.yml.before-dangling-slash-fix:30:      KBUILD_BUILD_HOST: github-actions
-.github/workflows/build.yml.before-dangling-slash-fix:49:      - name: Install build dependencies
-.github/workflows/build.yml.before-dangling-slash-fix:58:            build-essential \
-.github/workflows/build.yml.before-dangling-slash-fix:116:      - name: Verify KernelSU-Next
-.github/workflows/build.yml.before-dangling-slash-fix:120:          test -d KernelSU-Next/kernel
-.github/workflows/build.yml.before-dangling-slash-fix:121:          test -L drivers/kernelsu
-.github/workflows/build.yml.before-dangling-slash-fix:122:          test "$(readlink drivers/kernelsu)" = "../KernelSU-Next/kernel"                                     .github/workflows/build.yml.before-dangling-slash-fix:124:          echo "KernelSU-Next: OK"                    .github/workflows/build.yml.before-dangling-slash-fix:140:          grep -q 'obj-$(CONFIG_KSU_SUSFS) += susfs.o' fs/Makefile
-.github/workflows/build.yml.before-dangling-slash-fix:145:      # VERIFY KSU MANUAL HOOKS
-.github/workflows/build.yml.before-dangling-slash-fix:148:      - name: Verify KernelSU manual hooks
-.github/workflows/build.yml.before-dangling-slash-fix:153:          grep -n -C 3 'ksu_handle_faccessat' fs/open.c                                                       .github/workflows/build.yml.before-dangling-slash-fix:156:          echo "===== kernel/reboot.c ====="          .github/workflows/build.yml.before-dangling-slash-fix:157:          grep -n -C 3 'ksu_handle_sys_reboot' kernel/reboot.c
-.github/workflows/build.yml.before-dangling-slash-fix:159:          grep -q 'ksu_handle_faccessat' fs/open.c
-.github/workflows/build.yml.before-dangling-slash-fix:160:          grep -q 'ksu_handle_sys_reboot' kernel/reboot.c                                                     .github/workflows/build.yml.before-dangling-slash-fix:162:          echo "KSU manual hooks: PASS"               .github/workflows/build.yml.before-dangling-slash-fix:164:      - name: Verify KernelSU manual hook integration .github/workflows/build.yml.before-dangling-slash-fix:168:          echo "===== KernelSU hook implementation ====="
-.github/workflows/build.yml.before-dangling-slash-fix:171:            'ksu_handle_faccessat' \
-.github/workflows/build.yml.before-dangling-slash-fix:172:            KernelSU-Next/kernel/feature/sucompat.c
-.github/workflows/build.yml.before-dangling-slash-fix:175:            'ksu_handle_sys_reboot' \
-.github/workflows/build.yml.before-dangling-slash-fix:176:            KernelSU-Next/kernel/supercall/supercall.c
-.github/workflows/build.yml.before-dangling-slash-fix:179:          echo "===== Kernel manual hook integration ====="                                                   .github/workflows/build.yml.before-dangling-slash-fix:182:            'ksu_handle_faccessat' \                  .github/workflows/build.yml.before-dangling-slash-fix:186:            'ksu_handle_sys_reboot' \                 .github/workflows/build.yml.before-dangling-slash-fix:187:            kernel/reboot.c                           .github/workflows/build.yml.before-dangling-slash-fix:190:            'ksu_handle_faccessat' \                  .github/workflows/build.yml.before-dangling-slash-fix:191:            KernelSU-Next/kernel/feature/sucompat.c)" .github/workflows/build.yml.before-dangling-slash-fix:194:            'ksu_handle_sys_reboot' \                 .github/workflows/build.yml.before-dangling-slash-fix:195:            KernelSU-Next/kernel/supercall/supercall.c)"
-.github/workflows/build.yml.before-dangling-slash-fix:198:            'ksu_handle_faccessat' \
-.github/workflows/build.yml.before-dangling-slash-fix:202:            'ksu_handle_sys_reboot' \
-.github/workflows/build.yml.before-dangling-slash-fix:203:            kernel/reboot.c)"
-.github/workflows/build.yml.before-dangling-slash-fix:206:          echo "KernelSU manual hook integration: PASS"                                                       .github/workflows/build.yml.before-dangling-slash-fix:209:      # GENERATE DEFCONFIG                            .github/workflows/build.yml.before-dangling-slash-fix:212:      - name: Generate defconfig                      .github/workflows/build.yml.before-dangling-slash-fix:216:          make \                                      .github/workflows/build.yml.before-dangling-slash-fix:224:            KBUILD_DEFCONFIG="$DEFCONFIG" \           .github/workflows/build.yml.before-dangling-slash-fix:225:            defconfig                                 .github/workflows/build.yml.before-dangling-slash-fix:228:      # OLDDEFCONFIG
-.github/workflows/build.yml.before-dangling-slash-fix:231:      - name: Run olddefconfig
-.github/workflows/build.yml.before-dangling-slash-fix:235:          make \
-.github/workflows/build.yml.before-dangling-slash-fix:243:            olddefconfig
-.github/workflows/build.yml.before-dangling-slash-fix:249:      - name: Verify KSU and SUSFS configuration
-.github/workflows/build.yml.before-dangling-slash-fix:255:          echo "===== KSU CONFIG ====="
-.github/workflows/build.yml.before-dangling-slash-fix:257:          grep '^CONFIG_KSU=' "$CONFIG"
-.github/workflows/build.yml.before-dangling-slash-fix:258:          grep '^CONFIG_KSU_MANUAL_HOOK=' "$CONFIG"
-.github/workflows/build.yml.before-dangling-slash-fix:263:          grep '^CONFIG_KSU_SUSFS=' "$CONFIG"
-.github/workflows/build.yml.before-dangling-slash-fix:264:          grep '^CONFIG_KSU_SUSFS_SUS_PATH=' "$CONFIG"
-.github/workflows/build.yml.before-dangling-slash-fix:265:          grep '^CONFIG_KSU_SUSFS_SUS_MOUNT=' "$CONFIG"                                                       .github/workflows/build.yml.before-dangling-slash-fix:266:          grep '^CONFIG_KSU_SUSFS_SUS_KSTAT=' "$CONFIG"
-.github/workflows/build.yml.before-dangling-slash-fix:267:          grep '^CONFIG_KSU_SUSFS_SPOOF_UNAME=' "$CONFIG"
-.github/workflows/build.yml.before-dangling-slash-fix:268:          grep '^CONFIG_KSU_SUSFS_ENABLE_LOG=' "$CONFIG"                                                      .github/workflows/build.yml.before-dangling-slash-fix:269:          grep '^CONFIG_KSU_SUSFS_HIDE_KSU_SUSFS_SYMBOLS=' "$CONFIG"
-.github/workflows/build.yml.before-dangling-slash-fix:270:          grep '^CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=' "$CONFIG"                                     .github/workflows/build.yml.before-dangling-slash-fix:271:          grep '^CONFIG_KSU_SUSFS_OPEN_REDIRECT=' "$CONFIG"
-.github/workflows/build.yml.before-dangling-slash-fix:272:          grep '^CONFIG_KSU_SUSFS_SUS_MAP=' "$CONFIG"
-.github/workflows/build.yml.before-dangling-slash-fix:275:          CONFIG_KSU=y
-.github/workflows/build.yml.before-dangling-slash-fix:276:          CONFIG_KSU_MANUAL_HOOK=y
-.github/workflows/build.yml.before-dangling-slash-fix:277:          CONFIG_KSU_SUSFS=y
-.github/workflows/build.yml.before-dangling-slash-fix:278:          CONFIG_KSU_SUSFS_SUS_PATH=y
-.github/workflows/build.yml.before-dangling-slash-fix:279:          CONFIG_KSU_SUSFS_SUS_MOUNT=y                .github/workflows/build.yml.before-dangling-slash-fix:280:          CONFIG_KSU_SUSFS_SUS_KSTAT=y                .github/workflows/build.yml.before-dangling-slash-fix:281:          CONFIG_KSU_SUSFS_SPOOF_UNAME=y              .github/workflows/build.yml.before-dangling-slash-fix:282:          CONFIG_KSU_SUSFS_ENABLE_LOG=y
-.github/workflows/build.yml.before-dangling-slash-fix:283:          CONFIG_KSU_SUSFS_HIDE_KSU_SUSFS_SYMBOLS=y
-.github/workflows/build.yml.before-dangling-slash-fix:284:          CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=y                                                      .github/workflows/build.yml.before-dangling-slash-fix:285:          CONFIG_KSU_SUSFS_OPEN_REDIRECT=y            .github/workflows/build.yml.before-dangling-slash-fix:286:          CONFIG_KSU_SUSFS_SUS_MAP=y                  .github/workflows/build.yml.before-dangling-slash-fix:297:          echo "KSU/SUSFS CONFIGURATION: PASS"        .github/workflows/build.yml.before-dangling-slash-fix:300:      # BUILD IMAGE + DTBS                            .github/workflows/build.yml.before-dangling-slash-fix:303:      - name: Build Image, DTBs and Modules           .github/workflows/build.yml.before-dangling-slash-fix:307:          make \                                      .github/workflows/build.yml.before-dangling-slash-fix:391:      - name: Build or locate dtbo.img                .github/workflows/build.yml.before-dangling-slash-fix:419:            echo "Building Oscar dtbo.img from generated DTBO files."
-.github/workflows/build.yml.before-dangling-slash-fix:491:      # BUILD KERNEL MODULES
-.github/workflows/build.yml.before-dangling-slash-fix:494:      - name: Build kernel modules
-.github/workflows/build.yml.before-dangling-slash-fix:500:          make \
-.github/workflows/build.yml.before-dangling-slash-fix:560:          echo "===== KERNEL RELEASE ====="
-.github/workflows/build.yml.before-dangling-slash-fix:569:          echo "===== CLEAN BUILD TREE ====="
-.github/workflows/build.yml.before-dangling-slash-fix:576:      - name: Verify raw kernel files
-.github/workflows/build.yml.before-dangling-slash-fix:610:      # CLONE ANYKERNEL3
-.github/workflows/build.yml.before-dangling-slash-fix:613:      - name: Clone osm0sis AnyKernel3
-.github/workflows/build.yml.before-dangling-slash-fix:619:            https://github.com/osm0sis/AnyKernel3.git \                                                       .github/workflows/build.yml.before-dangling-slash-fix:620:            AnyKernel3                                .github/workflows/build.yml.before-dangling-slash-fix:622:          test -f AnyKernel3/tools/ak3-core.sh        .github/workflows/build.yml.before-dangling-slash-fix:623:          test -f AnyKernel3/META-INF/com/google/android/update-binary
-.github/workflows/build.yml.before-dangling-slash-fix:625:          echo "osm0sis AnyKernel3: PASS"
-.github/workflows/build.yml.before-dangling-slash-fix:628:      # PREPARE ANYKERNEL3
-.github/workflows/build.yml.before-dangling-slash-fix:631:      - name: Prepare AnyKernel3
-.github/workflows/build.yml.before-dangling-slash-fix:635:          cd AnyKernel3
-.github/workflows/build.yml.before-dangling-slash-fix:670:          echo "===== ANYKERNEL3 FILES ====="
-.github/workflows/build.yml.before-dangling-slash-fix:680:      # ANYKERNEL3 INSTALLER
-.github/workflows/build.yml.before-dangling-slash-fix:683:      - name: Configure AnyKernel3 installer
-.github/workflows/build.yml.before-dangling-slash-fix:687:          cat > AnyKernel3/anykernel.sh <<'AK3EOF'
-.github/workflows/build.yml.before-dangling-slash-fix:688:          # AnyKernel3 installer
-.github/workflows/build.yml.before-dangling-slash-fix:690:          # KernelSU-Next Legacy + SUSFS v2.3.0
-.github/workflows/build.yml.before-dangling-slash-fix:693:          kernel.string=Realme 9 Pro LineageOS-23.2
-.github/workflows/build.yml.before-dangling-slash-fix:738:          chmod 755 AnyKernel3/anykernel.sh
-.github/workflows/build.yml.before-dangling-slash-fix:740:          test -x AnyKernel3/anykernel.sh
-.github/workflows/build.yml.before-dangling-slash-fix:742:          echo "AnyKernel3 installer configured."
-.github/workflows/build.yml.before-dangling-slash-fix:745:      # VERIFY ANYKERNEL3 CONTENT
-.github/workflows/build.yml.before-dangling-slash-fix:748:      - name: Verify AnyKernel3 package content
-.github/workflows/build.yml.before-dangling-slash-fix:752:          test -f AnyKernel3/Image
-.github/workflows/build.yml.before-dangling-slash-fix:753:          test -f AnyKernel3/dtb
-.github/workflows/build.yml.before-dangling-slash-fix:754:          test -f AnyKernel3/dtbo.img
-.github/workflows/build.yml.before-dangling-slash-fix:756:          if [ -f AnyKernel3/Image.gz ]; then
-.github/workflows/build.yml.before-dangling-slash-fix:757:            echo "ERROR: Image.gz exists in AnyKernel3."                                                      .github/workflows/build.yml.before-dangling-slash-fix:761:          if [ -f AnyKernel3/Image-dtb.gz ]; then
-.github/workflows/build.yml.before-dangling-slash-fix:762:            echo "ERROR: Image-dtb.gz exists in AnyKernel3."
-.github/workflows/build.yml.before-dangling-slash-fix:766:          if [ -f AnyKernel3/Image-dtb ]; then
-.github/workflows/build.yml.before-dangling-slash-fix:767:            echo "ERROR: Image-dtb exists in AnyKernel3."                                                     .github/workflows/build.yml.before-dangling-slash-fix:771:          echo "AnyKernel3 contents: PASS"            .github/workflows/build.yml.before-dangling-slash-fix:777:      - name: Create AnyKernel3 flashable ZIP         .github/workflows/build.yml.before-dangling-slash-fix:781:          cd AnyKernel3                               .github/workflows/build.yml.before-dangling-slash-fix:784:            ../AnyKernel3-Realme-SM6375.zip \         .github/workflows/build.yml.before-dangling-slash-fix:793:          test -s AnyKernel3-Realme-SM6375.zip        .github/workflows/build.yml.before-dangling-slash-fix:795:          echo "===== ANYKERNEL3 ZIP ====="           .github/workflows/build.yml.before-dangling-slash-fix:796:          ls -lh AnyKernel3-Realme-SM6375.zip         .github/workflows/build.yml.before-dangling-slash-fix:802:      - name: Validate final AnyKernel3 ZIP           .github/workflows/build.yml.before-dangling-slash-fix:806:          ZIP="AnyKernel3-Realme-SM6375.zip"          .github/workflows/build.yml.before-dangling-slash-fix:837:          echo " ANYKERNEL3 PACKAGE VALIDATION: PASS" .github/workflows/build.yml.before-dangling-slash-fix:841:      # BUILD INFO                                    .github/workflows/build.yml.before-dangling-slash-fix:844:      - name: Generate build information              .github/workflows/build.yml.before-dangling-slash-fix:849:            echo "Kernel: Realme SM6375"              .github/workflows/build.yml.before-dangling-slash-fix:855:            echo "KernelSU: KernelSU-Next Legacy"     .github/workflows/build.yml.before-dangling-slash-fix:857:            echo "Defconfig: vendor/holi-qgki_defconfig"
-.github/workflows/build.yml.before-dangling-slash-fix:859:            echo "Kernel files:"
-.github/workflows/build.yml.before-dangling-slash-fix:864:            echo "AnyKernel3:"                        .github/workflows/build.yml.before-dangling-slash-fix:865:            ls -lh AnyKernel3-Realme-SM6375.zip       .github/workflows/build.yml.before-dangling-slash-fix:866:          } > artifacts/build-info.txt                .github/workflows/build.yml.before-dangling-slash-fix:872:      - name: Upload kernel artifacts                 .github/workflows/build.yml.before-dangling-slash-fix:875:          name: Realme-SM6375-Kernel                  .github/workflows/build.yml.before-dangling-slash-fix:879:            AnyKernel3-Realme-SM6375.zip              .github/workflows/build.yml.before-dangling-slash-fix:880:            artifacts/build-info.txt                  .github/workflows/build.yml.before-ci-syntax-fix:1:name: Realme SM6375 Kernel - Proton Clang + KSU-Next + SUSFS .github/workflows/build.yml.before-ci-syntax-fix:13:  build:                                                    .github/workflows/build.yml.before-ci-syntax-fix:14:    name: Build Realme SM6375 Kernel                        .github/workflows/build.yml.before-ci-syntax-fix:20:      DEFCONFIG: vendor/holi-qgki_defconfig                 .github/workflows/build.yml.before-ci-syntax-fix:21:      KERNEL_NAME: Realme-SM6375-Kernel                     .github/workflows/build.yml.before-ci-syntax-fix:22:      KSU_VERSION: KernelSU-Next Legacy                     .github/workflows/build.yml.before-ci-syntax-fix:29:      KBUILD_BUILD_USER: github-actions                     .github/workflows/build.yml.before-ci-syntax-fix:30:      KBUILD_BUILD_HOST: github-actions                     .github/workflows/build.yml.before-ci-syntax-fix:49:      - name: Install build dependencies                    .github/workflows/build.yml.before-ci-syntax-fix:58:            build-essential \                               .github/workflows/build.yml.before-ci-syntax-fix:116:      - name: Verify KernelSU-Next
-.github/workflows/build.yml.before-ci-syntax-fix:120:          test -d KernelSU-Next/kernel
-.github/workflows/build.yml.before-ci-syntax-fix:121:          test -L drivers/kernelsu
-.github/workflows/build.yml.before-ci-syntax-fix:122:          test "$(readlink drivers/kernelsu)" = "../KernelSU-Next/kernel"                                          .github/workflows/build.yml.before-ci-syntax-fix:124:          echo "KernelSU-Next: OK"                         .github/workflows/build.yml.before-ci-syntax-fix:140:          grep -q 'obj-$(CONFIG_KSU_SUSFS) += susfs.o' fs/Makefile
-.github/workflows/build.yml.before-ci-syntax-fix:145:      # VERIFY KSU MANUAL HOOKS
-.github/workflows/build.yml.before-ci-syntax-fix:148:      - name: Verify KernelSU manual hooks
-.github/workflows/build.yml.before-ci-syntax-fix:153:          grep -n -C 3 'ksu_handle_faccessat' fs/open.c
-.github/workflows/build.yml.before-ci-syntax-fix:156:          echo "===== kernel/reboot.c ====="
-.github/workflows/build.yml.before-ci-syntax-fix:157:          grep -n -C 3 'ksu_handle_sys_reboot' kernel/reboot.c                                                     .github/workflows/build.yml.before-ci-syntax-fix:159:          grep -q 'ksu_handle_faccessat' fs/open.c         .github/workflows/build.yml.before-ci-syntax-fix:160:          grep -q 'ksu_handle_sys_reboot' kernel/reboot.c  .github/workflows/build.yml.before-ci-syntax-fix:162:          echo "KSU manual hooks: PASS"                    .github/workflows/build.yml.before-ci-syntax-fix:164:      - name: Verify KernelSU manual hook integration      .github/workflows/build.yml.before-ci-syntax-fix:168:          echo "===== KernelSU hook implementation ====="  .github/workflows/build.yml.before-ci-syntax-fix:171:            'ksu_handle_faccessat' \                       .github/workflows/build.yml.before-ci-syntax-fix:172:            KernelSU-Next/kernel/feature/sucompat.c        .github/workflows/build.yml.before-ci-syntax-fix:175:            'ksu_handle_sys_reboot' \                      .github/workflows/build.yml.before-ci-syntax-fix:176:            KernelSU-Next/kernel/supercall/supercall.c     .github/workflows/build.yml.before-ci-syntax-fix:179:          echo "===== Kernel manual hook integration =====".github/workflows/build.yml.before-ci-syntax-fix:182:            'ksu_handle_faccessat' \                       .github/workflows/build.yml.before-ci-syntax-fix:186:            'ksu_handle_sys_reboot' \                      .github/workflows/build.yml.before-ci-syntax-fix:187:            kernel/reboot.c                                .github/workflows/build.yml.before-ci-syntax-fix:190:            'ksu_handle_faccessat' \                       .github/workflows/build.yml.before-ci-syntax-fix:191:            KernelSU-Next/kernel/feature/sucompat.c)"      .github/workflows/build.yml.before-ci-syntax-fix:194:            'ksu_handle_sys_reboot' \                      .github/workflows/build.yml.before-ci-syntax-fix:195:            KernelSU-Next/kernel/supercall/supercall.c)"   .github/workflows/build.yml.before-ci-syntax-fix:198:            'ksu_handle_faccessat' \                       .github/workflows/build.yml.before-ci-syntax-fix:202:            'ksu_handle_sys_reboot' \                      .github/workflows/build.yml.before-ci-syntax-fix:203:            kernel/reboot.c)"                              .github/workflows/build.yml.before-ci-syntax-fix:206:          echo "KernelSU manual hook integration: PASS"    .github/workflows/build.yml.before-ci-syntax-fix:209:      # GENERATE DEFCONFIG                                 .github/workflows/build.yml.before-ci-syntax-fix:212:      - name: Generate defconfig                           .github/workflows/build.yml.before-ci-syntax-fix:216:          make \                                           .github/workflows/build.yml.before-ci-syntax-fix:224:            KBUILD_DEFCONFIG="$DEFCONFIG" \                .github/workflows/build.yml.before-ci-syntax-fix:225:            defconfig                                      .github/workflows/build.yml.before-ci-syntax-fix:228:      # OLDDEFCONFIG                                       .github/workflows/build.yml.before-ci-syntax-fix:231:      - name: Run olddefconfig                             .github/workflows/build.yml.before-ci-syntax-fix:235:          make \                                           .github/workflows/build.yml.before-ci-syntax-fix:243:            olddefconfig                                   .github/workflows/build.yml.before-ci-syntax-fix:249:      - name: Verify KSU and SUSFS configuration           .github/workflows/build.yml.before-ci-syntax-fix:255:          echo "===== KSU CONFIG ====="                    .github/workflows/build.yml.before-ci-syntax-fix:257:          grep '^CONFIG_KSU=' "$CONFIG"                    .github/workflows/build.yml.before-ci-syntax-fix:258:          grep '^CONFIG_KSU_MANUAL_HOOK=' "$CONFIG"        .github/workflows/build.yml.before-ci-syntax-fix:263:          grep '^CONFIG_KSU_SUSFS=' "$CONFIG"              .github/workflows/build.yml.before-ci-syntax-fix:264:          grep '^CONFIG_KSU_SUSFS_SUS_PATH=' "$CONFIG"     .github/workflows/build.yml.before-ci-syntax-fix:265:          grep '^CONFIG_KSU_SUSFS_SUS_MOUNT=' "$CONFIG"    .github/workflows/build.yml.before-ci-syntax-fix:266:          grep '^CONFIG_KSU_SUSFS_SUS_KSTAT=' "$CONFIG"    .github/workflows/build.yml.before-ci-syntax-fix:267:          grep '^CONFIG_KSU_SUSFS_SPOOF_UNAME=' "$CONFIG"
-.github/workflows/build.yml.before-ci-syntax-fix:268:          grep '^CONFIG_KSU_SUSFS_ENABLE_LOG=' "$CONFIG"
-.github/workflows/build.yml.before-ci-syntax-fix:269:          grep '^CONFIG_KSU_SUSFS_HIDE_KSU_SUSFS_SYMBOLS=' "$CONFIG"                                               .github/workflows/build.yml.before-ci-syntax-fix:270:          grep '^CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=' "$CONFIG"
-.github/workflows/build.yml.before-ci-syntax-fix:271:          grep '^CONFIG_KSU_SUSFS_OPEN_REDIRECT=' "$CONFIG"
-.github/workflows/build.yml.before-ci-syntax-fix:272:          grep '^CONFIG_KSU_SUSFS_SUS_MAP=' "$CONFIG"
-.github/workflows/build.yml.before-ci-syntax-fix:275:          CONFIG_KSU=y
-.github/workflows/build.yml.before-ci-syntax-fix:276:          CONFIG_KSU_MANUAL_HOOK=y
-.github/workflows/build.yml.before-ci-syntax-fix:277:          CONFIG_KSU_SUSFS=y
-.github/workflows/build.yml.before-ci-syntax-fix:278:          CONFIG_KSU_SUSFS_SUS_PATH=y
-.github/workflows/build.yml.before-ci-syntax-fix:279:          CONFIG_KSU_SUSFS_SUS_MOUNT=y
-.github/workflows/build.yml.before-ci-syntax-fix:280:          CONFIG_KSU_SUSFS_SUS_KSTAT=y                     .github/workflows/build.yml.before-ci-syntax-fix:281:          CONFIG_KSU_SUSFS_SPOOF_UNAME=y                   .github/workflows/build.yml.before-ci-syntax-fix:282:          CONFIG_KSU_SUSFS_ENABLE_LOG=y                    .github/workflows/build.yml.before-ci-syntax-fix:283:          CONFIG_KSU_SUSFS_HIDE_KSU_SUSFS_SYMBOLS=y        .github/workflows/build.yml.before-ci-syntax-fix:284:          CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=y   .github/workflows/build.yml.before-ci-syntax-fix:285:          CONFIG_KSU_SUSFS_OPEN_REDIRECT=y                 .github/workflows/build.yml.before-ci-syntax-fix:286:          CONFIG_KSU_SUSFS_SUS_MAP=y                       .github/workflows/build.yml.before-ci-syntax-fix:297:          echo "KSU/SUSFS CONFIGURATION: PASS"             .github/workflows/build.yml.before-ci-syntax-fix:300:      # BUILD IMAGE + DTBS                                 .github/workflows/build.yml.before-ci-syntax-fix:303:      - name: Build Image, DTBs and Modules                .github/workflows/build.yml.before-ci-syntax-fix:307:          make \                                           .github/workflows/build.yml.before-ci-syntax-fix:391:      - name: Build or locate dtbo.img                     .github/workflows/build.yml.before-ci-syntax-fix:419:            echo "Building Oscar dtbo.img from generated DTBO files."
-.github/workflows/build.yml.before-ci-syntax-fix:491:      # BUILD KERNEL MODULES
-.github/workflows/build.yml.before-ci-syntax-fix:494:      - name: Build kernel modules
-.github/workflows/build.yml.before-ci-syntax-fix:500:          make \
-.github/workflows/build.yml.before-ci-syntax-fix:560:          echo "===== KERNEL RELEASE ====="
-.github/workflows/build.yml.before-ci-syntax-fix:569:          echo "===== CLEAN BUILD TREE ====="
-.github/workflows/build.yml.before-ci-syntax-fix:576:      - name: Verify raw kernel files
-.github/workflows/build.yml.before-ci-syntax-fix:610:      # CLONE ANYKERNEL3
-.github/workflows/build.yml.before-ci-syntax-fix:613:      - name: Clone osm0sis AnyKernel3
-.github/workflows/build.yml.before-ci-syntax-fix:619:            https://github.com/osm0sis/AnyKernel3.git \
-.github/workflows/build.yml.before-ci-syntax-fix:620:            AnyKernel3
-.github/workflows/build.yml.before-ci-syntax-fix:622:          test -f AnyKernel3/tools/ak3-core.sh
-.github/workflows/build.yml.before-ci-syntax-fix:623:          test -f AnyKernel3/META-INF/com/google/android/update-binary                                             .github/workflows/build.yml.before-ci-syntax-fix:625:          echo "osm0sis AnyKernel3: PASS"                  .github/workflows/build.yml.before-ci-syntax-fix:628:      # PREPARE ANYKERNEL3                                 .github/workflows/build.yml.before-ci-syntax-fix:631:      - name: Prepare AnyKernel3                           .github/workflows/build.yml.before-ci-syntax-fix:635:          cd AnyKernel3                                    .github/workflows/build.yml.before-ci-syntax-fix:670:          echo "===== ANYKERNEL3 FILES ====="              .github/workflows/build.yml.before-ci-syntax-fix:680:      # ANYKERNEL3 INSTALLER                               .github/workflows/build.yml.before-ci-syntax-fix:683:      - name: Configure AnyKernel3 installer               .github/workflows/build.yml.before-ci-syntax-fix:687:          cat > AnyKernel3/anykernel.sh <<'AK3EOF'         .github/workflows/build.yml.before-ci-syntax-fix:688:          # AnyKernel3 installer                           .github/workflows/build.yml.before-ci-syntax-fix:690:          # KernelSU-Next Legacy + SUSFS v2.3.0            .github/workflows/build.yml.before-ci-syntax-fix:693:          kernel.string=Realme 9 Pro LineageOS-23.2        .github/workflows/build.yml.before-ci-syntax-fix:738:          chmod 755 AnyKernel3/anykernel.sh                .github/workflows/build.yml.before-ci-syntax-fix:740:          test -x AnyKernel3/anykernel.sh                  .github/workflows/build.yml.before-ci-syntax-fix:742:          echo "AnyKernel3 installer configured."          .github/workflows/build.yml.before-ci-syntax-fix:745:      # VERIFY ANYKERNEL3 CONTENT                          .github/workflows/build.yml.before-ci-syntax-fix:748:      - name: Verify AnyKernel3 package content            .github/workflows/build.yml.before-ci-syntax-fix:752:          test -f AnyKernel3/Image                         .github/workflows/build.yml.before-ci-syntax-fix:753:          test -f AnyKernel3/dtb                           .github/workflows/build.yml.before-ci-syntax-fix:754:          test -f AnyKernel3/dtbo.img                      .github/workflows/build.yml.before-ci-syntax-fix:756:          if [ -f AnyKernel3/Image.gz ]; then              .github/workflows/build.yml.before-ci-syntax-fix:757:            echo "ERROR: Image.gz exists in AnyKernel3."   .github/workflows/build.yml.before-ci-syntax-fix:761:          if [ -f AnyKernel3/Image-dtb.gz ]; then          .github/workflows/build.yml.before-ci-syntax-fix:762:            echo "ERROR: Image-dtb.gz exists in AnyKernel3."                                                       .github/workflows/build.yml.before-ci-syntax-fix:766:          if [ -f AnyKernel3/Image-dtb ]; then             .github/workflows/build.yml.before-ci-syntax-fix:767:            echo "ERROR: Image-dtb exists in AnyKernel3."
-.github/workflows/build.yml.before-ci-syntax-fix:771:          echo "AnyKernel3 contents: PASS"
-.github/workflows/build.yml.before-ci-syntax-fix:777:      - name: Create AnyKernel3 flashable ZIP
-.github/workflows/build.yml.before-ci-syntax-fix:781:          cd AnyKernel3
-.github/workflows/build.yml.before-ci-syntax-fix:784:            ../AnyKernel3-Realme-SM6375.zip \
-.github/workflows/build.yml.before-ci-syntax-fix:793:          test -s AnyKernel3-Realme-SM6375.zip
-.github/workflows/build.yml.before-ci-syntax-fix:795:          echo "===== ANYKERNEL3 ZIP ====="
-.github/workflows/build.yml.before-ci-syntax-fix:796:          ls -lh AnyKernel3-Realme-SM6375.zip
-.github/workflows/build.yml.before-ci-syntax-fix:802:      - name: Validate final AnyKernel3 ZIP
-.github/workflows/build.yml.before-ci-syntax-fix:806:          ZIP="AnyKernel3-Realme-SM6375.zip"
-.github/workflows/build.yml.before-ci-syntax-fix:835:          echo " ANYKERNEL3 PACKAGE VALIDATION: PASS"
-.github/workflows/build.yml.before-ci-syntax-fix:839:      # BUILD INFO
-.github/workflows/build.yml.before-ci-syntax-fix:842:      - name: Generate build information
-.github/workflows/build.yml.before-ci-syntax-fix:847:            echo "Kernel: Realme SM6375"
-.github/workflows/build.yml.before-ci-syntax-fix:853:            echo "KernelSU: KernelSU-Next Legacy"
-.github/workflows/build.yml.before-ci-syntax-fix:855:            echo "Defconfig: vendor/holi-qgki_defconfig"
-.github/workflows/build.yml.before-ci-syntax-fix:857:            echo "Kernel files:"
-.github/workflows/build.yml.before-ci-syntax-fix:862:            echo "AnyKernel3:"
-.github/workflows/build.yml.before-ci-syntax-fix:863:            ls -lh AnyKernel3-Realme-SM6375.zip
-.github/workflows/build.yml.before-ci-syntax-fix:864:          } > artifacts/build-info.txt
-.github/workflows/build.yml.before-ci-syntax-fix:870:      - name: Upload kernel artifacts                      .github/workflows/build.yml.before-ci-syntax-fix:873:          name: Realme-SM6375-Kernel                       .github/workflows/build.yml.before-ci-syntax-fix:877:            AnyKernel3-Realme-SM6375.zip                   .github/workflows/build.yml.before-ci-syntax-fix:878:            artifacts/build-info.txt                       .github/workflows/build.yml.before-ksu-link-check:1:name: Realme SM6375 Kernel - Proton Clang + KSU-Next + SUSFS.github/workflows/build.yml.before-ksu-link-check:13:  build:                                                   .github/workflows/build.yml.before-ksu-link-check:14:    name: Build Realme SM6375 Kernel                       .github/workflows/build.yml.before-ksu-link-check:20:      DEFCONFIG: vendor/holi-qgki_defconfig                .github/workflows/build.yml.before-ksu-link-check:21:      KERNEL_NAME: Realme-SM6375-Kernel                    .github/workflows/build.yml.before-ksu-link-check:22:      KSU_VERSION: KernelSU-Next Legacy                    .github/workflows/build.yml.before-ksu-link-check:29:      KBUILD_BUILD_USER: github-actions                    .github/workflows/build.yml.before-ksu-link-check:30:      KBUILD_BUILD_HOST: github-actions                    .github/workflows/build.yml.before-ksu-link-check:49:      - name: Install build dependencies                   .github/workflows/build.yml.before-ksu-link-check:58:            build-essential \                              .github/workflows/build.yml.before-ksu-link-check:116:      - name: Verify KernelSU-Next                        .github/workflows/build.yml.before-ksu-link-check:120:          test -d KernelSU-Next/kernel                    .github/workflows/build.yml.before-ksu-link-check:121:          test -L drivers/kernelsu
-.github/workflows/build.yml.before-ksu-link-check:122:          test "$(readlink drivers/kernelsu)" = "../KernelSU-Next/kernel"                                         .github/workflows/build.yml.before-ksu-link-check:124:          echo "KernelSU-Next: OK"                        .github/workflows/build.yml.before-ksu-link-check:140:          grep -q 'obj-$(CONFIG_KSU_SUSFS) += susfs.o' fs/Makefile
-.github/workflows/build.yml.before-ksu-link-check:145:      # VERIFY KSU MANUAL HOOKS
-.github/workflows/build.yml.before-ksu-link-check:148:      - name: Verify KernelSU manual hooks
-.github/workflows/build.yml.before-ksu-link-check:153:          grep -n -C 3 'ksu_handle_faccessat' fs/open.c
-.github/workflows/build.yml.before-ksu-link-check:156:          echo "===== kernel/reboot.c ====="
-.github/workflows/build.yml.before-ksu-link-check:157:          grep -n -C 3 'ksu_handle_sys_reboot' kernel/reboot.c                                                    .github/workflows/build.yml.before-ksu-link-check:159:          grep -q 'ksu_handle_faccessat' fs/open.c        .github/workflows/build.yml.before-ksu-link-check:160:          grep -q 'ksu_handle_sys_reboot' kernel/reboot.c .github/workflows/build.yml.before-ksu-link-check:162:          echo "KSU manual hooks: PASS"                   .github/workflows/build.yml.before-ksu-link-check:164:      - name: Verify KernelSU manual hook integration     .github/workflows/build.yml.before-ksu-link-check:168:          echo "===== KernelSU hook implementation =====" .github/workflows/build.yml.before-ksu-link-check:171:            'ksu_handle_faccessat' \                      .github/workflows/build.yml.before-ksu-link-check:172:            KernelSU-Next/kernel/feature/sucompat.c       .github/workflows/build.yml.before-ksu-link-check:175:            'ksu_handle_sys_reboot' \                     .github/workflows/build.yml.before-ksu-link-check:176:            KernelSU-Next/kernel/supercall/supercall.c    .github/workflows/build.yml.before-ksu-link-check:179:          echo "===== Kernel manual hook integration ====="
-.github/workflows/build.yml.before-ksu-link-check:182:            'ksu_handle_faccessat' \
-.github/workflows/build.yml.before-ksu-link-check:186:            'ksu_handle_sys_reboot' \
-.github/workflows/build.yml.before-ksu-link-check:187:            kernel/reboot.c
-.github/workflows/build.yml.before-ksu-link-check:190:            'ksu_handle_faccessat' \
-.github/workflows/build.yml.before-ksu-link-check:191:            KernelSU-Next/kernel/feature/sucompat.c)"
-.github/workflows/build.yml.before-ksu-link-check:194:            'ksu_handle_sys_reboot' \
-.github/workflows/build.yml.before-ksu-link-check:195:            KernelSU-Next/kernel/supercall/supercall.c)"
-.github/workflows/build.yml.before-ksu-link-check:198:            'ksu_handle_faccessat' \
-.github/workflows/build.yml.before-ksu-link-check:202:            'ksu_handle_sys_reboot' \
-.github/workflows/build.yml.before-ksu-link-check:203:            kernel/reboot.c)"
-.github/workflows/build.yml.before-ksu-link-check:206:          echo "KernelSU manual hook integration: PASS"
-.github/workflows/build.yml.before-ksu-link-check:209:      # GENERATE DEFCONFIG
-.github/workflows/build.yml.before-ksu-link-check:212:      - name: Generate defconfig
-.github/workflows/build.yml.before-ksu-link-check:216:          make \
-.github/workflows/build.yml.before-ksu-link-check:224:            KBUILD_DEFCONFIG="$DEFCONFIG" \
-.github/workflows/build.yml.before-ksu-link-check:225:            defconfig
-.github/workflows/build.yml.before-ksu-link-check:228:      # OLDDEFCONFIG
-.github/workflows/build.yml.before-ksu-link-check:231:      - name: Run olddefconfig
-.github/workflows/build.yml.before-ksu-link-check:235:          make \
-.github/workflows/build.yml.before-ksu-link-check:243:            olddefconfig
-.github/workflows/build.yml.before-ksu-link-check:249:      - name: Verify KSU and SUSFS configuration
-.github/workflows/build.yml.before-ksu-link-check:255:          echo "===== KSU CONFIG ====="
-.github/workflows/build.yml.before-ksu-link-check:257:          grep '^CONFIG_KSU=' "$CONFIG"
-.github/workflows/build.yml.before-ksu-link-check:258:          grep '^CONFIG_KSU_MANUAL_HOOK=' "$CONFIG"
-.github/workflows/build.yml.before-ksu-link-check:263:          grep '^CONFIG_KSU_SUSFS=' "$CONFIG"
-.github/workflows/build.yml.before-ksu-link-check:264:          grep '^CONFIG_KSU_SUSFS_SUS_PATH=' "$CONFIG"
-.github/workflows/build.yml.before-ksu-link-check:265:          grep '^CONFIG_KSU_SUSFS_SUS_MOUNT=' "$CONFIG"
-.github/workflows/build.yml.before-ksu-link-check:266:          grep '^CONFIG_KSU_SUSFS_SUS_KSTAT=' "$CONFIG"
-.github/workflows/build.yml.before-ksu-link-check:267:          grep '^CONFIG_KSU_SUSFS_SPOOF_UNAME=' "$CONFIG"
-.github/workflows/build.yml.before-ksu-link-check:268:          grep '^CONFIG_KSU_SUSFS_ENABLE_LOG=' "$CONFIG"  .github/workflows/build.yml.before-ksu-link-check:269:          grep '^CONFIG_KSU_SUSFS_HIDE_KSU_SUSFS_SYMBOLS=' "$CONFIG"
-.github/workflows/build.yml.before-ksu-link-check:270:          grep '^CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=' "$CONFIG"                                         .github/workflows/build.yml.before-ksu-link-check:271:          grep '^CONFIG_KSU_SUSFS_OPEN_REDIRECT=' "$CONFIG"
-.github/workflows/build.yml.before-ksu-link-check:272:          grep '^CONFIG_KSU_SUSFS_SUS_MAP=' "$CONFIG"
-.github/workflows/build.yml.before-ksu-link-check:275:          CONFIG_KSU=y
-.github/workflows/build.yml.before-ksu-link-check:276:          CONFIG_KSU_MANUAL_HOOK=y
-.github/workflows/build.yml.before-ksu-link-check:277:          CONFIG_KSU_SUSFS=y
-.github/workflows/build.yml.before-ksu-link-check:278:          CONFIG_KSU_SUSFS_SUS_PATH=y
-.github/workflows/build.yml.before-ksu-link-check:279:          CONFIG_KSU_SUSFS_SUS_MOUNT=y
-.github/workflows/build.yml.before-ksu-link-check:280:          CONFIG_KSU_SUSFS_SUS_KSTAT=y
-.github/workflows/build.yml.before-ksu-link-check:281:          CONFIG_KSU_SUSFS_SPOOF_UNAME=y
-.github/workflows/build.yml.before-ksu-link-check:282:          CONFIG_KSU_SUSFS_ENABLE_LOG=y                   .github/workflows/build.yml.before-ksu-link-check:283:          CONFIG_KSU_SUSFS_HIDE_KSU_SUSFS_SYMBOLS=y       .github/workflows/build.yml.before-ksu-link-check:284:          CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=y  .github/workflows/build.yml.before-ksu-link-check:285:          CONFIG_KSU_SUSFS_OPEN_REDIRECT=y
-.github/workflows/build.yml.before-ksu-link-check:286:          CONFIG_KSU_SUSFS_SUS_MAP=y
-.github/workflows/build.yml.before-ksu-link-check:297:          echo "KSU/SUSFS CONFIGURATION: PASS"
-.github/workflows/build.yml.before-ksu-link-check:300:      # BUILD IMAGE + DTBS
-.github/workflows/build.yml.before-ksu-link-check:303:      - name: Build Image, DTBs and Modules
-.github/workflows/build.yml.before-ksu-link-check:307:          make \                                          .github/workflows/build.yml.before-ksu-link-check:391:      - name: Build or locate dtbo.img                    .github/workflows/build.yml.before-ksu-link-check:419:            echo "Building Oscar dtbo.img from generated DTBO files."                                             .github/workflows/build.yml.before-ksu-link-check:491:      # BUILD KERNEL MODULES                              .github/workflows/build.yml.before-ksu-link-check:494:      - name: Build kernel modules                        .github/workflows/build.yml.before-ksu-link-check:500:          make \                                          .github/workflows/build.yml.before-ksu-link-check:560:          echo "===== KERNEL RELEASE ====="
-.github/workflows/build.yml.before-ksu-link-check:569:          echo "===== CLEAN BUILD TREE ====="
-.github/workflows/build.yml.before-ksu-link-check:576:      - name: Verify raw kernel files
-.github/workflows/build.yml.before-ksu-link-check:610:      # CLONE ANYKERNEL3
-.github/workflows/build.yml.before-ksu-link-check:613:      - name: Clone osm0sis AnyKernel3
-.github/workflows/build.yml.before-ksu-link-check:619:            https://github.com/osm0sis/AnyKernel3.git \   .github/workflows/build.yml.before-ksu-link-check:620:            AnyKernel3                                    .github/workflows/build.yml.before-ksu-link-check:622:          test -f AnyKernel3/tools/ak3-core.sh            .github/workflows/build.yml.before-ksu-link-check:623:          test -f AnyKernel3/META-INF/com/google/android/update-binary
-.github/workflows/build.yml.before-ksu-link-check:625:          echo "osm0sis AnyKernel3: PASS"
-.github/workflows/build.yml.before-ksu-link-check:628:      # PREPARE ANYKERNEL3
-.github/workflows/build.yml.before-ksu-link-check:631:      - name: Prepare AnyKernel3
-.github/workflows/build.yml.before-ksu-link-check:635:          cd AnyKernel3
-.github/workflows/build.yml.before-ksu-link-check:670:          echo "===== ANYKERNEL3 FILES ====="
-.github/workflows/build.yml.before-ksu-link-check:680:      # ANYKERNEL3 INSTALLER
-.github/workflows/build.yml.before-ksu-link-check:683:      - name: Configure AnyKernel3 installer
-.github/workflows/build.yml.before-ksu-link-check:687:          cat > AnyKernel3/anykernel.sh <<'AK3EOF'
-.github/workflows/build.yml.before-ksu-link-check:688:          # AnyKernel3 installer
-.github/workflows/build.yml.before-ksu-link-check:690:          # KernelSU-Next Legacy + SUSFS v2.3.0
-.github/workflows/build.yml.before-ksu-link-check:693:          kernel.string=Realme 9 Pro LineageOS-23.2
-.github/workflows/build.yml.before-ksu-link-check:738:          chmod 755 AnyKernel3/anykernel.sh
-.github/workflows/build.yml.before-ksu-link-check:740:          test -x AnyKernel3/anykernel.sh
-.github/workflows/build.yml.before-ksu-link-check:742:          echo "AnyKernel3 installer configured."
-.github/workflows/build.yml.before-ksu-link-check:745:      # VERIFY ANYKERNEL3 CONTENT
-.github/workflows/build.yml.before-ksu-link-check:748:      - name: Verify AnyKernel3 package content
-.github/workflows/build.yml.before-ksu-link-check:752:          test -f AnyKernel3/Image
-.github/workflows/build.yml.before-ksu-link-check:753:          test -f AnyKernel3/dtb
-.github/workflows/build.yml.before-ksu-link-check:754:          test -f AnyKernel3/dtbo.img
-.github/workflows/build.yml.before-ksu-link-check:756:          if [ -f AnyKernel3/Image.gz ]; then
-.github/workflows/build.yml.before-ksu-link-check:757:            echo "ERROR: Image.gz exists in AnyKernel3."
-.github/workflows/build.yml.before-ksu-link-check:761:          if [ -f AnyKernel3/Image-dtb.gz ]; then
-.github/workflows/build.yml.before-ksu-link-check:762:            echo "ERROR: Image-dtb.gz exists in AnyKernel3."                                                      .github/workflows/build.yml.before-ksu-link-check:766:          if [ -f AnyKernel3/Image-dtb ]; then            .github/workflows/build.yml.before-ksu-link-check:767:            echo "ERROR: Image-dtb exists in AnyKernel3." .github/workflows/build.yml.before-ksu-link-check:771:          echo "AnyKernel3 contents: PASS"
-.github/workflows/build.yml.before-ksu-link-check:777:      - name: Create AnyKernel3 flashable ZIP
-.github/workflows/build.yml.before-ksu-link-check:781:          cd AnyKernel3                                   .github/workflows/build.yml.before-ksu-link-check:784:            ../AnyKernel3-Realme-SM6375.zip \             .github/workflows/build.yml.before-ksu-link-check:793:          test -s AnyKernel3-Realme-SM6375.zip
-.github/workflows/build.yml.before-ksu-link-check:795:          echo "===== ANYKERNEL3 ZIP ====="               .github/workflows/build.yml.before-ksu-link-check:796:          ls -lh AnyKernel3-Realme-SM6375.zip             .github/workflows/build.yml.before-ksu-link-check:802:      - name: Validate final AnyKernel3 ZIP               .github/workflows/build.yml.before-ksu-link-check:806:          ZIP="AnyKernel3-Realme-SM6375.zip"              .github/workflows/build.yml.before-ksu-link-check:835:          echo " ANYKERNEL3 PACKAGE VALIDATION: PASS"     .github/workflows/build.yml.before-ksu-link-check:839:      # BUILD INFO                                        .github/workflows/build.yml.before-ksu-link-check:842:      - name: Generate build information                  .github/workflows/build.yml.before-ksu-link-check:847:            echo "Kernel: Realme SM6375"                  .github/workflows/build.yml.before-ksu-link-check:853:            echo "KernelSU: KernelSU-Next Legacy"         .github/workflows/build.yml.before-ksu-link-check:855:            echo "Defconfig: vendor/holi-qgki_defconfig"  .github/workflows/build.yml.before-ksu-link-check:857:            echo "Kernel files:"                          .github/workflows/build.yml.before-ksu-link-check:862:            echo "AnyKernel3:"                            .github/workflows/build.yml.before-ksu-link-check:863:            ls -lh AnyKernel3-Realme-SM6375.zip           .github/workflows/build.yml.before-ksu-link-check:864:          } > artifacts/build-info.txt                    .github/workflows/build.yml.before-ksu-link-check:870:      - name: Upload kernel artifacts                     .github/workflows/build.yml.before-ksu-link-check:873:          name: Realme-SM6375-Kernel                      .github/workflows/build.yml.before-ksu-link-check:877:            AnyKernel3-Realme-SM6375.zip                  .github/workflows/build.yml.before-ksu-link-check:878:            artifacts/build-info.txt                      .github/workflows/build.yml.before-anykernel-config:1:name: Realme SM6375 Kernel - Proton Clang + KSU-Next + SUSFS
-.github/workflows/build.yml.before-anykernel-config:13:  build:                                                 .github/workflows/build.yml.before-anykernel-config:14:    name: Build Realme SM6375 Kernel                     .github/workflows/build.yml.before-anykernel-config:20:      DEFCONFIG: vendor/holi-qgki_defconfig              .github/workflows/build.yml.before-anykernel-config:21:      KERNEL_NAME: Realme-SM6375-Kernel                  .github/workflows/build.yml.before-anykernel-config:22:      KSU_VERSION: KernelSU-Next Legacy                  .github/workflows/build.yml.before-anykernel-config:29:      KBUILD_BUILD_USER: github-actions                  .github/workflows/build.yml.before-anykernel-config:30:      KBUILD_BUILD_HOST: github-actions                  .github/workflows/build.yml.before-anykernel-config:49:      - name: Install build dependencies
-.github/workflows/build.yml.before-anykernel-config:58:            build-essential \
-.github/workflows/build.yml.before-anykernel-config:116:      - name: Verify KernelSU-Next                      .github/workflows/build.yml.before-anykernel-config:120:          test -d KernelSU-Next/kernel                  .github/workflows/build.yml.before-anykernel-config:121:          test -L drivers/kernelsu                      .github/workflows/build.yml.before-anykernel-config:122:          test "$(readlink drivers/kernelsu)" = "../KernelSU-Next/kernel"                                       .github/workflows/build.yml.before-anykernel-config:124:          echo "KernelSU-Next: OK"                      .github/workflows/build.yml.before-anykernel-config:140:          grep -q 'obj-$(CONFIG_KSU_SUSFS) += susfs.o' fs/Makefile
-.github/workflows/build.yml.before-anykernel-config:145:      # VERIFY KSU MANUAL HOOKS
-.github/workflows/build.yml.before-anykernel-config:148:      - name: Verify KernelSU manual hooks
-.github/workflows/build.yml.before-anykernel-config:153:          grep -n -C 3 'ksu_handle_faccessat' fs/open.c
-.github/workflows/build.yml.before-anykernel-config:156:          echo "===== kernel/reboot.c ====="
-.github/workflows/build.yml.before-anykernel-config:157:          grep -n -C 3 'ksu_handle_sys_reboot' kernel/reboot.c
-.github/workflows/build.yml.before-anykernel-config:159:          grep -q 'ksu_handle_faccessat' fs/open.c
-.github/workflows/build.yml.before-anykernel-config:160:          grep -q 'ksu_handle_sys_reboot' kernel/reboot.c                                                       .github/workflows/build.yml.before-anykernel-config:162:          echo "KSU manual hooks: PASS"                 .github/workflows/build.yml.before-anykernel-config:164:      - name: Verify KernelSU manual hook integration   .github/workflows/build.yml.before-anykernel-config:168:          echo "===== KernelSU hook implementation ====="
-.github/workflows/build.yml.before-anykernel-config:171:            'ksu_handle_faccessat' \
-.github/workflows/build.yml.before-anykernel-config:172:            KernelSU-Next/kernel/feature/sucompat.c
-.github/workflows/build.yml.before-anykernel-config:175:            'ksu_handle_sys_reboot' \
-.github/workflows/build.yml.before-anykernel-config:176:            KernelSU-Next/kernel/supercall/supercall.c
-.github/workflows/build.yml.before-anykernel-config:179:          echo "===== Kernel manual hook integration ====="                                                     .github/workflows/build.yml.before-anykernel-config:182:            'ksu_handle_faccessat' \                    .github/workflows/build.yml.before-anykernel-config:186:            'ksu_handle_sys_reboot' \                   .github/workflows/build.yml.before-anykernel-config:187:            kernel/reboot.c                             .github/workflows/build.yml.before-anykernel-config:190:            'ksu_handle_faccessat' \                    .github/workflows/build.yml.before-anykernel-config:191:            KernelSU-Next/kernel/feature/sucompat.c)"   .github/workflows/build.yml.before-anykernel-config:194:            'ksu_handle_sys_reboot' \                   .github/workflows/build.yml.before-anykernel-config:195:            KernelSU-Next/kernel/supercall/supercall.c)".github/workflows/build.yml.before-anykernel-config:198:            'ksu_handle_faccessat' \                    .github/workflows/build.yml.before-anykernel-config:202:            'ksu_handle_sys_reboot' \                   .github/workflows/build.yml.before-anykernel-config:203:            kernel/reboot.c)"                           .github/workflows/build.yml.before-anykernel-config:206:          echo "KernelSU manual hook integration: PASS" .github/workflows/build.yml.before-anykernel-config:209:      # GENERATE DEFCONFIG                              .github/workflows/build.yml.before-anykernel-config:212:      - name: Generate defconfig
-.github/workflows/build.yml.before-anykernel-config:216:          make \
-.github/workflows/build.yml.before-anykernel-config:224:            KBUILD_DEFCONFIG="$DEFCONFIG" \             .github/workflows/build.yml.before-anykernel-config:225:            defconfig                                   .github/workflows/build.yml.before-anykernel-config:228:      # OLDDEFCONFIG                                    .github/workflows/build.yml.before-anykernel-config:231:      - name: Run olddefconfig                          .github/workflows/build.yml.before-anykernel-config:235:          make \                                        .github/workflows/build.yml.before-anykernel-config:243:            olddefconfig                                .github/workflows/build.yml.before-anykernel-config:249:      - name: Verify KSU and SUSFS configuration        .github/workflows/build.yml.before-anykernel-config:255:          echo "===== KSU CONFIG ====="                 .github/workflows/build.yml.before-anykernel-config:257:          grep '^CONFIG_KSU=' "$CONFIG"                 .github/workflows/build.yml.before-anykernel-config:258:          grep '^CONFIG_KSU_MANUAL_HOOK=' "$CONFIG"     .github/workflows/build.yml.before-anykernel-config:263:          grep '^CONFIG_KSU_SUSFS=' "$CONFIG"           .github/workflows/build.yml.before-anykernel-config:264:          grep '^CONFIG_KSU_SUSFS_SUS_PATH=' "$CONFIG"  .github/workflows/build.yml.before-anykernel-config:265:          grep '^CONFIG_KSU_SUSFS_SUS_MOUNT=' "$CONFIG" .github/workflows/build.yml.before-anykernel-config:266:          grep '^CONFIG_KSU_SUSFS_SUS_KSTAT=' "$CONFIG" .github/workflows/build.yml.before-anykernel-config:267:          grep '^CONFIG_KSU_SUSFS_SPOOF_UNAME=' "$CONFIG"
-.github/workflows/build.yml.before-anykernel-config:268:          grep '^CONFIG_KSU_SUSFS_ENABLE_LOG=' "$CONFIG"
-.github/workflows/build.yml.before-anykernel-config:269:          grep '^CONFIG_KSU_SUSFS_HIDE_KSU_SUSFS_SYMBOLS=' "$CONFIG"                                            .github/workflows/build.yml.before-anykernel-config:270:          grep '^CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=' "$CONFIG"
-.github/workflows/build.yml.before-anykernel-config:271:          grep '^CONFIG_KSU_SUSFS_OPEN_REDIRECT=' "$CONFIG"                                                     .github/workflows/build.yml.before-anykernel-config:272:          grep '^CONFIG_KSU_SUSFS_SUS_MAP=' "$CONFIG"   .github/workflows/build.yml.before-anykernel-config:275:          CONFIG_KSU=y                                  .github/workflows/build.yml.before-anykernel-config:276:          CONFIG_KSU_MANUAL_HOOK=y                      .github/workflows/build.yml.before-anykernel-config:277:          CONFIG_KSU_SUSFS=y                            .github/workflows/build.yml.before-anykernel-config:278:          CONFIG_KSU_SUSFS_SUS_PATH=y
-.github/workflows/build.yml.before-anykernel-config:279:          CONFIG_KSU_SUSFS_SUS_MOUNT=y
-.github/workflows/build.yml.before-anykernel-config:280:          CONFIG_KSU_SUSFS_SUS_KSTAT=y
-.github/workflows/build.yml.before-anykernel-config:281:          CONFIG_KSU_SUSFS_SPOOF_UNAME=y
-.github/workflows/build.yml.before-anykernel-config:282:          CONFIG_KSU_SUSFS_ENABLE_LOG=y
-.github/workflows/build.yml.before-anykernel-config:283:          CONFIG_KSU_SUSFS_HIDE_KSU_SUSFS_SYMBOLS=y
-.github/workflows/build.yml.before-anykernel-config:284:          CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG=y
-.github/workflows/build.yml.before-anykernel-config:285:          CONFIG_KSU_SUSFS_OPEN_REDIRECT=y
-.github/workflows/build.yml.before-anykernel-config:286:          CONFIG_KSU_SUSFS_SUS_MAP=y
-.github/workflows/build.yml.before-anykernel-config:297:          echo "KSU/SUSFS CONFIGURATION: PASS"
-.github/workflows/build.yml.before-anykernel-config:300:      # BUILD IMAGE + DTBS
-.github/workflows/build.yml.before-anykernel-config:303:      - name: Build Image, DTBs and Modules
-.github/workflows/build.yml.before-anykernel-config:307:          make \
-.github/workflows/build.yml.before-anykernel-config:326:      # VERIFY KERNELSU LINKAGE                         .github/workflows/build.yml.before-anykernel-config:329:      - name: Verify KernelSU linkage                   .github/workflows/build.yml.before-anykernel-config:333:          echo "===== KERNELSU LINKAGE ====="           .github/workflows/build.yml.before-anykernel-config:348:          echo "===== KSU SYMBOLS IN FINAL VMLINUX ====="                                                       .github/workflows/build.yml.before-anykernel-config:350:          if ! llvm-nm "$VMLINUX" 2>/dev/null | grep -Eq '[[:space:]]ksu_[A-Za-z0-9_]+$'; then
-.github/workflows/build.yml.before-anykernel-config:351:            echo "ERROR: No KernelSU symbols found in final out/vmlinux."
-.github/workflows/build.yml.before-anykernel-config:353:            echo "Checking for any ksu-related strings:"
-.github/workflows/build.yml.before-anykernel-config:354:            strings "$VMLINUX" | grep -E 'ksu_' | head -50 || true
-.github/workflows/build.yml.before-anykernel-config:358:          llvm-nm "$VMLINUX" 2>/dev/null             | grep -E '[[:space:]]ksu_[A-Za-z0-9_]+$'             | head -100                                                  .github/workflows/build.yml.before-anykernel-config:361:          echo "KernelSU symbols found in final vmlinux."
-.github/workflows/build.yml.before-anykernel-config:365:            echo "===== SYSTEM.MAP KSU SYMBOLS ====="
-.github/workflows/build.yml.before-anykernel-config:366:            grep -E '(^|[[:space:]])ksu_' out/System.map | head -100 || true
-.github/workflows/build.yml.before-anykernel-config:373:          echo "KernelSU linkage: PASS"
-.github/workflows/build.yml.before-anykernel-config:441:      - name: Build or locate dtbo.img
-.github/workflows/build.yml.before-anykernel-config:469:            echo "Building Oscar dtbo.img from generated DTBO files."                                           .github/workflows/build.yml.before-anykernel-config:541:      # BUILD KERNEL MODULES                            .github/workflows/build.yml.before-anykernel-config:544:      - name: Build kernel modules
-.github/workflows/build.yml.before-anykernel-config:550:          make \
-.github/workflows/build.yml.before-anykernel-config:610:          echo "===== KERNEL RELEASE ====="
-.github/workflows/build.yml.before-anykernel-config:619:          echo "===== CLEAN BUILD TREE ====="
-.github/workflows/build.yml.before-anykernel-config:626:      - name: Verify raw kernel files
-.github/workflows/build.yml.before-anykernel-config:660:      # CLONE ANYKERNEL3
-.github/workflows/build.yml.before-anykernel-config:663:      - name: Clone osm0sis AnyKernel3
-.github/workflows/build.yml.before-anykernel-config:669:            https://github.com/osm0sis/AnyKernel3.git \ .github/workflows/build.yml.before-anykernel-config:670:            AnyKernel3                                  .github/workflows/build.yml.before-anykernel-config:672:          test -f AnyKernel3/tools/ak3-core.sh          .github/workflows/build.yml.before-anykernel-config:673:          test -f AnyKernel3/META-INF/com/google/android/update-binary
-.github/workflows/build.yml.before-anykernel-config:675:          echo "osm0sis AnyKernel3: PASS"               .github/workflows/build.yml.before-anykernel-config:678:      # PREPARE ANYKERNEL3                              .github/workflows/build.yml.before-anykernel-config:681:      - name: Prepare AnyKernel3                        .github/workflows/build.yml.before-anykernel-config:685:          cd AnyKernel3                                 .github/workflows/build.yml.before-anykernel-config:720:          echo "===== ANYKERNEL3 FILES ====="           .github/workflows/build.yml.before-anykernel-config:730:      # ANYKERNEL3 INSTALLER                            .github/workflows/build.yml.before-anykernel-config:733:      - name: Configure AnyKernel3 installer            .github/workflows/build.yml.before-anykernel-config:737:          cat > AnyKernel3/anykernel.sh <<'AK3EOF'      .github/workflows/build.yml.before-anykernel-config:738:          # AnyKernel3 installer                        .github/workflows/build.yml.before-anykernel-config:740:          # KernelSU-Next Legacy + SUSFS v2.3.0         .github/workflows/build.yml.before-anykernel-config:743:          kernel.string=Realme 9 Pro LineageOS-23.2     .github/workflows/build.yml.before-anykernel-config:788:          chmod 755 AnyKernel3/anykernel.sh             .github/workflows/build.yml.before-anykernel-config:790:          test -x AnyKernel3/anykernel.sh               .github/workflows/build.yml.before-anykernel-config:792:          echo "AnyKernel3 installer configured."       .github/workflows/build.yml.before-anykernel-config:795:      # VERIFY ANYKERNEL3 CONTENT                       .github/workflows/build.yml.before-anykernel-config:798:      - name: Verify AnyKernel3 package content         .github/workflows/build.yml.before-anykernel-config:802:          test -f AnyKernel3/Image                      .github/workflows/build.yml.before-anykernel-config:803:          test -f AnyKernel3/dtb
-.github/workflows/build.yml.before-anykernel-config:804:          test -f AnyKernel3/dtbo.img                   .github/workflows/build.yml.before-anykernel-config:806:          if [ -f AnyKernel3/Image.gz ]; then           .github/workflows/build.yml.before-anykernel-config:807:            echo "ERROR: Image.gz exists in AnyKernel3."
-.github/workflows/build.yml.before-anykernel-config:811:          if [ -f AnyKernel3/Image-dtb.gz ]; then       .github/workflows/build.yml.before-anykernel-config:812:            echo "ERROR: Image-dtb.gz exists in AnyKernel3."                                                    .github/workflows/build.yml.before-anykernel-config:816:          if [ -f AnyKernel3/Image-dtb ]; then          .github/workflows/build.yml.before-anykernel-config:817:            echo "ERROR: Image-dtb exists in AnyKernel3."                                                       .github/workflows/build.yml.before-anykernel-config:821:          echo "AnyKernel3 contents: PASS"
-.github/workflows/build.yml.before-anykernel-config:827:      - name: Create AnyKernel3 flashable ZIP
-.github/workflows/build.yml.before-anykernel-config:831:          cd AnyKernel3
-.github/workflows/build.yml.before-anykernel-config:834:            ../AnyKernel3-Realme-SM6375.zip \
-.github/workflows/build.yml.before-anykernel-config:843:          test -s AnyKernel3-Realme-SM6375.zip
-.github/workflows/build.yml.before-anykernel-config:845:          echo "===== ANYKERNEL3 ZIP ====="
-.github/workflows/build.yml.before-anykernel-config:846:          ls -lh AnyKernel3-Realme-SM6375.zip
-.github/workflows/build.yml.before-anykernel-config:852:      - name: Validate final AnyKernel3 ZIP
-.github/workflows/build.yml.before-anykernel-config:856:          ZIP="AnyKernel3-Realme-SM6375.zip"
-.github/workflows/build.yml.before-anykernel-config:885:          echo " ANYKERNEL3 PACKAGE VALIDATION: PASS"
-.github/workflows/build.yml.before-anykernel-config:889:      # BUILD INFO
-.github/workflows/build.yml.before-anykernel-config:892:      - name: Generate build information                .github/workflows/build.yml.before-anykernel-config:897:            echo "Kernel: Realme SM6375"                .github/workflows/build.yml.before-anykernel-config:903:            echo "KernelSU: KernelSU-Next Legacy"       .github/workflows/build.yml.before-anykernel-config:905:            echo "Defconfig: vendor/holi-qgki_defconfig".github/workflows/build.yml.before-anykernel-config:907:            echo "Kernel files:"                        .github/workflows/build.yml.before-anykernel-config:912:            echo "AnyKernel3:"                          .github/workflows/build.yml.before-anykernel-config:913:            ls -lh AnyKernel3-Realme-SM6375.zip         .github/workflows/build.yml.before-anykernel-config:914:          } > artifacts/build-info.txt                  .github/workflows/build.yml.before-anykernel-config:920:      - name: Upload kernel artifacts                   .github/workflows/build.yml.before-anykernel-config:923:          name: Realme-SM6375-Kernel
-.github/workflows/build.yml.before-anykernel-config:927:            AnyKernel3-Realme-SM6375.zip
-.github/workflows/build.yml.before-anykernel-config:928:            artifacts/build-info.txt
-root@localhost:~/oscar# git log -5 --oneline            9aa2f2b38 (HEAD -> oscar) ci: verify KernelSU linkage and update AnyKernel installer                            139a3f774 Fix workflow artifact loop syntax
-b43189d95 (origin/oscar) Create build.yml               932c59c3e Delete .github directory
-20d8abe23 Remove vendor_dlkm image build and packaging  root@localhost:~/oscar#
+root@localhost:~/oscar/KernelSU-Next# cd /root/oscar/KernelSU-Next                                              
+git reset --hard HEAD
+git clean -fd
+HEAD is now at a54e4fa4 kernel: Don't use kprobes if we don't have functional kprobes                           Removing 10_enable_susfs_for_ksu.patch
+Removing kernel/Kconfig.orig
+Removing kernel/Makefile.orig
+Removing kernel/Makefile.rej
+Removing kernel/selinux/rules.c.orig                    Removing kernel/selinux/rules.c.rej
+Removing kernel/selinux/selinux.c.orig
+Removing kernel/selinux/selinux.c.rej
+Removing kernel/selinux/selinux.h.orig
+Removing kernel/selinux/selinux.h.rej
+root@localhost:~/oscar/KernelSU-Next# git status --shortroot@localhost:~/oscar/KernelSU-Next# find kernel -name "*.rej" -o -name "*.orig"                               root@localhost:~/oscar/KernelSU-Next# grep -nE 'KSU_KPROBES_HOOK|KSU_SUSFS|KPROBES' kernel/Kconfig
+8:        Requires CONFIG_KPROBES for kernel hooking support.
+47:     default y if !KPROBES                           52:config KSU_KPROBES_HOOK
+55:     depends on KRETPROBES && KPROBES && HAVE_SYSCALL_TRACEPOINTS
+56:     default y if KPROBES && KRETPROBES && HAVE_SYSCALL_TRACEPOINTS
+59:       Enable KPROBES, KRETPROBES and TRACEPOINT hook for KernelSU core.
+root@localhost:~/oscar/KernelSU-Next# find kernel -maxdepth 2 -type f | sort
+kernel/.clang-format
+kernel/.clangd
+kernel/.gitignore
+kernel/.vscode/c_cpp_properties.json
+kernel/.vscode/generate_compdb.py
+kernel/.vscode/tasks.json
+kernel/Kbuild
+kernel/Kconfig
+kernel/LICENSE
+kernel/Makefile
+kernel/compat/kernel_compat.c
+kernel/compat/kernel_compat.h
+kernel/core/init.c
+kernel/extras.c
+kernel/feature/adb_root.c
+kernel/feature/adb_root.h
+kernel/feature/kernel_umount.c
+kernel/feature/kernel_umount.h
+kernel/feature/selinux_hide.c
+kernel/feature/selinux_hide.h
+kernel/feature/sucompat.c
+kernel/feature/sucompat.h
+kernel/feature/sulog.c
+kernel/feature/sulog.h
+kernel/hook/hook_manager.c
+kernel/hook/hook_manager.h
+kernel/hook/lsm_hooks.c
+kernel/hook/setuid_hook.c
+kernel/hook/setuid_hook.h
+kernel/include/arch.h
+kernel/include/klog.h
+kernel/include/ksu.h
+kernel/infra/event_queue.c
+kernel/infra/event_queue.h
+kernel/infra/file_wrapper.c
+kernel/infra/file_wrapper.h
+kernel/infra/seccomp_cache.c
+kernel/infra/seccomp_cache.h
+kernel/infra/su_mount_ns.c
+kernel/infra/su_mount_ns.h
+kernel/manager/apk_sign.c
+kernel/manager/apk_sign.h
+kernel/manager/manager_identity.h
+kernel/manager/manager_observer.h
+kernel/manager/pkg_observer.c
+kernel/manager/pkg_observer_defs.h
+kernel/manager/throne_tracker.c
+kernel/manager/throne_tracker.h
+kernel/policy/allowlist.c
+kernel/policy/allowlist.h
+kernel/policy/app_profile.c
+kernel/policy/app_profile.h
+kernel/policy/feature.c
+kernel/policy/feature.h
+kernel/runtime/boot_event.c
+kernel/runtime/ksud.h
+kernel/runtime/ksud_boot.h
+kernel/runtime/ksud_integration.c
+kernel/selinux/Makefile
+kernel/selinux/rules.c
+kernel/selinux/selinux.c
+kernel/selinux/selinux.h
+kernel/selinux/sepolicy.c
+kernel/selinux/sepolicy.h
+kernel/setup.sh
+kernel/sulog/event.c
+kernel/sulog/event.h
+kernel/sulog/fd.c
+kernel/sulog/fd.h
+kernel/supercall/dispatch.c
+kernel/supercall/internal.h
+kernel/supercall/perm.c
+kernel/supercall/supercall.c
+kernel/supercall/supercall.h
+kernel/tools/check_symbol.c
+root@localhost:~/oscar/KernelSU-Next# cd /root/oscar/KernelSU-Next
+
+git status --short
+git log --oneline --all --decorate -20
+e94a5bf2 (origin/l10n_dev) New translations manager/app/src/main/res/values-it-rIT/strings.xml (bundle: 8)
+f9a69951 (origin/dev, origin/HEAD, dev) kernel: retain capabilities across execve for non-root profiles (https://github.com/tiann/KernelSU/pull/3710)
+36a6729b New translations manager/app/src/main/res/values-vi-rVN/strings.xml (bundle: 8)
+e7ddc574 New translations manager/app/src/main/res/values-uk-rUA/strings.xml (bundle: 8)
+e89ecf0d New translations manager/app/src/main/res/values-tr-rTR/strings.xml (bundle: 8)
+650638c9 New translations manager/app/src/main/res/values-th-rTH/strings.xml (bundle: 8)
+61b5085e New translations manager/app/src/main/res/values-sv-rSE/strings.xml (bundle: 8)
+27c2e925 New translations manager/app/src/main/res/values-es-rEM/strings.xml (bundle: 8)
+67fb01b2 New translations manager/app/src/main/res/values-ru-rRU/strings.xml (bundle: 8)
+f8ea5ca6 New translations manager/app/src/main/res/values-pt-rBR/strings.xml (bundle: 8)
+71829c7c New translations manager/app/src/main/res/values-pl-rPL/strings.xml (bundle: 8)
+6ea7c645 New translations manager/app/src/main/res/values-fa-rIR/strings.xml (bundle: 8)
+dab3dcad New translations manager/app/src/main/res/values-ko-rKR/strings.xml (bundle: 8)
+c5f68e1c New translations manager/app/src/main/res/values-ja-rJP/strings.xml (bundle: 8)
+d90036fd New translations manager/app/src/main/res/values-it-rIT/strings.xml (bundle: 8)
+0b562c98 New translations manager/app/src/main/res/values-in-rID/strings.xml (bundle: 8)
+5f863a74 New translations manager/app/src/main/res/values-hu-rHU/strings.xml (bundle: 8)
+ed11afc1 New translations manager/app/src/main/res/values-hi-rIN/strings.xml (bundle: 8)
+239efb68 New translations manager/app/src/main/res/values-de-rDE/strings.xml (bundle: 8)
+85b351cf New translations manager/app/src/main/res/values-fr-rFR/strings.xml (bundle: 8)
+root@localhost:~/oscar/KernelSU-Next# git log --all --oneline -- kernel/allowlist.c kernel/core_hook.c kernel/ksu.c kernel/ksud.c kernel/sucompat.c
+813bc8a7 kernel: reorganize source layout
+0306a23a feat: safe exit (https://github.com/tiann/KernelSU/pull/3317)
+7a26364c kernel: remove util.c and try_set_access_flag dead code
+917775f2 kernel: ksud: prevent atomic panics and fix 32-bit compat in fstat kretprobe
+bcb08758 fix(ksud): remove unsafe memory access hacks in execve kprobe
+1ff11c11 kernel: sucompat: align userspace stack buffer to 16 bytes
+916fc446 kernel: sucompat: safely read execve paths without preempt/access-flag hacks
+db9eae94 kernel: allowlist: optimize `ksu_get_root_profile` linear scan
+85421904 kernel: allowlist: use workqueue instead of init task_work for saving
+6d4aa8bf kernel: reorganize source layout
+785e0bb6 fix: restore missing LSM init for built-in/manual hooks
+6e4be193 kernel: handle ksud execve by syscall_hook_manager, use static_key
+ac5bb5d6 kernel: allow exit
+93d56b35 feat: safe exit (https://github.com/tiann/KernelSU/pull/3317)
+9707560b [PARTIAL] Bring back x86_64 support with a catch (https://github.com/tiann/KernelSU/pull/3328)
+e05540f4 kernel: use syscall table hook to avoid running in atomic context
+942853ee feat: jailbreak by Magica (https://github.com/tiann/KernelSU/pull/3268)
+9515aa4b kernel: enforcing selinux at late-load mode
+3bfc56a3 feat: add late-load mode support (https://github.com/tiann/KernelSU/pull/3258)
+71e0585c kernel: refine stackprotector workaround (https://github.com/tiann/KernelSU/pull/3264)
+1cd7fd81 kernel: make clang-format happy
+92e845f3 kernel: Only check CONFIG_STACKPROTECTOR_PER_TASK on arm64 (https://github.com/tiann/KernelSU/pull/3263)
+3f4eb7dd kernel: add missing attribute
+1d79ce51 kernel: Provide own stackprotector symbol if necessary
+dd808f86 [PARTIAL] feat: jailbreak by Magica (https://github.com/tiann/KernelSU/pull/3268)
+4693f14b kernel: enforcing selinux at late-load mode
+948f4771 feat: add late-load mode support (https://github.com/tiann/KernelSU/pull/3258)
+71363abb kernel: refine stackprotector workaround (https://github.com/tiann/KernelSU/pull/3264)
+fa060a8a kernel: make clang-format happy
+6e112b77 kernel: Only check CONFIG_STACKPROTECTOR_PER_TASK on arm64 (https://github.com/tiann/KernelSU/pull/3263)
+271b2be1 kernel: add missing attribute
+6a04abc6 kernel: Provide own stackprotector symbol if necessary
+d8fa0fc8 kernel: Use ksu cred to save allowlist (https://github.com/tiann/KernelSU/pull/3243)
+b3920c81 kernel: Use ksu cred to save allowlist (https://github.com/tiann/KernelSU/pull/3243)
+8f39f4a1 Revert "kernel: Explicitly check zygote start in execve hook (https://github.com/tiann/KernelSU/pull/3113) (#1038)"
+ff629805 kernel: Avoid malloc in remove_uid_from_arr()
+1a608613 kernel: use rcu to access allowlist, refactor get allowlist api
+6fb44f00 kernel: Avoid malloc in remove_uid_from_arr() (#3099)
+56074f8f kernel: use rcu to access allowlist, refactor get allowlist api
+85dde0cd kernel: ksud: Restore init.rc injection for manual hooks
+c24b3a1e kernel: ksud: read: add fallback to /init.rc
+93c19610 kernel: Use more reasonable symbol name for newfstatat
+8d7f119c kernel: Fixing symbol names causing x64 kernel compilation failure (#3147)
+f9df4c57 kernel: ksud: Refine rc injection, fix issue of Android Canary 2601
+21058f79 kernel: Explicitly check zygote start in execve hook (https://github.com/tiann/KernelSU/pull/3113) (#1038)
+863c1804 kernel: remove innecesary code in ksud.c
+46644093 selinux: Cache SID lookups for domain checks (https://github.com/tiann/KernelSU/pull/3128) (#1051)
+ed226983 kernel: Fix potential memory leaks (https://github.com/tiann/KernelSU/pull/3170) (#1082)
+a32cb83c kernel: Fix potential memory leaks (https://github.com/tiann/KernelSU/pull/3170) (#1082)
+5da83f74 kernel: Prune legacy (4.x) support (#1072)
+9b6c22b4 kernel: Use more reasonable symbol name for newfstatat
+81cd9e8b kernel: Fixing symbol names causing x64 kernel compilation failure (#3147)
+e822400c kernel: ksud: Refine rc injection, fix issue of Android Canary 2601
+00127f2d Revert "kernel: ksud: migrate init.rc handling to security_file_permission LSM" (#1056)
+56879181 selinux: Cache SID lookups for domain checks (https://github.com/tiann/KernelSU/pull/3128) (#1051)
+d7de833a Sync legacy with dev branch and update scope minimized manual hooks 1.7 (#1047)
+a30c086e kernel: Explicitly check zygote start in execve hook (https://github.com/tiann/KernelSU/pull/3113) (#1038)
+5712ea72 kernel: Add some backports and remove some compatibility code
+90ce7c45 kernel: Explicitly check zygote start in execve hook
+800a7a20 sync legacy with dev branch and other things (#1021)
+a7a85040 fix issues in legacy branch (#1007)
+81c604ad kernel: append to init.rc instead of prepending to atrace.rc (https://github.com/tiann/KernelSU/pull/3107) (#1017)
+391eb912 kernel: legacy, add missing early return in ksu_handle_execveat_sucompat (#1009)
+5abd0cbd sync legacy branch with dev branch (#998)
+c0944eb4 kernel: Refactor file_wrapper (#3070)
+cfd00dae kernel: fix compilation errors in non-gki kernels (#996)
+4f8090cd fix some issues in legacy branch (#995)
+bc376376 kernel: extras: add avc spoof impl
+a93da680 add support for legacy/non-gki kernels (#976)
+8490b465 Add mount namespace support <E6><B7><BB><E5>
+<8A><A0><E6><8C><82><E8><BD><BD><E5><91><BD><E5><90><8D><E7><A9><BA><E9><97><B4><E6><94><AF><E6><8C><81> (#2909)
+c5d2b28c kernel: sulog: basic ringbuffer su log
+da81be97 kernel: reformat codes, add workflow to check format (#3062)
+919953e9 kernel: Identify manager without PER_USER_RANGE (#3038)
+f8df0434 kernel: use our cred to unmount, remove sepolicy of zygote (#3032)
+37e48432 kernel: escape to ksu domain in execve hook, remove sepolicy between <E2><80><A6> (#3031)
+36075e36 kernel: Remove second stage init handling for old system
+7b6916f9 kernel: remove redundant KSU_KPROBES_HOOK guard
+5626c09a kernel: Fix execve filename access on ARM64
+eddcb0cc kernel: Add preempt_{disable|enable}_notrace for MODULE
+b4ecfe5a sucompat: Fix execve filename access on ARM64
+81923789 kernel: Remove unreachable vfs_statx handling
+039b6a2b kernel: Add nuke_ext4_sysfs interface
+02e7dbce kernel: Replace kmalloc() usages with kzalloc() (#2939)
+4813ad8f kernel: no need to remark process on post-fs-data and boot-completed
+a9a6b8b8 kernel: Prune allowlist only after boot completed
+62ba9358 kernel: refine syscall_hook_manager
+c94ea0c0 kernel: fix zygote mark on first boot (https://github.com/tiann/KernelSU/pull/2924)
+8f2994b6 kernel: Don't save allowlist on module exit
+a0a294b1 Clean up kernel code (https://github.com/tiann/KernelSU/pull/2898)
+a6741b73 update mark rules, add init mark tracker
+00ea2b07 refactor: kernel_umount setuid_hook
+cbcaf0f5 move reboot hook to supercall.c
+46aa63a5 use kprobe for reboot hook
+5b1befeb add zygote to hook target
+f75095d7 unified hook manager
+5b599128 refact: use app_profile
+25770bd4 on_module_mounted in ksud.c
+adcc1c2e kernel: fix put_task if alloc failed.
+ddf9bf83 use proxy file for pts (https://github.com/tiann/KernelSU/pull/2886)
+8693927a Fix missing unlock on error path
+f52469ac kernel: fix save allowlist
+190a54d5 kernel: remove unused kernel_compat
+5092ba77 kernel: Use real_parent to avoid interference from ptrace.
+c4e12481 kernel: remove unused wrapper for
+83bee9b8 kernel: remove ksu_compat_{open,read,write} because we're in the right context now
+275a6e27 kernel: remove workqueue for allowlist
+1f6bda46 Use force_sig(SIGKILL) to kill process
+1d2fbb83 Switch kretprobe to heap (https://github.com/tiann/KernelSU/pull/2880)
+5e9ca705 Replace mutex with spinlock for tracepoint registration (https://github.com/tiann/KernelSU/pull/2882)
+c07c5e97 build: remove -Wno-implicit-function-declaration
+d81f9098 Revert "kernel: remove unused workqueue"
+d8ef2cb0 revert: still using workqueue for allowlist
+ea5ae778 fix: enhanced security register
+a254da0a kill pgrp in enhanced security
+bdab674a add mutex for sucompat mark
+44888a7e fix: sucompat (https://github.com/tiann/KernelSU/pull/2874)
+c8576c00 kernel: clean headers
+53fef355 kernel: Set the tracepoint flag in a tracepoint manner
+e10edd24 feature: add enhanced security (https://github.com/tiann/KernelSU/pull/2873)
+b8a6973e kernel: remove unused workqueue
+3d6516ab fix: mark tif (https://github.com/tiann/KernelSU/pull/2871)
+bb0241fd kernel: use sys_enter tracepoint for sucompat (https://github.com/tiann/KernelSU/pull/2866)
+564158af support mainline kernel (https://github.com/tiann/KernelSU/pull/2869)
+d11d2d7e kernel: init/exit umount feature
+4615e2f5 kernel: rework umount with task_work
+d49bdd14 Revert "Implement workqueue for unmounting"
+1633e702 Reapply: "kernel: Allow to use in Private Space" (https://github.com/tiann/KernelSU/pull/2857)
+a301f131 kernel: disable setuid debug log
+67352ca7 use cap_task_fix_setuid hook to avoid inline issue
+e3684fe4 add name and print command value
+939acde9 fix security_task_fix_setuid_handler_pre
+13e34358 add fixme
+05cfaf57 fix
+08df3bea refact: use feature subsystem
+a1129d7b switch ns umount
+454b92b6 Implement workqueue for unmounting
+09ef83b3 back to kprobe setuid hook
+711549bc kernel: remove unused
+c2760bd5 fix: a lot again (https://github.com/tiann/KernelSU/pull/2845)
+b133475e fix: a lot (https://github.com/tiann/KernelSU/pull/2843)
+7398ef78 new supercall impl (https://github.com/tiann/KernelSU/pull/2835)
+cc10d042 kernel: replace renameat hook with fsnotify (#910)
+ad8a8446 Fix kernel panics caused by thread info flag corruption (#909)
+69be375d Revert "kernel: harden prctl check"
+11643ee6 Revert "kernel: align prctl harden commit from backslashxx/KernelSU"
+478394a6 kernel: align prctl harden commit from backslashxx/KernelSU SQUASHED: * kernel: harden barriers for arm/arm64 * kernel: core_hook: harden prctl handler
+f1c97b50 kernel: harden prctl check
+693ac0be Revert "Unmount isolated process which forks from zygote unconditionally (https://github.com/tiann/KernelSU/pull/2747) (#776)"
+363e8082 kernel: manager: get kernel driver version tag
+89a0d4c5 (tag: v1.1.0) kernel: sucompat: fix improper sizeof(su)
+dd44d421 kernel: ksud and core_hook: wrap execveat_hook checks with CONFIG_KSU_KPROBES_HOOK guard
+b0e99762 Revert "kernel: core_hook: expose prctl interface for umount list (5ec1cff#16)"
+427f724c Revert "kernel: core_hook: expose nuke_ext4_sysfs on prctl"
+88092246 kernel: sucompat: add missing import arch.h
+02823765 kernel: sucompat: ducplicate declaration, previous declaration is in kernel_compat
+e7a09032 kernel: ksud: provide is_ksu_transition check v2
+3cd88145 kernel: selinux: fix pointer mismatch with 32-bit ksud on 64-bit kernels
+8d8220b3 kernel: ksud: migrate ksud execution to security_bprm_check (tiann#2653)
+35a6c1d1 kernel: sucompat: increase reliability, commonize and micro-optimize (tiann#2656)
+1f95c35d kernel: core_hook: expose nuke_ext4_sysfs on prctl
+2d60fdb9 kernel: core_hook: expose prctl interface for umount list (5ec1cff#16)
+04c6bbf0 kernel: Remove duplicate include in core_hook (#784)
+cee92d69 Unmount isolated process which forks from zygote unconditionally (https://github.com/tiann/KernelSU/pull/2747) (#776)
+5bdb938e fix 'for' loop problem (https://github.com/tiann/KernelSU/pull/2745) (#772)
+a540992e Reset seccomp filter count when escaping to root (https://github.com/tiann/KernelSU/pull/2708) (#743)
+3f4c23a3 kernel: allow only perms for /{system | vendor | product | system_ext}/bin/su path kernel: guard kernelnosu perms if not using KSU_KPROBES_HOOK
+948975ba kernel: core_hook: add support for KernelNoSU
+45ad73e9 kernel: guard syscall hook types
+2c9078e0 kernel: use ksu_strncpy_from_user_retry when kprobes hook sucompat pagefaults
+81f4f09d ksud: Address pagefault in ksu_handle_execveat_ksud (#662)
+bd03c296 kernel/Makefile: remove redundant get_cred_rcu backports
+c6b60a24 ksud: Add second_stage init variant (#653)
+b567e9b2 kernel: add better error message if CMD_GET_MANAGWR_UID fails to fetch manager_uid
+4e3f06d4 kernel: added new prctl CMD_GET_MANAGER_UID to get the uid of the crowned manager
+80bd7977 kernel: ksud: remove remove read_iter requirement
+f15d9b18 kernel: ksud: d_is_reg to IS_REG
+adce6575 kernel: ksud: provide is_ksu_transition check v2
+d6601e1e kernel: core_hook: fix refcount leaks on try_umount (#2635)
+85f4e6ac Switch to prepare_creds/commit_creds (#2631)
+c91f9c18 Revert "kernel: ksud, throne_tracker: small changes for UL"
+3921175e kernel: core_hook: intercept devpts via security_inode_permission LSM (#480)
+c4deee1e kernel: ksud, throne_tracker: small changes for UL
+ce37e17c kernel: added CMD_HOOK_MODE prctl to get the enabled su hook mode value
+eed68550 kernel: rename KSU_WITH_KPROBES to KSU_KPROBES_HOOK for better self explanitory
+27d8bc45 kernel: sucompat: increase reliability of execve_sucompat
+980f71c1 kernel: core_hook: fixup 217d230b (#402)
+9e150b2c ksud/installer: /odm handling we move the folder out of system if it exists in real filesystem and it is not a symlink. this is already supported on init_event.rs so only handle_partition logic was needed to make it happen
+217d230b kernel: expose KSU_LSM_SECURITY_HOOKS on Kconfig
+5f871cd7 kernel/selinux: fix pointer mismatch with 32-bit ksud on 64-bit kernels
+4a37422a kernel/sucompat: sync to KSU pr #2506
+1c9705fd Set KSU_APP_PROFILE_VER for shell (#2481)
+f369297b kernel: fix sometimes sucompat can not toggle by manager (#2484)
+7218a504 kernel: ksud: add ksu_handle_execve_ksud (#217)
+7a08683c (tag: v1.0.5) kernel: remove unnecessary umount calls for configuration directories (evil modifications)
+487e7d00 kernel: simplify umount calls for configuration files
+0038ba65 Fix reference count leak in nuke_ext4_sysfs() (#2467)
+785d8143 kernel: remove KSU_WITH_KPROBES definition since it's already defined by Kconfig
+cd0031e8 kernel: expose variables used by manual hooks always
+15371bb1 kernel: add non-kprobe support for sucompat disable/enable
+097451d5 kernel: guard functionality that requires kprobes
+85866848 kernel: Allow to re-enable sucompat
+bb6c2033 kernel: add support for disable sucompat
+a89985f3 Allow toggling unmount setting for all apps (#2450)
+42896dfa kernel: add umount calls for pixelify gphotos spoof configs and lsposed dex2oat bin
+74171a29 kernel: unregister sysfs for module's ext4 image
+a2fcd157 Revert "kernel: do not umount modules by default"
+bbb05b29 kernel: do not umount modules by default
+87fc6b27 kernel: clear securebits
+a05b790d Avoid unnecessarily overriding capabilities (#2381)
+0ada4ee5 kernel: improve get_cred_rcu guard
+95584df0 kernel: Add fallback if user didn't implement 'get_cred_rcu'
+b18c39e9 Improve seccomp disable && Add locking to protect cred modifications in escape_to_root (#2320)
+72739fac kernel: expose allowlist workaround as Kconfig option Useful for situations where the SU allowlist is not kept after a reboot. As per upstream this is only used for < 4.10 and Huawei HiSilicon devices. but theres user reports having issues even on 4.14/4.19 samsung kernels. Expose this option so users affected can opt-in.
+9f30b48e kernel: try umount /system/etc/hosts & /system_ext
+7ea1579b kernel: try umount /system/etc/hosts & /system_ext
+4332b5ca fix: reset ambient capabilities to resolve D-Bus permission issues
+a5f12ffe fix: reset ambient capabilities to resolve D-Bus permission issues
+a1553c52 Revert "kernel: added susfs v1.5.3"
+8fbddc95 Revert "kernel: added susfs v1.5.3"
+091a35be kernel: added susfs v1.5.3
+bdf81c08 kernel: added susfs v1.5.3
+f929e402 Revert "[1.0] Drop Non-GKI Support (#1483)"
+1a84f69f Revert "[1.0] Drop Non-GKI Support (#1483)"
+cf75aa4a kernel: sync with upstream
+8d2b017c kernel: sync with upstream
+36fb6085 kernel: require path_umount backporting Most kernel builders have to touch their kernel source code anyway so we might as well tell them to backport path_umount to achieve some sort of feature parity.
+1b70c44d kernel: require path_umount backporting Most kernel builders have to touch their kernel source code anyway so we might as well tell them to backport path_umount to achieve some sort of feature parity.
+5f2c1eef kernel: expose allowlist workaround as Kconfig option Useful for situations where the SU allowlist is not kept after a reboot. As per upstream this is only used for < 4.10 and Huawei HiSilicon devices. but theres user reports having issues even on 4.14/4.19 samsung kernels. Expose this option so users affected can opt-in.
+68eb2fb6 kernel: expose allowlist workaround as Kconfig option Useful for situations where the SU allowlist is not kept after a reboot. As per upstream this is only used for < 4.10 and Huawei HiSilicon devices. but theres user reports having issues even on 4.14/4.19 samsung kernels. Expose this option so users affected can opt-in.
+38ca0334 kernel: slightly polish up code
+a545a3e8 kernel: slightly polish up code
+bfa4c9db kernel: cleaned up remaining susfs code
+f2fcb368 kernel: cleaned up remaining susfs code
+7848dd16 kernel: Removed SuSFS Patch
+98a69237 kernel: Removed SuSFS Patch
+9e996d1d Revert "kernel: susfs: CONFIG_KSU_SUSFS_INFO syscall to get susfs version & variant"
+e1551604 Revert "kernel: susfs: CONFIG_KSU_SUSFS_INFO syscall to get susfs version & variant"
+dc1bff44 kernel: Removed SuSFS Patch
+2679f917 Revert "kernel: susfs: CONFIG_KSU_SUSFS_INFO syscall to get susfs version & variant"
+e1107e51 kernel: susfs: CONFIG_KSU_SUSFS_INFO syscall to get susfs version & variant
+b78c9adf kernel: susfs: CONFIG_KSU_SUSFS_INFO syscall to get susfs version & variant
+f50ce005 kernel: implement SuSFS v1.5.2
+e1d30d55 kernel: implement SuSFS v1.5.2
+27bb2491 kernel: Relax dentry_path_raw compare in core_hook (#2041)
+3acb13df kernel: Relax dentry_path_raw compare in core_hook (#2041)
+bd24044e Revert "ksud: [Fix] grant root to the shell in debug mode" (#1860)
+d9fda971 Revert "ksud: [Fix] grant root to the shell in debug mode" (#1860)
+56c39545 ksud: [Fix] grant root to the shell in debug mode (#1853)
+894115e4 ksud: [Fix] grant root to the shell in debug mode (#1853)
+898e9d4f [1.0] Drop Non-GKI Support (#1483)
+97d70b40 [1.0] Drop Non-GKI Support (#1483)
+8e973bcb kernel: replace devpts kprobe
+31653b11 kernel: replace devpts kprobe
+5d6ef355 kernel: Allow to use in Private Space
+0576495b kernel: Allow to use in Private Space
+81033bcc kernel: fix devpts permission. close #1727
+123b66e8 kernel: fix devpts permission. close #1727
+0e656dd3 kernel: Fix compile error on 4.4. close #1720
+7af4f338 kernel: Fix compile error on 4.4. close #1720
+109442f8 (tag: v0.9.4) docs: Add devpts description for non gki
+1bec08ea docs: Add devpts description for non gki
+98757bcd kernel: transition devpts in kernel
+89818cf8 kernel: transition devpts in kernel
+efbc07fd kernel: use library import
+2efefcea kernel: use library import
+f9826838 kernel: refactor PR_REAL_REGS
+cd73307c kernel: refactor PR_REAL_REGS
+fcc3d2d3 kernel: no need to hook
+714990b7 kernel: no need to hook
+dedd54d8 kernel: use syscall hook for all version, remove code next version if works well
+2dc2dbfd kernel: use syscall hook for all version, remove code next version if works well
+2027ac32 Hook syscalls and stable symbols (#1657)
+e2b0721a Hook syscalls and stable symbols (#1657)
+fd17e852 kernel: no need to umount and mark as root for manager uid (#1549)
+a93a3566 kernel: no need to umount and mark as root for manager uid (#1549)
+44457473 Fix missing semicolon (#1551)
+ae8ffe2c Fix missing semicolon (#1551)
+4f05fe22 kernel:Add Huawei hisi check (#1545)
+4584aa7f kernel:Add Huawei hisi check (#1545)
+4ac203a7 kernel: Fix misleading log
+ea0ee056 kernel: Fix misleading log
+8fe19d38 kernel: fix issue with dfd parameter retrieval (#1543)
+2cc23124 kernel: fix issue with dfd parameter retrieval (#1543)
+cb7f414e kernel: guard "umount for uid" logprint with CONFIG_KSU_DEBUG (#1519)
+37410f85 kernel: guard "umount for uid" logprint with CONFIG_KSU_DEBUG (#1519)
+858ec910 kernel: clean memory when exit
+d8671b14 kernel: clean memory when exit
+dc5f911e kernel: remove become_manager and minor refactors
+478fda67 kernel: remove become_manager and minor refactors
+e1f9900b kernel: simplify prctl
+a91690ea kernel: simplify prctl
+9a042110 kernel: Let the kernel choose who is qualified to be the manager.
+a9b31087 kernel: Let the kernel choose who is qualified to be the manager.
+e38a5e52 kernel: we should take ownership over fd
+1ccb61c0 kernel: we should take ownership over fd
+b3a15e2b kernel: Fix the incorrect judgment condition.
+c0254fdb kernel: Fix the incorrect judgment condition.
+c5d423c4 kernel: ignore all non application uid
+91204e71 kernel: ignore all non application uid
+64908583 kernel: Fix compile warning
+7713b7ce kernel: Fix compile warning
+c408710b kernel: minor fixes
+4c9f201c kernel: minor fixes
+bc1e03fe kernel: remove unused headers
+895ad601 kernel: remove unused headers
+71b56ba7 kernel: fix panic cast
+fdb6b6a8 kernel: fix panic cast
+815f4d04 kernel: hook newfstatat/faccessat syscall instead of unstable symbol
+f69abf1e kernel: hook newfstatat/faccessat syscall instead of unstable symbol
+2a64784a kernel: hook syscall instead of unstable symbol
+2fdcdb2b kernel: hook syscall instead of unstable symbol
+247aa877 fixup! Suggest non-gki kernel users to backport path_umount (#1477)
+65bda4b5 fixup! Suggest non-gki kernel users to backport path_umount (#1477)
+ce0c397a kernel: support query working mode
+ae049019 kernel: support query working mode
+4bad691e kernel: don't remove from sysfs when debug is enabled
+68bee049 kernel: don't remove from sysfs when debug is enabled
+fefb02e5 kernel: remove it from sysfs
+85e2cd49 kernel: remove it from sysfs
+d6770467 kernel: Make it compile on 3.18 (maybe older) kernels (#1460)
+8a36c36e kernel: Make it compile on 3.18 (maybe older) kernels (#1460)
+b4cfc2f2 Suggest non-gki kernel users to backport path_umount (#1464)
+cbb215ea Suggest non-gki kernel users to backport path_umount (#1464)
+7568d55b Build KernelSU as LKM (#1254)
+3f5d6ca5 Build KernelSU as LKM (#1254)
+3e2de84a Guard a few logprint in prctl path with KSU_DEBUG (#1402)
+9b254e86 Guard a few logprint in prctl path with KSU_DEBUG (#1402)
+07e475c5 kernel: prevent become manager when failed. close #1328
+8e06088f kernel: prevent become manager when failed. close #1328
+e9997a07 kernel: avoding umount when there isn't any module. close #556
+802549d8 kernel: avoding umount when there isn't any module. close #556
+e3e4d2ee Try umount `/sbin` in kernel (#1257)
+cbf8f0aa Try umount `/sbin` in kernel (#1257)
+32b3ec98 kernel: truncate allowlist before save
+2f3862b1 kernel: truncate allowlist before save
+d6cbda49 kernel: fix out of bound reading. close #1227
+8197ddb3 kernel: fix out of bound reading. close #1227
+706cd1e7 Mount temp dir at /debug_ramdisk (#1226)
+c07b7d38 Mount temp dir at /debug_ramdisk (#1226)
+b7f937b7 kernel: fix su not working in shell for 6.1 kernel
+62117c60 kernel: fix su not working in shell for 6.1 kernel
+1b67c1b1 kernel: fix null pointer dereference for some case (#1075)
+d5985f74 kernel: fix null pointer dereference for some case (#1075)
+344c08bb kernel: make compiler happy
+86dcb02f kernel: make compiler happy
+75b5fdfb kernel: make su without any capabilities possible
+5c495a7e kernel: make su without any capabilities possible
+ce892bc4 kernel: don't umount for non zygote child process. fixes #1054,#1049,#1045
+6dd1b266 kernel: don't umount for non zygote child process. fixes #1054,#1049,#1045
+b1830049 kernel: prune allowlist with package name and uid
+165e450f kernel: prune allowlist with package name and uid
+79951f06 kernel: ignore path that's not mountpoint
+aefcb9c9 kernel: ignore path that's not mountpoint
+7747c0e2 kernel: umount modules mnt when needed. fix #991
+aca3eceb kernel: umount modules mnt when needed. fix #991
+54ee400d kernel: Adapt to low version Android init process (#973)
+b14ea03d kernel: Adapt to low version Android init process (#973)
+cbb98a1d Copy one extra byte from userspace filename (#958)
+c8d0f01c Copy one extra byte from userspace filename (#958)
+cde3e951 kernel: Fix manager recognize err
+a3b675c6 kernel: Fix manager recognize err
+beaa048b kernel: don't trigger page fault when become manager. fix #836
+2f5b4d97 kernel: don't trigger page fault when become manager. fix #836
+907bcad1 kernel: use ordered work queue to avoid timing issues
+f7c1c078 kernel: use ordered work queue to avoid timing issues
+cd952f5e kernel/ksu.c:Fix word mistakes when enabling CONFIG_KSU_DEBUG (#724)
+54214cdc kernel/ksu.c:Fix word mistakes when enabling CONFIG_KSU_DEBUG (#724)
+f4d2b0fe Distinguish different PT_REGS_PARM4 under x86 (#711)
+cd19ce2e Distinguish different PT_REGS_PARM4 under x86 (#711)
+c0066b68 kernel: support the case that init_task.mnt_ns != zygote.mnt_ns(WSA) (#698)
+c62c5f1d kernel: support the case that init_task.mnt_ns != zygote.mnt_ns(WSA) (#698)
+da959b4e kernel: fix compile err on lower kernel
+c7c5a07f kernel: fix compile err on lower kernel
+b644c124 kernel: copy filename ourself instead of getname
+8b7dcc67 kernel: copy filename ourself instead of getname
+f5cfb328 kernel: fix incorrect umount for apps
+f87d6eb9 kernel: fix incorrect umount for apps
+e17f3eab Revert "kernel: use vfs_fstatat on kernel 5.10+, vfs_statx may have cfi."
+a0abe9db Revert "kernel: use vfs_fstatat on kernel 5.10+, vfs_statx may have cfi."
+08884da4 kernel: don't alloc groups for default groups
+fc4f0b28 kernel: don't alloc groups for default groups
+5f1d70da Revert "kernel: getname might sleep in kprobe handler  (#670)"
+22e3e1fc Revert "kernel: getname might sleep in kprobe handler  (#670)"
+79bb9813 kernel: getname might sleep in kprobe handler  (#670)
+7fa7b5b8 kernel: getname might sleep in kprobe handler  (#670)
+cd3e2924 kernel: use vfs_fstatat on kernel 5.10+, vfs_statx may have cfi.
+d2647b2f kernel: use vfs_fstatat on kernel 5.10+, vfs_statx may have cfi.
+9b2f907a kernel: fix typo in allowlist.c (#663)
+3863d197 kernel: fix typo in allowlist.c (#663)
+90299ad0 kernel:Fix the issue of incompatible __maybe_unused in the GCC compiler kernel used in versions 4.4. x to 4.9. x. (#660)
+29169dde kernel:Fix the issue of incompatible __maybe_unused in the GCC compiler kernel used in versions 4.4. x to 4.9. x. (#660)
+ff8c6147 kernel: allow uid 1000(system_uid) to grant root. close #645
+0eb96082 kernel: allow uid 1000(system_uid) to grant root. close #645
+bd8434f4 Hook improvements (take 2) (#563)
+9fa6a0ce Hook improvements (take 2) (#563)
+c6973988 kernel: fix warning on x86_64, close #637
+6b326ffb kernel: fix warning on x86_64, close #637
+4218aa48 Fix error build when using GCC 12.0.0 (#609)
+3fffcde5 Fix error build when using GCC 12.0.0 (#609)
+3ad27c59 (tag: v0.6.0) kernel: use macro for default domain
+ba229c9e kernel: use macro for default domain
+5b27f6c0 kernel: Fix shell permission under KSU_DEBUG
+109472ae kernel: Fix shell permission under KSU_DEBUG
+5db70754 kernel: bump format version to force clear allowlist, prepare to release a new version
+6a11cb70 kernel: bump format version to force clear allowlist, prepare to release a new version
+1408175a kernel: fix set groups for kernel 4.9-
+19e00ac4 kernel: fix set groups for kernel 4.9-
+53be8612 kernel: support setting selinux context for profile
+bacd16a6 kernel: support setting selinux context for profile
+c7f6a7d1 kernel: support settings supplementary groups for profile
+893aebca kernel: support settings supplementary groups for profile
+710edb72 kernel: prevent root process to exec su, which makes app can escape root profile by exec it twice
+1a6e99bc kernel: prevent root process to exec su, which makes app can escape root profile by exec it twice
+076e5d36 kernel: make the profile uid, gid, capabilities really work
+fc961726 kernel: make the profile uid, gid, capabilities really work
+8af5a903 kernel: fix set app profile may override other user's
+9abe9687 kernel: fix set app profile may override other user's
+990626cf kernel: Fixing the issue of a delay in updating the default profile.
+27cca2a2 kernel: Fixing the issue of a delay in updating the default profile.
+fc77ca98 kernel: use uid instead of package to compare allowlist, fix #580
+20a9c6ec kernel: use uid instead of package to compare allowlist, fix #580
+2ce39760 Fixup: build under linux 4.14 (#581)
+da45d906 Fixup: build under linux 4.14 (#581)
+63ec5318 kernel: dont prune uid used for app profile
+395711c9 kernel: dont prune uid used for app profile
+5980c113 kernel: respect the app profile's umount modules field for kernel umounting
+bc9e3da5 kernel: respect the app profile's umount modules field for kernel umounting
+005404f5 kernel: support load/restore default profiles
+0e539cce kernel: support load/restore default profiles
+b31fc471 kernel: support CMD_IS_UID_GRANTED_ROOT and CMD_IS_UID_SHOULD_UMOUNT
+14b13868 kernel: support CMD_IS_UID_GRANTED_ROOT and CMD_IS_UID_SHOULD_UMOUNT
+82d5ec3c kernel: fix CMD_GET_ALLOW_LIST error
+e030ca48 kernel: fix CMD_GET_ALLOW_LIST error
+de72eedb kernel: don't copy profile when not found
+b4f63022 kernel: don't copy profile when not found
+89f6cd04 kernel: minor fixes for profiles
+f8b18c06 kernel: minor fixes for profiles
+bd3a1291 kernel: don't fill default value for app profile
+cb5cd080 kernel: don't fill default value for app profile
+3abb7e4c kernel: baby version of profile
+e8d234ae kernel: baby version of profile
+d014947a change warning about disable kprobes (#549)
+7428ee02 change warning about disable kprobes (#549)
+8f3e5980 kernel: fix format warnning
+976f2610 kernel: fix format warnning
+b80e0625 Revert "Add option to enable global namespace (#497)"
+dc8e6342 Revert "Add option to enable global namespace (#497)"
+f81caf75 Add option to enable global namespace (#497)
+00a459a9 Add option to enable global namespace (#497)
+2716ec58 (tag: v0.5.7) Revert 67667b6 (#500)
+5b4655f8 Revert 052a3d3 (#500)
+294d6fa0 kernel: don't umount for process in global namespace
+002969e9 kernel: don't umount for process in global namespace
+72ee14e6 kernel: revert init stage for x86_64 temporarily
+9d24e592 kernel: revert init stage for x86_64 temporarily
+36ed99d1 ksud.c : Include compat.h (#450)
+5b284d27 ksud.c : Include compat.h (#450)
+67667b6d kernel: umount by lazy
+052a3d3a kernel: umount by lazy
+45c229dc (tag: v0.5.3) kernel: fix snprintf
+168f1f1d kernel: fix snprintf
+f35e03d8 kernel: allow manager to be installed in work profile
+fa25a4fe kernel: allow manager to be installed in work profile
+5504b0dd Revert "kernel: don't save allowlist in worker"
+6b8b02c4 Revert "kernel: don't save allowlist in worker"
+f0dcddd3 kernel: don't show log when get allowlist
+79655229 kernel: don't show log when get allowlist
+c569d803 kernel: don't save allowlist in worker
+54461bc4 kernel: don't save allowlist in worker
+dc45eb6e kernel: Make sure logd has started before post-fs-data.
+8a5c94c3 kernel: Make sure logd has started before post-fs-data.
+a343aa5e Try to solve 4.14 build don't pass problem  (#368)
+3a3fcaad Try to solve 4.14 build don't pass problem  (#368)
+2d36e982  kernel: make /system/bin/init second_stage more precisely (#357)
+8ba6ef20  kernel: make /system/bin/init second_stage more precisely (#357)
+fabaa612 kernel: check CONFIG_SECCOMP status (#351)
+54e5e8fc kernel: check CONFIG_SECCOMP status (#351)
+a3874dd0 kernel: use ksud as root shell instead of /system/bin/sh
+978839da kernel: use ksud as root shell instead of /system/bin/sh
+62bbee56 kernel: fix incorrect dput
+4933b045 kernel: fix incorrect dput
+ec4a233e kernel: basicly umount overlayfs in kernel
+44444b2a kernel: basicly umount overlayfs in kernel
+814d65cc kernel: Fix side channel attack
+a8bd9f19 kernel: Fix side channel attack
+77056a71 kernel: remove unused poll wait becuase we always call this in post-fs-data, no need to wait for /data mounted
+8cd4ccf7 kernel: remove unused poll wait becuase we always call this in post-fs-data, no need to wait for /data mounted
+40d7d62a kernel: optimize vfs_read probe.
+dbcdc29b kernel: optimize vfs_read probe.
+09fb118d kernel: return early for prctl command
+6ae2a73a kernel: return early for prctl command
+683ba112 kernel: add prefix to avoid symbol confliction
+4f5c35c3 kernel: add prefix to avoid symbol confliction
+a161c318 kernel: allow root processes to get allow/deny list (#256)
+f946ef77 kernel: allow root processes to get allow/deny list (#256)
+051fc53a kernel: count time of volumedown to enter safemode
+70829a42 kernel: count time of volumedown to enter safemode
+ca950d90 kernel: press KEY_VOLUMEDOWN over 2 seconds will enter safemode and disable all modules
+20fcc971 kernel: press KEY_VOLUMEDOWN over 2 seconds will enter safemode and disable all modules
+0c322a33 kernel: fix filp_open on older kernel's kworker (#205)
+9b8f8fac kernel: fix filp_open on older kernel's kworker (#205)
+199f5cc2 fix some typos introduced in #166 (#181)
+4a811576 fix some typos introduced in #166 (#181)
+4f2b8b70 kernel: backport to 4.4 (#166)
+b085db50 kernel: backport to 4.4 (#166)
+46913671 kernel, ksud: collect binaries into /data/adb/ksu (#161)
+d1632001 kernel, ksud: collect binaries into /data/adb/ksu (#161)
+b9e27621 kernel: support sepolicy
+3603778a kernel: support sepolicy
+ee7065bc kernel: minor fix (#122)
+fa1b6f6d kernel: minor fix (#122)
+8446f07a kernel: update debug warning (#121)
+cdee2f87 kernel: update debug warning (#121)
+db600d5e kernel: precise trigger timing of post-fs-data (#118)
+443c5867 kernel: precise trigger timing of post-fs-data (#118)
+22b66b66 kernel: opt allowlist persist and log (#119)
+21ecb29d kernel: opt allowlist persist and log (#119)
+06aaae13 kernel: fix missing log tag (#117)
+9fe636cd kernel: fix missing log tag (#117)
+2f970f7a kernel: refact (#113)
+3d07b728 kernel: refact (#113)
+47a736f5 kernel: allow to change manager in debug mode (#111)
+ecfe4e9e kernel: allow to change manager in debug mode (#111)
+fbd7d0f9 kernel: enable sucompat iff KPROBES enabled, close #100
+b3fb2564 kernel: enable sucompat iff KPROBES enabled, close #100
+4c28932c kernel: run ksu_kprobe_init if build as module (#109)
+3cd2e0d4 kernel: run ksu_kprobe_init if build as module (#109)
+fe11fcd6 kernel: Migrate the reference of task_stack() (#102)
+7be4d887 kernel: Migrate the reference of task_stack() (#102)
+c252492a kernel: add __init for init funcs
+58c1ebaa kernel: add __init for init funcs
+da377a9f kernel: fix unused-variable
+029241e3 kernel: fix unused-variable
+deac6163 kernel: 1. use prctl lsm hook; 2. refine sucompat hook
+0b14cac8 kernel: 1. use prctl lsm hook; 2. refine sucompat hook
+830c2736 kernel: unify workqueue
+a9dd171f kernel: unify workqueue
+5b2efd65 (tag: v0.3.3) kernel: add null check (#84)
+88161ba7 kernel: add null check (#84)
+2724c621 kernel: put original group_info (#82)
+5dee70a8 kernel: put original group_info (#82)
+3d5effb6 kernel: fix panic in #79 (#80)
+d2c6b9ae kernel: fix panic in #79 (#80)
+2a1e91cb kernel: don't use 0(root uid) as manager init uid
+aa6ab8fc kernel: don't use 0(root uid) as manager init uid
+ab36e1fa kernel: add uid observer, correctly prune uid allowlist when app is installed/uninstalled.
+7da51893 kernel: add uid observer, correctly prune uid allowlist when app is installed/uninstalled.
+bf3edfd0 kernel: fix init_groups not exist int 5.15
+a0852cd7 kernel: fix init_groups not exist int 5.15
+ece66a3c kernel: setgroup to root for su
+610b6aba kernel: setgroup to root for su
+fb73a7f8 kernel: fix typo
+a1aa5644 kernel: fix typo
+2222a999 kernel: version 9
+c70917b0 kernel: version 9
+00b1d753 kernel: support ksud services
+d776da4d kernel: support ksud services
+886c7d97 kernel: fix stack frame size exceeds
+cbb1cb39 kernel: fix stack frame size exceeds
+4f99d865 kernel: make kernel correctly response CMD_GRANT_ROOT (#73)
+d91e4027 kernel: make kernel correctly response CMD_GRANT_ROOT (#73)
+a30aab1d [skip ci] minor fixup (#72)
+6ad3f47d [skip ci] minor fixup (#72)
+2359b165 backport to 4.14 (#59)
+9150cfed backport to 4.14 (#59)
+0b86cd69 [skip ci] kernel: allow root processes to get version (#63)
+f590f95b [skip ci] kernel: allow root processes to get version (#63)
+5e77d1cd kernel: add CONFIG_KSU_DEBUG (#19)
+c4cfd45f kernel: add CONFIG_KSU_DEBUG (#19)
+0e0a812a kernel: backport to 4.19 (#36)
+0caaf53c kernel: backport to 4.19 (#36)
+43bea506 kernel: fix syscall_work version
+2f0349ae kernel: fix syscall_work version
+94d0d5ac kernel: syscall_work is introduced above 5.10
+17268b5c kernel: syscall_work is introduced above 5.10
+35d6e27c kernel: change vold.rc to atrace.rc temporarily
+0e847f1a kernel: change vold.rc to atrace.rc temporarily
+d7cfa6b6 kernel: version -> 8
+a45fd72e kernel: version -> 8
+91ec1631 kernel: Add boot_completed init event
+a66328dd kernel: Add boot_completed init event
+d3d66010 kernel: version -> 7
+681a5036 kernel: version -> 7
+b3f7d1f0 kernel: use exec instead of init service
+d2888f71 kernel: use exec instead of init service
+5229b815 kernel: make injected init service name random
+c4ad1545 kernel: make injected init service name random
+2e8645b5 kernel: unregister vfs_read hook to avoid read performance
+a9192b7d kernel: unregister vfs_read hook to avoid read performance
+ae18ab2b kernel: inject userspace init events
+808f4b88 kernel: inject userspace init events
+00b40253 kernel: become_manager return true iff it is manager
+92de8fbc kernel: become_manager return true iff it is manager
+b427c86a misc: code format(use kernel code stype: https://www.kernel.org/doc/html/v6.1/process/coding-style.html
+95656d61 misc: code format(use kernel code stype: https://www.kernel.org/doc/html/v6.1/process/coding-style.html
+0661dda1 kernel: fix wrong args
+8f25280e kernel: fix wrong args
+82161dec kernel: fix path leak
+ea9f71e2 kernel: fix path leak
+7b60a1e5 kernel: improve manager validation
+64931d4a kernel: improve manager validation
+2a891a47 kernel: version -> 5
+6901464d kernel: version -> 5
+fa594347 kernel: add selinux rules for allowlist
+5f1d8136 kernel: add selinux rules for allowlist
+dcb1d38a kernel: fix seccomp, this is actually a fix of previous commit
+dacf57f4 kernel: fix seccomp, this is actually a fix of previous commit
+31967315 kernel: improve selinux for su context
+c17aed0d kernel: improve selinux for su context
+301406d0 kernel: fix seccomp. it may crash in https://elixir.bootlin.com/linux/v5.10.161/source/kernel/seccomp.c#L1079
+24c2ddc2 kernel: fix seccomp. it may crash in https://elixir.bootlin.com/linux/v5.10.161/source/kernel/seccomp.c#L1079
+e6d40afe <F0><9F><92><9A> kernel: fix ci build (#16)
+b83d3673 <F0><9F><92><9A> kernel: fix ci build (#16)
+47b0f7bd kernel: manager's parent must be zygote(uid=0)
+99ebc30c kernel: manager's parent must be zygote(uid=0)
+9aacf2a6 kernel: avoding other root process being kprobed
+fa4362dd kernel: avoding other root process being kprobed
+78fc2507 kernel: version -> 4
+0563f6fa kernel: version -> 4
+5053e207 kernel: switch to syscall_work if CONFIG_GENERIC_ENTRY is enabled (#12)
+7d5297c1 kernel: switch to syscall_work if CONFIG_GENERIC_ENTRY is enabled (#12)
+758c8eb8 kernel: fix compile errors & warnings on android13-5.15 gki
+5ccaa584 kernel: fix compile errors & warnings on android13-5.15 gki
+c5da14ae need to import namespace (#7)
+f15575cd need to import namespace (#7)
+96139986 kernel: Include task_stack.h in sucompat.c (#6)
+fbfed680 kernel: Include task_stack.h in sucompat.c (#6)
+85d4cbd9 Fix `su` file not found after su (#5)
+7194c7b3 Fix `su` file not found after su (#5)
+223f5588 kernel: always disable seccomp
+d69f7609 kernel: always disable seccomp
+be91d4ed kernel: emit compile error when KPROBES disabled
+09f0b78c kernel: emit compile error when KPROBES disabled
+91f3b3ef kernel: load_allow_list when /data prepared
+bb91686c kernel: load_allow_list when /data prepared
+fc497546 kernel: fix free kmem err
+2ae0af7b kernel: fix free kmem err
+c6300ccf kernel: fix memory leaks and x86_64 args
+ccf0675f kernel: fix memory leaks and x86_64 args
+e9ed2807 kernel: add su compat mode
+44af9c5d kernel: add su compat mode
+28066012 kernel: don't setenforce if kernel is already permissive
+84ebb680 kernel: don't setenforce if kernel is already permissive
+0d8785ec kernel: support x86_64
+facd3d90 kernel: support x86_64
+304581ca kernel: fix selinux when load/save allowlist
+5fd16bd7 kernel: fix selinux when load/save allowlist
+820d84e5 kernel: make allowlist available cross boot
+b1a33f86 kernel: make allowlist available cross boot
+730a522f kernel: fmt
+c7af4720 kernel: fmt
+51c84400 Init
+2f6031ad Init
+root@localhost:~/oscar/KernelSU-Next# cd /root/susfs4ksu
+
+git branch --show-current
+git rev-parse HEAD
+git log --oneline --decorate -20
+kernel-5.4
+76affd70abf61d77feb0a132f61365d6848505df
+76affd7 (grafted, HEAD -> kernel-5.4, origin/kernel-5.4) kernel: Remove support for Shamiko
+root@localhost:~/susfs4ksu#
