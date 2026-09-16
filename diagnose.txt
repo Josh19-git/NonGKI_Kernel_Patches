@@ -1,1579 +1,1181 @@
-l-5.4.patchusfs4ksu/kernel_patches/50_add_susfs_in_kerne
-========================================
-1. SUSFS CMDLINE/BOOTCONFIG SOURCE
-========================================
-        }
-        spin_unlock(&susfs_uname_spin_lock);
-        SUSFS_LOGI("setting spoofed release: '%s', version: '%s'\n",
-                                my_uname.release, my_uname.version);
-        return 0;
-}
+/data/data/com.termux/files/usr/include/string.h:106:17error: expected '=', ',', ';', 'asm' or '__attribute__' before '__strrchr_chk'
+  106 | char* _Nullable __strrchr_chk(const char* _Nonnull __s, int __ch, size_t __n);
+      |                 ^~~~~~~~~~~~~
+/data/data/com.termux/files/usr/include/string.h:108:36error: expected ';', ',' or ')' before '__s'
+  108 | size_t strlen(const char* _Nonnull __s) __attribute_pure__;
+      |                                    ^~~
+/data/data/com.termux/files/usr/include/string.h:109:42error: expected ';', ',' or ')' before '__s'
+  109 | t __strlen_chk(const char* _Nonnull __s, size_t __n);
+      |                                     ^~~
 
-void susfs_spoof_uname(struct new_utsname* tmp) {
-        if (unlikely(my_uname.release[0] == '\0' || spin_is_locked(&susfs_uname_spin_lock)))
-                return;
-        strncpy(tmp->release, my_uname.release, __NEW_UTS_LEN);
-        strncpy(tmp->version, my_uname.version, __NEW_UTS_LEN);
-}
-#endif // #ifdef CONFIG_KSU_SUSFS_SPOOF_UNAME
+/data/data/com.termux/files/usr/include/string.h:111:33error: expected ';', ',' or ')' before '__lhs'
+  111 | int strcmp(const char* _Nonnull __lhs, const char* _Nonnull __rhs) __attribute_pure__;
+      |                                 ^~~~~
+/data/data/com.termux/files/usr/include/string.h:112:16error: expected '=', ',', ';', 'asm' or '__attribute__' before 'stpcpy'
+  112 | char* _Nonnull stpcpy(char* _Nonnull __dst, const char* _Nonnull __src);
+      |                ^~~~~~
+/data/data/com.termux/files/usr/include/string.h:113:16error: expected '=', ',', ';', 'asm' or '__attribute__' before 'strcpy'
+  113 | char* _Nonnull strcpy(char* _Nonnull __dst, const char* _Nonnull __src);
+      |                ^~~~~~
+/data/data/com.termux/files/usr/include/string.h:114:16error: expected '=', ',', ';', 'asm' or '__attribute__' before 'strcat'
+  114 | char* _Nonnull strcat(char* _Nonnull __dst, const char* _Nonnull __src);
+      |                ^~~~~~
+/data/data/com.termux/files/usr/include/string.h:115:17error: expected '=', ',', ';', 'asm' or '__attribute__' before 'strdup'
+  115 | char* _Nullable strdup(const char* _Nonnull __s);
+      |                 ^~~~~~
+/data/data/com.termux/files/usr/include/string.h:117:17error: expected '=', ',', ';', 'asm' or '__attribute__' before 'strstr'
+  117 | char* _Nullable strstr(const char* _Nonnull __haystack, const char* _Nonnull __needle) __attribute_pure__;
+      |                 ^~~~~~
+/data/data/com.termux/files/usr/include/string.h:122:17error: expected '=', ',', ';', 'asm' or '__attribute__' before 'strcasestr'
+  122 | char* _Nullable strcasestr(const char* _Nonnull __haystack, const char* _Nonnull __needle) __attribute_pure__;
+      |                 ^~~~~~~~~~
+/data/data/com.termux/files/usr/include/string.h:124:17error: expected '=', ',', ';', 'asm' or '__attribute__' before 'strtok'
+  124 | char* _Nullable strtok(char* _Nullable __s, const char* _Nonnull __delimiter);
+      |                 ^~~~~~
+/data/data/com.termux/files/usr/include/string.h:125:17error: expected '=', ',', ';', 'asm' or '__attribute__' before 'strtok_r'
+  125 | char* _Nullable strtok_r(char* _Nullable __s, const char* _Nonnull __delimiter, char* _Nonnull * _Nonnull __pos_ptr);
+      |                 ^~~~~~~~
+/data/data/com.termux/files/usr/include/string.h:138:16error: expected '=', ',', ';', 'asm' or '__attribute__' before 'strerror'
+  138 | char* _Nonnull strerror(int __errno_value);
+      |                ^~~~~~~~
+/data/data/com.termux/files/usr/include/string.h:143:16error: expected '=', ',', ';', 'asm' or '__attribute__' before 'strerror_l'
+  143 | char* _Nonnull strerror_l(int __errno_value, locale_t _Nonnull __l) __RENAME(strerror);
+      |                ^~~~~~~~~~
+/data/data/com.termux/files/usr/include/string.h:157:16error: expected '=', ',', ';', 'asm' or '__attribute__' before 'strerror_r'
+  157 | char* _Nonnull strerror_r(int __errno_value, char* _Nullable __buf, size_t __n) __RENAME(__gnu_strerror_r) __INTRODUCED_IN(23);
+      |                ^~~~~~~~~~
+/data/data/com.termux/files/usr/include/string.h:190:22error: expected '=', ',', ';', 'asm' or '__attribute__' before 'strerrordesc_np'
+  190 | const char* _Nonnull strerrordesc_np(int __errno_value) __RENAME(strerror);
+      |                      ^~~~~~~~~~~~~~~
+/data/data/com.termux/files/usr/include/string.h:193:37error: expected ';', ',' or ')' before '__s'
+  193 | size_t strnlen(const char* _Nonnull __s, size_t __n) __attribute_pure__;
+      |                                     ^~~
+/data/data/com.termux/files/usr/include/string.h:194:16error: expected '=', ',', ';', 'asm' or '__attribute__' before 'strncat'
+  194 | char* _Nonnull strncat(char* _Nonnull __dst, const char* _Nonnull __src, size_t __n);
+      |                ^~~~~~~
+/data/data/com.termux/files/usr/include/string.h:195:17error: expected '=', ',', ';', 'asm' or '__attribute__' before 'strndup'
+  195 | char* _Nullable strndup(const char* _Nonnull __s, size_t __n);
+      |                 ^~~~~~~
+/data/data/com.termux/files/usr/include/string.h:196:34error: expected ';', ',' or ')' before '__lhs'
+  196 | int strncmp(const char* _Nonnull __lhs, const char* _Nonnull __rhs, size_t __n) __attribute_pure__;
+      |                                  ^~~~~
+/data/data/com.termux/files/usr/include/string.h:197:16error: expected '=', ',', ';', 'asm' or '__attribute__' before 'stpncpy'
+  197 | char* _Nonnull stpncpy(char* _Nonnull __dst, const char* _Nonnull __src, size_t __n);
+      |                ^~~~~~~
+/data/data/com.termux/files/usr/include/string.h:198:16error: expected '=', ',', ';', 'asm' or '__attribute__' before 'strncpy'
+  198 | char* _Nonnull strncpy(char* _Nonnull __dst, const char* _Nonnull __src, size_t __n);
+      |                ^~~~~~~
+/data/data/com.termux/files/usr/include/string.h:200:31error: expected ';', ',' or ')' before '__dst'
+  200 | size_t strlcat(char* _Nonnull __dst, const char* _Nonnull __src, size_t __n);
+      |                               ^~~~~
+/data/data/com.termux/files/usr/include/string.h:201:31error: expected ';', ',' or ')' before '__dst'
+  201 | size_t strlcpy(char* _Nonnull __dst, const char* _Nonnull __src, size_t __n);
+      |                               ^~~~~
+/data/data/com.termux/files/usr/include/string.h:203:37error: expected ';', ',' or ')' before '__s'
+  203 | size_t strcspn(const char* _Nonnull __s, const char* _Nonnull __reject) __attribute_pure__;
+      |                                     ^~~
+/data/data/com.termux/files/usr/include/string.h:204:17error: expected '=', ',', ';', 'asm' or '__attribute__' before 'strpbrk'
+  204 | char* _Nullable strpbrk(const char* _Nonnull __s, const char* _Nonnull __accept) __attribute_pure__;
+      |                 ^~~~~~~
+/data/data/com.termux/files/usr/include/string.h:205:17error: expected '=', ',', ';', 'asm' or '__attribute__' before 'strsep'
+  205 | char* _Nullable strsep(char* _Nullable * _Nonnull __s_ptr, const char* _Nonnull __delimiter);
+      |                 ^~~~~~
+/data/data/com.termux/files/usr/include/string.h:206:36error: expected ';', ',' or ')' before '__s'
+  206 | size_t strspn(const char* _Nonnull __s, const char* _Nonnull __accept);
+      |                                    ^~~
+/data/data/com.termux/files/usr/include/string.h:208:16error: expected '=', ',', ';', 'asm' or '__attribute__' before 'strsignal'
+  208 | char* _Nonnull strsignal(int __signal);
+      |                ^~~~~~~~~
+/data/data/com.termux/files/usr/include/string.h:210:34error: expected ';', ',' or ')' before '__lhs'
+  210 | int strcoll(const char* _Nonnull __lhs, const char* _Nonnull __rhs) __attribute_pure__;
+      |                                  ^~~~~
+/data/data/com.termux/files/usr/include/string.h:211:52error: expected ';', ',' or ')' before '__dst'
+  211 | char* __BIONIC_COMPLICATED_NULLNESS __dst, const char* _Nonnull __src, size_t __n);
+      |                                     ^~~~~
 
-/* set_log */
-#ifdef CONFIG_KSU_SUSFS_ENABLE_LOG
-void susfs_set_log(bool enabled) {
-        spin_lock(&susfs_spin_lock);
-        susfs_is_log_enabled = enabled;
-        spin_unlock(&susfs_spin_lock);
-        if (susfs_is_log_enabled) {
-                pr_info("susfs: enable logging to kernel");
-        } else {
-                pr_info("susfs: disable logging to kernel");
-        }
-}
-#endif // #ifdef CONFIG_KSU_SUSFS_ENABLE_LOG
+/data/data/com.termux/files/usr/include/string.h:213:36error: expected ';', ',' or ')' before '__lhs'
+  213 | int strcoll_l(const char* _Nonnull __lhs, const char* _Nonnull __rhs, locale_t _Nonnull __l) __attribute_pure__;
+      |                                    ^~~~~
+/data/data/com.termux/files/usr/include/string.h:214:54error: expected ';', ',' or ')' before '__dst'
+  214 | char* __BIONIC_COMPLICATED_NULLNESS __dst, const char* _Nonnull __src, size_t __n, locale_t _Nonnull __l);
+      |                                     ^~~~~
 
-/* spoof_cmdline_or_bootconfig */
-#ifdef CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG
-static char *fake_cmdline_or_bootconfig = NULL;
-int susfs_set_cmdline_or_bootconfig(char* __user user_fake_cmdline_or_bootconfig) {
-        int res;
+/data/data/com.termux/files/usr/include/stdio.h:67:23: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'stdin'
+   67 | extern FILE* _Nonnull stdin __INTRODUCED_IN(23);
+      |                       ^~~~~
+/data/data/com.termux/files/usr/include/stdio.h:68:23: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'stdout'
+   68 | extern FILE* _Nonnull stdout __INTRODUCED_IN(23);
+      |                       ^~~~~~
+/data/data/com.termux/files/usr/include/stdio.h:69:23: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'stderr'
+   69 | extern FILE* _Nonnull stderr __INTRODUCED_IN(23);
+      |                       ^~~~~~
+/data/data/com.termux/files/usr/include/stdio.h:111:30:error: expected ';', ',' or ')' before '__fp'
+  111 | void clearerr(FILE* _Nonnull __fp);
+      |                              ^~~~
+/data/data/com.termux/files/usr/include/stdio.h:112:27:error: expected ';', ',' or ')' before '__fp'
+  112 | int fclose(FILE* _Nonnull __fp);
+      |                           ^~~~
+/data/data/com.termux/files/usr/include/stdio.h:113:37:error: expected ';', ',' or ')' before '__fp'
+  113 | __nodiscard int feof(FILE* _Nonnull __fp);
+      |                                     ^~~~
+/data/data/com.termux/files/usr/include/stdio.h:114:39:error: expected ';', ',' or ')' before '__fp'
+  114 | __nodiscard int ferror(FILE* _Nonnull __fp);
+      |                                       ^~~~
+/data/data/com.termux/files/usr/include/stdio.h:115:28:error: expected ';', ',' or ')' before '__fp'
+  115 | int fflush(FILE* _Nullable __fp);
+      |                            ^~~~
+/data/data/com.termux/files/usr/include/stdio.h:116:38:error: expected ';', ',' or ')' before '__fp'
+  116 | __nodiscard int fgetc(FILE* _Nonnull __fp);
+      |                                      ^~~~
+/data/data/com.termux/files/usr/include/stdio.h:117:17:error: expected '=', ',', ';', 'asm' or '__attribute__' before 'fgets'
+  117 | char* _Nullable fgets(char* _Nonnull __buf, int __size, FILE* _Nonnull __fp);
+      |                 ^~~~~
+/data/data/com.termux/files/usr/include/stdio.h:118:28:error: expected ';', ',' or ')' before '__fp'
+  118 | int fprintf(FILE* _Nonnull __fp , const char* _Nonnull __fmt, ...) __printflike(2, 3);
+      |                            ^~~~
+/data/data/com.termux/files/usr/include/stdio.h:119:36:error: expected ';', ',' or ')' before '__fp'
+  119 | int fputc(int __ch, FILE* _Nonnull __fp);
+      |                                    ^~~~
+/data/data/com.termux/files/usr/include/stdio.h:120:32:error: expected ';', ',' or ')' before '__s'
+  120 | int fputs(const char* _Nonnull __s, FILE* _Nonnull __fp);
+      |                                ^~~
+/data/data/com.termux/files/usr/include/stdio.h:121:29:error: expected ';', ',' or ')' before '__buf'
+  121 | size_t fread(void* _Nonnull __buf, size_t __size, size_t __count, FILE* _Nonnull __fp);
+      |                             ^~~~~
+/data/data/com.termux/files/usr/include/stdio.h:122:27:error: expected ';', ',' or ')' before '__fp'
+  122 | int fscanf(FILE* _Nonnull __fp, const char* _Nonnull __fmt, ...) __scanflike(2, 3);
+      |                           ^~~~
+/data/data/com.termux/files/usr/include/stdio.h:123:36:error: expected ';', ',' or ')' before '__buf'
+  123 | size_t fwrite(const void* _Nonnull __buf, size_t __size, size_t __count, FILE* _Nonnull __fp);
+      |                                    ^~~~~
+/data/data/com.termux/files/usr/include/stdio.h:124:37:error: expected ';', ',' or ')' before '__fp'
+  124 | __nodiscard int getc(FILE* _Nonnull __fp);
+      |                                     ^~~~
+/data/data/com.termux/files/usr/include/stdio.h:126:34:error: expected ';', ',' or ')' before '*' token
+  126 | ssize_t getdelim(char* _Nullable * _Nonnull __line_ptr, size_t* _Nonnull __line_length_ptr, int __delimiter, FILE* _Nonnull __fp);
+      |                                  ^
+/data/data/com.termux/files/usr/include/stdio.h:127:33:error: expected ';', ',' or ')' before '*' token
+  127 | ssize_t getline(char* _Nullable * _Nonnull __line_ptr, size_t* _Nonnull __line_length_ptr, FILE* _Nonnull __fp);
+      |                                 ^
+/data/data/com.termux/files/usr/include/stdio.h:129:35:error: expected ';', ',' or ')' before '__msg'
+  129 | void perror(const char* _Nullable __msg);
+      |                                   ^~~~~
+/data/data/com.termux/files/usr/include/stdio.h:130:33:error: expected ';', ',' or ')' before '__fmt'
+  130 | int printf(const char* _Nonnull __fmt, ...) __printflike(1, 2);
+      |                                 ^~~~~
+/data/data/com.termux/files/usr/include/stdio.h:131:35:error: expected ';', ',' or ')' before '__fp'
+  131 | int putc(int __ch, FILE* _Nonnull __fp);
+      |                                   ^~~~
+/data/data/com.termux/files/usr/include/stdio.h:133:31:error: expected ';', ',' or ')' before '__s'
+  133 | int puts(const char* _Nonnull __s);
+      |                               ^~~
+/data/data/com.termux/files/usr/include/stdio.h:134:33:error: expected ';', ',' or ')' before '__path'
+  134 | int remove(const char* _Nonnull __path);
+      |                                 ^~~~~~
+/data/data/com.termux/files/usr/include/stdio.h:135:28:error: expected ';', ',' or ')' before '__fp'
+  135 | void rewind(FILE* _Nonnull __fp);
+      |                            ^~~~
+/data/data/com.termux/files/usr/include/stdio.h:136:32:error: expected ';', ',' or ')' before '__fmt'
+  136 | int scanf(const char* _Nonnull __fmt, ...) __scanflike(1, 2);
+      |                                ^~~~~
+/data/data/com.termux/files/usr/include/stdio.h:137:28:error: expected ';', ',' or ')' before '__fp'
+  137 | void setbuf(FILE* _Nonnull __fp, char* _Nullable __buf);
+      |                            ^~~~
+/data/data/com.termux/files/usr/include/stdio.h:138:28:error: expected ';', ',' or ')' before '__fp'
+  138 | int setvbuf(FILE* _Nonnull __fp, char* _Nullable __buf, int __mode, size_t __size);
+      |                            ^~~~
+/data/data/com.termux/files/usr/include/stdio.h:139:33:error: expected ';', ',' or ')' before '__s'
+  139 | int sscanf(const char* _Nonnull __s, const char* _Nonnull __fmt, ...) __scanflike(2, 3);
+      |                                 ^~~
+/data/data/com.termux/files/usr/include/stdio.h:140:37:error: expected ';', ',' or ')' before '__fp'
+  140 | int ungetc(int __ch, FILE* _Nonnull __fp);
+      |                                     ^~~~
+/data/data/com.termux/files/usr/include/stdio.h:141:29:error: expected ';', ',' or ')' before '__fp'
+  141 | int vfprintf(FILE* _Nonnull __fp, const char* _Nonnull __fmt, va_list __args) __printflike(2, 0);
+      |                             ^~~~
+/data/data/com.termux/files/usr/include/stdio.h:142:34:error: expected ';', ',' or ')' before '__fp'
+  142 | int vprintf(const char* _Nonnull __fp, va_list __args) __printflike(1, 0);
+      |                                  ^~~~
+/data/data/com.termux/files/usr/include/stdio.h:144:44:error: expected ';', ',' or ')' before '__fmt'
+  144 | intf(int __fd, const char* _Nonnull __fmt, ...) __printflike(2, 3);
+      |                                     ^~~~~
 
-        if (!fake_cmdline_or_bootconfig) {
-                // 4096 is enough I guess
-                fake_cmdline_or_bootconfig = kmalloc(SUSFS_FAKE_CMDLINE_OR_BOOTCONFIG_SIZE, GFP_KERNEL);
-                if (!fake_cmdline_or_bootconfig) {
-                        SUSFS_LOGE("no enough memory\n");
-                        return -ENOMEM;
-                }
-        }
+/data/data/com.termux/files/usr/include/stdio.h:145:45:error: expected ';', ',' or ')' before '__fmt'
+  145 | intf(int __fd, const char* _Nonnull __fmt, va_list __args) __printflike(2, 0);
+      |                                     ^~~~~
 
-        spin_lock(&susfs_spin_lock);
-        memset(fake_cmdline_or_bootconfig, 0, SUSFS_FAKE_CMDLINE_OR_BOOTCONFIG_SIZE);
-        res = strncpy_from_user(fake_cmdline_or_bootconfig, user_fake_cmdline_or_bootconfig, SUSFS_FAKE_CMDLINE_OR_BOOTCONFIG_SIZE-1);
-        spin_unlock(&susfs_spin_lock);
+/data/data/com.termux/files/usr/include/stdio.h:151:49:error: expected ';', ',' or ')' before '__s'
+  151 | char* __BIONIC_COMPLICATED_NULLNESS __s, const char* _Nonnull __fmt, ...)
+      |                                     ^~~
 
-        if (res > 0) {
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(6,1,0)
-                SUSFS_LOGI("fake_cmdline_or_bootconfig is set, length of string: %lu\n", strlen(fake_cmdline_or_bootconfig));
-#else
-                SUSFS_LOGI("fake_cmdline_or_bootconfig is set, length of string: %u\n", strlen(fake_cmdline_or_bootconfig));
-#endif
-                return 0;
-        }
-        SUSFS_LOGI("failed setting fake_cmdline_or_bootconfig\n");
-        return res;
-}
+/data/data/com.termux/files/usr/include/stdio.h:153:50:error: expected ';', ',' or ')' before '__s'
+  153 | char* __BIONIC_COMPLICATED_NULLNESS __s, const char* _Nonnull __fmt, va_list __args)
+      |                                     ^~~
 
-int susfs_spoof_cmdline_or_bootconfig(struct seq_file *m) {
-        if (fake_cmdline_or_bootconfig != NULL) {
-                seq_puts(m, fake_cmdline_or_bootconfig);
-                return 0;
-        }
-        return 1;
-}
-#endif
+/data/data/com.termux/files/usr/include/stdio.h:155:17:error: expected '=', ',', ';', 'asm' or '__attribute__' before 'tmpnam'
+  155 | char* _Nullable tmpnam(char* _Nullable __s)
+      |                 ^~~~~~
+/data/data/com.termux/files/usr/include/stdio.h:158:17:error: expected '=', ',', ';', 'asm' or '__attribute__' before 'tempnam'
+  158 | char* _Nullable tempnam(const char* _Nullable __dir, const char* _Nullable __prefix)
+      |                 ^~~~~~~
+/data/data/com.termux/files/usr/include/stdio.h:167:33:error: expected ';', ',' or ')' before '__old_path'
+  167 | int rename(const char* _Nonnull __old_path, const char* _Nonnull __new_path);
+      |                                 ^~~~~~~~~~
+/data/data/com.termux/files/usr/include/stdio.h:175:53:error: expected ';', ',' or ')' before '__old_path'
+  175 |  __old_dir_fd, const char* _Nonnull __old_path, int __new_dir_fd, const char* _Nonnull __new_path);
+      |                                     ^~~~~~~~~~
 
-/* open_redirect */
-#ifdef CONFIG_KSU_SUSFS_OPEN_REDIRECT
-static DEFINE_HASHTABLE(OPEN_REDIRECT_HLIST, 10);
-static int susfs_update_open_redirect_inode(struct st_susfs_open_redirect_hlist *new_entry) {
-        struct path path_target;
-        struct inode *inode_target;
-        int err = 0;
+/data/data/com.termux/files/usr/include/stdio.h:212:26:error: expected ';', ',' or ')' before '__fp'
+  212 | int fseek(FILE* _Nonnull __fp, long __offset, int __whence);
+      |                          ^~~~
+/data/data/com.termux/files/usr/include/stdio.h:213:39:error: expected ';', ',' or ')' before '__fp'
+  213 | __nodiscard long ftell(FILE* _Nonnull __fp);
+      |                                       ^~~~
+/data/data/com.termux/files/usr/include/stdio.h:238:28:error: expected ';', ',' or ')' before '__fp'
+  238 | int fgetpos(FILE* _Nonnull __fp, fpos_t* _Nonnull __pos);
+      |                            ^~~~
+/data/data/com.termux/files/usr/include/stdio.h:239:28:error: expected ';', ',' or ')' before '__fp'
+  239 | int fsetpos(FILE* _Nonnull __fp, const fpos_t* _Nonnull __pos);
+      |                            ^~~~
+/data/data/com.termux/files/usr/include/stdio.h:240:27:error: expected ';', ',' or ')' before '__fp'
+  240 | int fseeko(FILE* _Nonnull __fp, off_t __offset, int __whence);
+      |                           ^~~~
+/data/data/com.termux/files/usr/include/stdio.h:241:41:error: expected ';', ',' or ')' before '__fp'
+  241 | __nodiscard off_t ftello(FILE* _Nonnull __fp);
+      |                                         ^~~~
+/data/data/com.termux/files/usr/include/stdio.h:244:29:error: expected '=', ',', ';', 'asm' or '__attribute__' before 'funopen'
+  244 | __nodiscard FILE* _Nullable funopen(const void* _Nullable __cookie,
+      |                             ^~~~~~~
+/data/data/com.termux/files/usr/include/stdio.h:272:29:error: expected '=', ',', ';', 'asm' or '__attribute__' before 'fopen'
+  272 | __nodiscard FILE* _Nullable fopen(const char* _Nonnull __path, const char* _Nonnull __mode);
+      |                             ^~~~~
+/data/data/com.termux/files/usr/include/stdio.h:278:17:error: expected '=', ',', ';', 'asm' or '__attribute__' before 'freopen'
+  278 | FILE* _Nullable freopen(const char* _Nullable __path, const char* _Nonnull __mode, FILE* _Nonnull __fp);
+      |                 ^~~~~~~
+/data/data/com.termux/files/usr/include/stdio.h:289:50:error: expected ';', ',' or ')' before '__buf'
+  289 | char* __BIONIC_COMPLICATED_NULLNESS __buf, size_t __size, const char* _Nonnull __fmt, ...) __printflike(3, 4);
+      |                                     ^~~~~
 
-        err = kern_path(new_entry->target_pathname, LOOKUP_FOLLOW, &path_target);
-        if (err) {
-                SUSFS_LOGE("Failed opening file '%s'\n", new_entry->target_pathname);
-                return err;
-        }
+/data/data/com.termux/files/usr/include/stdio.h:290:28:error: expected ';', ',' or ')' before '__fp'
+  290 | int vfscanf(FILE* _Nonnull __fp, const char* _Nonnull __fmt, va_list __args) __scanflike(2, 0);
+      |                            ^~~~
+/data/data/com.termux/files/usr/include/stdio.h:291:33:error: expected ';', ',' or ')' before '__fmt'
+  291 | int vscanf(const char* _Nonnull __fmt , va_list __args) __scanflike(1, 0);
+      |                                 ^~~~~
+/data/data/com.termux/files/usr/include/stdio.h:292:51:error: expected ';', ',' or ')' before '__buf'
+  292 | char* __BIONIC_COMPLICATED_NULLNESS __buf, size_t __size, const char* _Nonnull __fmt, va_list __args) __printflike(3, 0);
+      |                                     ^~~~~
 
-        inode_target = d_inode(path_target.dentry);
-        if (!inode_target) {
+/data/data/com.termux/files/usr/include/stdio.h:293:34:error: expected ';', ',' or ')' before '__s'
+  293 | int vsscanf(const char* _Nonnull __s, const char* _Nonnull __fmt, va_list __args) __scanflike(2, 0);
+      |                                  ^~~
+/data/data/com.termux/files/usr/include/stdio.h:302:34:error: expected '=', ',', ';', 'asm' or '__attribute__' before 'ctermid'
+  302 | static __inline__ char* _Nonnull ctermid(char* _Nullable __termux_s) {
+      |                                  ^~~~~~~
+/data/data/com.termux/files/usr/include/stdio.h:310:29:error: expected '=', ',', ';', 'asm' or '__attribute__' before 'fdopen'
+  310 | __nodiscard FILE* _Nullable fdopen(int __fd, const char* _Nonnull __mode);
+      |                             ^~~~~~
+/data/data/com.termux/files/usr/include/stdio.h:311:39:error: expected ';', ',' or ')' before '__fp'
+  311 | __nodiscard int fileno(FILE* _Nonnull __fp);
+      |                                       ^~~~
+/data/data/com.termux/files/usr/include/stdio.h:312:27:error: expected ';', ',' or ')' before '__fp'
+  312 | int pclose(FILE* _Nonnull __fp);
+      |                           ^~~~
+/data/data/com.termux/files/usr/include/stdio.h:313:29:error: expected '=', ',', ';', 'asm' or '__attribute__' before 'popen'
+  313 | __nodiscard FILE* _Nullable popen(const char* _Nonnull __command, const char* _Nonnull __mode);
+      |                             ^~~~~
+/data/data/com.termux/files/usr/include/stdio.h:314:32:error: expected ';', ',' or ')' before '__fp'
+  314 | void flockfile(FILE* _Nonnull  __fp);
+      |                                ^~~~
+/data/data/com.termux/files/usr/include/stdio.h:315:33:error: expected ';', ',' or ')' before '__fp'
+  315 | int ftrylockfile(FILE* _Nonnull __fp);
+      |                                 ^~~~
+/data/data/com.termux/files/usr/include/stdio.h:316:33:error: expected ';', ',' or ')' before '__fp'
+  316 | void funlockfile(FILE* _Nonnull __fp);
+      |                                 ^~~~
+/data/data/com.termux/files/usr/include/stdio.h:317:46:error: expected ';', ',' or ')' before '__fp'
+  317 | discard int getc_unlocked(FILE* _Nonnull __fp);
+      |                                          ^~~~
 
-========================================
-2. SUSFS HEADER DECLARATIONS
-========================================
-#endif
-/* try_umount */
-#ifdef CONFIG_KSU_SUSFS_TRY_UMOUNT
-int susfs_add_try_umount(struct st_susfs_try_umount* __user user_info);
-void susfs_try_umount(uid_t target_uid);
-#ifdef CONFIG_KSU_SUSFS_AUTO_ADD_TRY_UMOUNT_FOR_BIND_MOUNT
-void susfs_auto_add_try_umount_for_bind_mount(struct path *path);
-#endif // #ifdef CONFIG_KSU_SUSFS_AUTO_ADD_TRY_UMOUNT_FOR_BIND_MOUNT
-#endif // #ifdef CONFIG_KSU_SUSFS_TRY_UMOUNT
-/* spoof_uname */
-#ifdef CONFIG_KSU_SUSFS_SPOOF_UNAME
-int susfs_set_uname(struct st_susfs_uname* __user user_info);
-void susfs_spoof_uname(struct new_utsname* tmp);
-#endif
-/* set_log */
-#ifdef CONFIG_KSU_SUSFS_ENABLE_LOG
-void susfs_set_log(bool enabled);
-#endif
-/* spoof_cmdline_or_bootconfig */
-#ifdef CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG
-int susfs_set_cmdline_or_bootconfig(char* __user user_fake_boot_config);
-int susfs_spoof_cmdline_or_bootconfig(struct seq_file *m);
-#endif
-/* open_redirect */
-#ifdef CONFIG_KSU_SUSFS_OPEN_REDIRECT
-int susfs_add_open_redirect(struct st_susfs_open_redirect* __user user_info);
-struct filename* susfs_get_redirected_path(unsigned long ino);
-#endif
-/* sus_su */
-#ifdef CONFIG_KSU_SUSFS_SUS_SU
-int susfs_get_sus_su_working_mode(void);
+/data/data/com.termux/files/usr/include/stdio.h:319:44:error: expected ';', ',' or ')' before '__fp'
+  319 | t putc_unlocked(int __ch, FILE* _Nonnull __fp);
+      |                                          ^~~~
 
-========================================
-3. KSU KCONFIG SPOOF SECTION
-========================================
-      - Allow spoofing the string returned by uname syscall to user-defined string.
-      - Effective on all processes.
+/data/data/com.termux/files/usr/include/stdio.h:330:31:error: expected ';', ',' or ')' before '*' token
+  330 | int  asprintf(char* _Nullable * _Nonnull __s_ptr, const char* _Nonnull __fmt, ...) __printflike(2, 3);
+      |                               ^
+/data/data/com.termux/files/usr/include/stdio.h:331:17:error: expected '=', ',', ';', 'asm' or '__attribute__' before 'fgetln'
+  331 | char* _Nullable fgetln(FILE* _Nonnull __fp, size_t* _Nonnull __length_ptr);
+      |                 ^~~~~~
+/data/data/com.termux/files/usr/include/stdio.h:332:27:error: expected ';', ',' or ')' before '__fp'
+  332 | int fpurge(FILE* _Nonnull __fp);
+      |                           ^~~~
+/data/data/com.termux/files/usr/include/stdio.h:333:31:error: expected ';', ',' or ')' before '__fp'
+  333 | void setbuffer(FILE* _Nonnull __fp, char* _Nullable __buf, int __size);
+      |                               ^~~~
+/data/data/com.termux/files/usr/include/stdio.h:334:31:error: expected ';', ',' or ')' before '__fp'
+  334 | int setlinebuf(FILE* _Nonnull __fp);
+      |                               ^~~~
+/data/data/com.termux/files/usr/include/stdio.h:335:31:error: expected ';', ',' or ')' before '*' token
+  335 | int vasprintf(char* _Nullable * _Nonnull __s_ptr, const char* _Nonnull __fmt, va_list __args) __printflike(2, 0);
+      |                               ^
+/data/data/com.termux/files/usr/include/stdio.h:378:1: warning: function declaration isn't a prototype [-Wstrict-prototypes]
+  378 | extern pid_t getpid();
+      | ^~~~~~
+/data/data/com.termux/files/usr/include/stdio.h:382:35:error: expected '=', ',', ';', 'asm' or '__attribute__' before 'tmpfile'
+  382 | static __inline__ FILE* _Nullable tmpfile() {
+      |                                   ^~~~~~~
+In file included from /data/data/com.termux/files/usr/include/stdlib.h:36,
+                 from ../scripts/extract-cert.c:16:
+/data/data/com.termux/files/usr/include/malloc.h:58:29:error: expected '=', ',', ';', 'asm' or '__attribute__' before 'malloc'
+   58 | __nodiscard void* _Nullable malloc(size_t __byte_count) __mallocfunc __BIONIC_ALLOC_SIZE(1);
+      |                             ^~~~~~
+/data/data/com.termux/files/usr/include/malloc.h:67:29:error: expected '=', ',', ';', 'asm' or '__attribute__' before 'calloc'
+   67 | __nodiscard void* _Nullable calloc(size_t __item_count, size_t __item_size) __mallocfunc __BIONIC_ALLOC_SIZE(1,2);
+      |                             ^~~~~~
+/data/data/com.termux/files/usr/include/malloc.h:77:29:error: expected '=', ',', ';', 'asm' or '__attribute__' before 'realloc'
+   77 | __nodiscard void* _Nullable realloc(void* _Nullable __ptr, size_t __byte_count) __BIONIC_ALLOC_SIZE(2);
+      |                             ^~~~~~~
+/data/data/com.termux/files/usr/include/malloc.h:91:29:error: expected '=', ',', ';', 'asm' or '__attribute__' before 'reallocarray'
+   91 | __nodiscard void* _Nullable reallocarray(void* _Nullable __ptr, size_t __item_count, size_t __item_size) __BIONIC_ALLOC_SIZE(2, 3) __INTRODUCED_IN(29);
+      |                             ^~~~~~~~~~~~
+/data/data/com.termux/files/usr/include/malloc.h:108:27error: expected ';', ',' or ')' before '__ptr'
+  108 | void free(void* _Nullable __ptr);
+      |                           ^~~~~
+/data/data/com.termux/files/usr/include/malloc.h:119:29error: expected '=', ',', ';', 'asm' or '__attribute__' before 'memalign'
+  119 | __nodiscard void* _Nullable memalign(size_t __alignment, size_t __byte_count) __mallocfunc __BIONIC_ALLOC_SIZE(2);
+      |                             ^~~~~~~~
+/data/data/com.termux/files/usr/include/malloc.h:125:61error: expected ';', ',' or ')' before '__ptr'
+  125 | alloc_usable_size(const void* _Nullable __ptr);
+      |                                         ^~~~~
 
-config KSU_SUSFS_ENABLE_LOG
-    bool "Enable logging susfs log to kernel"
-    depends on KSU_SUSFS
-    default y
-    help
-      - Allow logging susfs log to kernel, uncheck it to completely disable all susfs log.
+/data/data/com.termux/files/usr/include/stdlib.h:48:1: warning: 'nomerge' attribute directive ignored [-Wattributes]
+   48 | __noreturn void abort(void) __attribute__((__nomerge__));
+      | ^~~~~~~~~~
+/data/data/com.termux/files/usr/include/stdlib.h:52:28:error: expected ')' before '__fn'
+   52 | int atexit(void (* _Nonnull __fn)(void));
+      |                            ^~~~~
+      |                            )
+/data/data/com.termux/files/usr/include/stdlib.h:54:35:error: expected ')' before '__fn'
+   54 | int at_quick_exit(void (* _Nonnull __fn)(void));
+      |                                   ^~~~~
+      |                                   )
+/data/data/com.termux/files/usr/include/stdlib.h:57:17:error: expected '=', ',', ';', 'asm' or '__attribute__' before 'getenv'
+   57 | char* _Nullable getenv(const char* _Nonnull __name);
+      |                 ^~~~~~
+/data/data/com.termux/files/usr/include/stdlib.h:58:27:error: expected ';', ',' or ')' before '__assignment'
+   58 | int putenv(char* _Nonnull __assignment);
+      |                           ^~~~~~~~~~~~
+/data/data/com.termux/files/usr/include/stdlib.h:59:33:error: expected ';', ',' or ')' before '__name'
+   59 | int setenv(const char* _Nonnull __name, const char* _Nonnull __value, int __overwrite);
+      |                                 ^~~~~~
+/data/data/com.termux/files/usr/include/stdlib.h:60:35:error: expected ';', ',' or ')' before '__name'
+   60 | int unsetenv(const char* _Nonnull __name);
+      |                                   ^~~~~~
+/data/data/com.termux/files/usr/include/stdlib.h:63:17:error: expected '=', ',', ';', 'asm' or '__attribute__' before 'mkdtemp'
+   63 | char* _Nullable mkdtemp(char* _Nonnull __template);
+      |                 ^~~~~~~
+/data/data/com.termux/files/usr/include/stdlib.h:64:17:error: expected '=', ',', ';', 'asm' or '__attribute__' before 'mktemp'
+   64 | char* _Nullable mktemp(char* _Nonnull __template) __attribute__((__deprecated__("mktemp is unsafe, use mkstemp or tmpfile instead")));
+      |                 ^~~~~~
+/data/data/com.termux/files/usr/include/stdlib.h:74:30:error: expected ';', ',' or ')' before '__template'
+   74 | int mkstemp64(char* _Nonnull __template);
+      |                              ^~~~~~~~~~
+/data/data/com.termux/files/usr/include/stdlib.h:75:28:error: expected ';', ',' or ')' before '__template'
+   75 | int mkstemp(char* _Nonnull __template);
+      |                            ^~~~~~~~~~
+/data/data/com.termux/files/usr/include/stdlib.h:81:29:error: expected ';', ',' or ')' before '__template'
+   81 | int mkstemps(char* _Nonnull __template, int __flags);
+      |                             ^~~~~~~~~~
+/data/data/com.termux/files/usr/include/stdlib.h:83:36:error: expected ';', ',' or ')' before '*' token
+   83 | int posix_memalign(void* _Nullable * _Nullable __memptr, size_t __alignment, size_t __size);
+      |                                    ^
+/data/data/com.termux/files/usr/include/stdlib.h:100:29error: expected '=', ',', ';', 'asm' or '__attribute__' before 'realpath'
+  100 | __nodiscard char* _Nullable realpath(const char* _Nonnull __path, char* _Nullable __resolved);
+      |                             ^~~~~~~~
+/data/data/com.termux/files/usr/include/stdlib.h:117:33error: expected ';', ',' or ')' before '__command'
+  117 | int system(const char* _Nonnull __command);
+      |                                 ^~~~~~~~~
+/data/data/com.termux/files/usr/include/stdlib.h:126:29error: expected '=', ',', ';', 'asm' or '__attribute__' before 'bsearch'
+  126 | __nodiscard void* _Nullable bsearch(const void* _Nonnull __key, const void* _Nullable __base, size_t __nmemb, size_t __size, int (* _Nonnull __comparator)(const void* _Nonnull __lhs, const void* _Nonnull __rhs));
+      |                             ^~~~~~~
+/data/data/com.termux/files/usr/include/stdlib.h:132:28error: expected ';', ',' or ')' before '__array'
+  132 | void qsort(void* _Nullable __array, size_t __n, size_t __size, int (* _Nonnull __comparator)(const void* _Nullable __lhs, const void* _Nullable __rhs));
+      |                            ^~~~~~~
+/data/data/com.termux/files/usr/include/stdlib.h:149:36error: expected ';', ',' or ')' before '__buf'
+  149 | void arc4random_buf(void* _Nonnull __buf, size_t __n);
+      |                                    ^~~~~
+/data/data/com.termux/files/usr/include/stdlib.h:153:35error: expected ';', ',' or ')' before '__seed_ptr'
+  153 | int rand_r(unsigned int* _Nonnull __seed_ptr);
+      |                                   ^~~~~~~~~~
+/data/data/com.termux/files/usr/include/stdlib.h:156:39error: '_Nonnull' undeclared here (not in a function)
+  156 | uble erand48(unsigned short __xsubi[_Nonnull 3]);
+      |                                     ^~~~~~~~
 
-config KSU_SUSFS_HIDE_KSU_SUSFS_SYMBOLS
-    bool "Enable to automatically hide ksu and susfs symbols from /proc/kallsyms"
-    depends on KSU_SUSFS
-    default y
-    help
-      - Automatically hide ksu and susfs symbols from '/proc/kallsyms'.
-      - Effective on all processes.
+/data/data/com.termux/files/usr/include/stdlib.h:156:47error: expected ']' before numeric constant
+  156 | le erand48(unsigned short __xsubi[_Nonnull 3]);
+      |                                           ^~
+      |                                           ]
+/data/data/com.termux/files/usr/include/stdlib.h:157:37error: '_Nonnull' undeclared here (not in a function)
+  157 | long jrand48(unsigned short __xsubi[_Nonnull 3]);
+      |                                     ^~~~~~~~
+/data/data/com.termux/files/usr/include/stdlib.h:157:45error: expected ']' before numeric constant
+  157 | ng jrand48(unsigned short __xsubi[_Nonnull 3]);
+      |                                           ^~
+      |                                           ]
+/data/data/com.termux/files/usr/include/stdlib.h:165:37error: '_Nonnull' undeclared here (not in a function)
+  165 | long nrand48(unsigned short __xsubi[_Nonnull 3]);
+      |                                     ^~~~~~~~
+/data/data/com.termux/files/usr/include/stdlib.h:165:45error: expected ']' before numeric constant
+  165 | ng nrand48(unsigned short __xsubi[_Nonnull 3]);
+      |                                           ^~
+      |                                           ]
+/data/data/com.termux/files/usr/include/stdlib.h:166:26error: expected '=', ',', ';', 'asm' or '__attribute__' before 'seed48'
+  166 | unsigned short* _Nonnull seed48(unsigned short __seed16v[_Nonnull 3]);
+      |                          ^~~~~~
+/data/data/com.termux/files/usr/include/stdlib.h:169:17error: expected '=', ',', ';', 'asm' or '__attribute__' before 'initstate'
+  169 | char* _Nullable initstate(unsigned int __seed, char* _Nonnull __state, size_t __n);
+      |                 ^~~~~~~~~
+/data/data/com.termux/files/usr/include/stdlib.h:170:17error: expected '=', ',', ';', 'asm' or '__attribute__' before 'setstate'
+  170 | char* _Nullable setstate(char* _Nonnull __state);
+      |                 ^~~~~~~~
+/data/data/com.termux/files/usr/include/stdlib.h:174:17error: expected '=', ',', ';', 'asm' or '__attribute__' before 'ptsname'
+  174 | char* _Nullable ptsname(int __fd);
+      |                 ^~~~~~~
+/data/data/com.termux/files/usr/include/stdlib.h:175:40error: expected ';', ',' or ')' before '__buf'
+  175 |  ptsname_r(int __fd, char* _Nonnull __buf, size_t __n);
+      |                                     ^~~~~
 
-config KSU_SUSFS_SPOOF_BOOTCONFIG
-    bool "Enable to spoof /proc/cmdline"
-    depends on KSU_SUSFS
-    default y
-    help
-      - Spoof the output of /proc/cmdline with a user-defined file.
-      - Effective on all processes.
+/data/data/com.termux/files/usr/include/stdlib.h:219:23error: expected '=', ',', ';', 'asm' or '__attribute__' before 'getprogname'
+  219 | const char* _Nullable getprogname(void);
+      |                       ^~~~~~~~~~~
+/data/data/com.termux/files/usr/include/stdlib.h:220:39error: expected ';', ',' or ')' before '__name'
+  220 | void setprogname(const char* _Nonnull __name);
+      |                                       ^~~~~~
+/data/data/com.termux/files/usr/include/stdlib.h:223:33error: expected ';', ',' or ')' before '__s'
+  223 | int mblen(const char* _Nullable __s, size_t __n);
+      |                                 ^~~
+/data/data/com.termux/files/usr/include/stdlib.h:225:36error: expected ';', ',' or ')' before '__dst'
+  225 | size_t mbstowcs(wchar_t* _Nullable __dst, const char* _Nullable __src, size_t __n);
+      |                                    ^~~~~
+/data/data/com.termux/files/usr/include/stdlib.h:226:31error: expected ';', ',' or ')' before '__wc_ptr'
+  226 | int mbtowc(wchar_t* _Nullable __wc_ptr, const char*  _Nullable __s, size_t __n);
+      |                               ^~~~~~~~
+/data/data/com.termux/files/usr/include/stdlib.h:227:28error: expected ';', ',' or ')' before '__dst'
+  227 | int wctomb(char* _Nullable __dst, wchar_t __wc);
+      |                            ^~~~~
+/data/data/com.termux/files/usr/include/stdlib.h:229:33error: expected ';', ',' or ')' before '__dst'
+  229 | size_t wcstombs(char* _Nullable __dst, const wchar_t* _Nullable __src, size_t __n);
+      |                                 ^~~~~
+/data/data/com.termux/files/usr/include/stdlib.h:253:34error: expected ';', ',' or ')' before '__s'
+  253 | double atof(const char* _Nonnull __s) __attribute_pure__;
+      |                                  ^~~
+/data/data/com.termux/files/usr/include/stdlib.h:261:31error: expected ';', ',' or ')' before '__s'
+  261 | int atoi(const char* _Nonnull __s) __attribute_pure__;
+      |                               ^~~
+/data/data/com.termux/files/usr/include/stdlib.h:269:32error: expected ';', ',' or ')' before '__s'
+  269 | long atol(const char* _Nonnull __s) __attribute_pure__;
+      |                                ^~~
+/data/data/com.termux/files/usr/include/stdlib.h:277:38error: expected ';', ',' or ')' before '__s'
+  277 | ong long atoll(const char* _Nonnull __s) __attribute_pure__;
+      |                                     ^~~
 
-config KSU_SUSFS_OPEN_REDIRECT
-    bool "Enable to redirect a path to be opened with another path (experimental)"
-    depends on KSU_SUSFS
-    default y
-    help
-      - Allow redirecting a target path to be opened with another user-defined path.
-      - Effective only on processes with uid < 2000.
-      - Please be reminded that process with open access to the target and redirected path can be detected.
+/data/data/com.termux/files/usr/include/stdlib.h:287:34error: expected ';', ',' or ')' before '__s'
+  287 | long strtol(const char* _Nonnull __s, char* _Nullable * _Nullable __end_ptr, int __base);
+      |                                  ^~~
+/data/data/com.termux/files/usr/include/stdlib.h:290:36error: expected ';', ',' or ')' before '__s'
+  290 | long strtol_l(const char* _Nonnull __s, char* _Nullable * _Nullable __end_ptr, int, locale_t _Nonnull __l) __RENAME(strtol);
+      |                                    ^~~
+/data/data/com.termux/files/usr/include/stdlib.h:300:40error: expected ';', ',' or ')' before '__s'
+  300 | g long strtoll(const char* _Nonnull __s, char* _Nullable * _Nullable __end_ptr, int __base);
+      |                                     ^~~
 
-config KSU_SUSFS_SUS_SU
+/data/data/com.termux/files/usr/include/stdlib.h:303:42error: expected ';', ',' or ')' before '__s'
+  303 | long strtoll_l(const char* _Nonnull __s, char* _Nullable * _Nullable __end_ptr, int __base, locale_t _Nonnull __l);
+      |                                     ^~~
 
-========================================
-4. KSU CORE_HOOK SPOOF REFERENCES
-========================================
-                                return 0;
-                        }
-                        error = susfs_set_uname((struct st_susfs_uname __user*)arg3);
-                        pr_info("susfs: CMD_SUSFS_SET_UNAME -> ret: %d\n", error);
-                        if (copy_to_user((void __user*)arg5, &error, sizeof(error)))
-                                pr_info("susfs: copy_to_user() failed\n");
-                        return 0;
-                }
-#endif //#ifdef CONFIG_KSU_SUSFS_SPOOF_UNAME
-#ifdef CONFIG_KSU_SUSFS_ENABLE_LOG
-                if (arg2 == CMD_SUSFS_ENABLE_LOG) {
-                        int error = 0;
-                        if (arg3 != 0 && arg3 != 1) {
-                                pr_err("susfs: CMD_SUSFS_ENABLE_LOG -> arg3 can only be 0 or 1\n");
-                                return 0;
-                        }
-                        susfs_set_log(arg3);
-                        if (copy_to_user((void __user*)arg5, &error, sizeof(error)))
-                                pr_info("susfs: copy_to_user() failed\n");
-                        return 0;
-                }
-#endif //#ifdef CONFIG_KSU_SUSFS_ENABLE_LOG
-#ifdef CONFIG_KSU_SUSFS_SPOOF_BOOTCONFIG
-                if (arg2 == CMD_SUSFS_SET_BOOTCONFIG) {
-                        int error = 0;
-                        if (!ksu_access_ok((void __user*)arg3, SUSFS_FAKE_BOOT_CONFIG_SIZE)) {
-                                pr_err("susfs: CMD_SUSFS_SET_BOOTCONFIG -> arg3 is not accessible\n");
-                                return 0;
-                        }
-                        if (!ksu_access_ok((void __user*)arg5, sizeof(error))) {
-                                pr_err("susfs: CMD_SUSFS_SET_BOOTCONFIG -> arg5 is not accessible\n");
-                                return 0;
-                        }
-                        error = susfs_set_bootconfig((char __user*)arg3);
-                        pr_info("susfs: CMD_SUSFS_SET_BOOTCONFIG -> ret: %d\n", error);
-                        if (copy_to_user((void __user*)arg5, &error, sizeof(error)))
-                                pr_info("susfs: copy_to_user() failed\n");
-                        return 0;
-                }
-#endif //#ifdef CONFIG_KSU_SUSFS_SPOOF_BOOTCONFIG
-#ifdef CONFIG_KSU_SUSFS_OPEN_REDIRECT
-                if (arg2 == CMD_SUSFS_ADD_OPEN_REDIRECT) {
-                        int error = 0;
-                        if (!ksu_access_ok((void __user*)arg3, sizeof(struct st_susfs_open_redirect))) {
-                                pr_err("susfs: CMD_SUSFS_ADD_OPEN_REDIRECT -> arg3 is not accessible\n");
-                                return 0;
-                        }
-                        if (!ksu_access_ok((void __user*)arg5, sizeof(error))) {
-                                pr_err("susfs: CMD_SUSFS_ADD_OPEN_REDIRECT -> arg5 is not accessible\n");
-                                return 0;
-                        }
-                        error = susfs_add_open_redirect((struct st_susfs_open_redirect __user*)arg3);
-                        pr_info("susfs: CMD_SUSFS_ADD_OPEN_REDIRECT -> ret: %d\n", error);
-                        if (copy_to_user((void __user*)arg5, &error, sizeof(error)))
-                                pr_info("susfs: copy_to_user() failed\n");
-                        return 0;
-#ifdef CONFIG_KSU_SUSFS_SUS_OVERLAYFS
-                        enabled_features |= (1 << 5);
-#endif
-#ifdef CONFIG_KSU_SUSFS_TRY_UMOUNT
-                        enabled_features |= (1 << 6);
-#endif
-#ifdef CONFIG_KSU_SUSFS_AUTO_ADD_TRY_UMOUNT_FOR_BIND_MOUNT
-                        enabled_features |= (1 << 7);
-#endif
-#ifdef CONFIG_KSU_SUSFS_SPOOF_UNAME
-                        enabled_features |= (1 << 8);
-#endif
-#ifdef CONFIG_KSU_SUSFS_ENABLE_LOG
-                        enabled_features |= (1 << 9);
-#endif
-#ifdef CONFIG_KSU_SUSFS_HIDE_KSU_SUSFS_SYMBOLS
-                        enabled_features |= (1 << 10);
-#endif
-#ifdef CONFIG_KSU_SUSFS_SPOOF_BOOTCONFIG
-                        enabled_features |= (1 << 11);
-#endif
-#ifdef CONFIG_KSU_SUSFS_OPEN_REDIRECT
-                        enabled_features |= (1 << 12);
-#endif
-#ifdef CONFIG_KSU_SUSFS_SUS_SU
-                        enabled_features |= (1 << 13);
-#endif
-                        error = copy_to_user((void __user*)arg3, (void*)&enabled_features, sizeof(enabled_features));
-                        pr_info("susfs: CMD_SUSFS_SHOW_ENABLED_FEATURES -> ret: %d\n", error);
-                        if (copy_to_user((void __user*)arg5, &error, sizeof(error)))
-                                pr_info("susfs: copy_to_user() failed\n");
-                        return 0;
-                }
-                if (arg2 == CMD_SUSFS_SHOW_VARIANT) {
-                        int error = 0;
-                        int len_of_variant = strlen(SUSFS_VARIANT);
+/data/data/com.termux/files/usr/include/stdlib.h:313:44error: expected ';', ',' or ')' before '__s'
+  313 | d long strtoul(const char* _Nonnull __s, char* _Nullable * _Nullable __end_ptr, int __base);
+      |                                     ^~~
 
-========================================
-5. PATCH 50 CMDLINE/BOOTCONFIG SECTION
-========================================
-964-+#endif
-965-+
-966-    ovl_path_real(root_dentry, &path);
-967-
-968-    err = vfs_statfs(&path, buf);
-969:diff --git a/fs/proc/bootconfig.c b/fs/proc/bootconfig.c
-970-index 2e244ada1f97..792e1cb04b11 100644
-971:--- a/fs/proc/bootconfig.c
-972:+++ b/fs/proc/bootconfig.c
-973-@@ -12,8 +12,19 @@
-974-
-975- static char *saved_boot_config;
-976-
-977:+#ifdef CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG
-978-+extern int susfs_spoof_cmdline_or_bootconfig(struct seq_file *m);
-979-+#endif
-980-+
-981- static int boot_config_proc_show(struct seq_file *m, void *v)
-982- {
-983:+#ifdef CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG
-984-+   if (saved_boot_config) {
-985-+           if (!susfs_spoof_cmdline_or_bootconfig(m)) {
-986-+                   return 0;
-987-+           }
-988-+   }
-989-+#endif
-990-    if (saved_boot_config)
-991-            seq_puts(m, saved_boot_config);
-992-    return 0;
-993-diff --git a/fs/proc/fd.c b/fs/proc/fd.c
-994-index 6b634c0a9b6e..1bf6ca564248 100644
-995---- a/fs/proc/fd.c
-996-+++ b/fs/proc/fd.c
-997-@@ -13,6 +13,9 @@
-998- #include <linux/fs.h>
-999-
-1000- #include <linux/proc_fs.h>
-1001-+#ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-1002-+#include <linux/susfs_def.h>
-1003-+#endif
-1004-
-1005- #include "../mount.h"
-1006- #include "internal.h"
-1007-@@ -24,6 +27,9 @@ static int seq_show(struct seq_file *m, void *v)
-1008-   int f_flags = 0, ret = -ENOENT;
-1009-   struct file *file = NULL;
-1010-   struct task_struct *task;
-1011-+#ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-1012-+  struct mount *mnt = NULL;
-1013-+#endif
+/data/data/com.termux/files/usr/include/stdlib.h:316:46error: expected ';', ',' or ')' before '__s'
+  316 | long strtoul_l(const char* _Nonnull __s, char* _Nullable * _Nullable __end_ptr, int __base, locale_t _Nonnull __l) __RENAME(strtoul);
+      |                                     ^~~
 
-========================================
-6. PATCH 50 VFSMOUNT HUNK
-========================================
-422-+
-423-+   if (res < 0)
-424-+           return res;
-425-+   mnt->mnt_id = res;
-426-+   return 0;
-427-+}
-428-+#endif
-429- static int mnt_alloc_id(struct mount *mnt)
-430- {
-431-    int res = ida_alloc(&mnt_id_ida, GFP_KERNEL);
-432-@@ -114,6 +153,26 @@ static int mnt_alloc_id(struct mount *mnt)
-433-
-434- static void mnt_free_id(struct mount *mnt)
-435- {
-436-+#ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-437:+   // We should first check the 'mnt->mnt.susfs_mnt_id_backup', see if it is DEFAULT_SUS_MNT_ID_FOR_KSU_PROC_UNSHARE
-438-+   // if so, these mnt_id were not assigned by mnt_alloc_id() so we don't need to free it.
-439:+   if (unlikely(mnt->mnt.susfs_mnt_id_backup == DEFAULT_SUS_MNT_ID_FOR_KSU_PROC_UNSHARE)) {
-440-+           return;
-441-+   }
-442-+   // Now we can check if its mnt_id is sus
-443-+   if (unlikely(mnt->mnt_id >= DEFAULT_SUS_MNT_ID)) {
-444-+           ida_free(&susfs_mnt_id_ida, mnt->mnt_id);
-445-+           return;
-446-+   }
-447:+   // Lastly if 'mnt->mnt.susfs_mnt_id_backup' is not 0, then it contains a backup origin mnt_id
-448-+   // so we free it in the original way
-449:+   if (likely(mnt->mnt.susfs_mnt_id_backup)) {
-450:+           // If mnt->mnt.susfs_mnt_id_backup is not zero, it means mnt->mnt_id is spoofed,
-451-+           // so here we return the original mnt_id for being freed.
-452:+           ida_free(&mnt_id_ida, mnt->mnt.susfs_mnt_id_backup);
-453-+           return;
-454-+   }
-455-+#endif
-456-    ida_free(&mnt_id_ida, mnt->mnt_id);
-457- }
-458-
-459-@@ -122,7 +181,20 @@ static void mnt_free_id(struct mount *mnt)
-460-  */
-461- static int mnt_alloc_group_id(struct mount *mnt)
-462- {
-463-+#ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-464-+   int res;
-465-+
-466-+   // Check if mnt has sus mnt_id
-467-+   if (mnt->mnt_id >= DEFAULT_SUS_MNT_ID) {
-468-+           // If so, assign a sus mnt_group id DEFAULT_SUS_MNT_GROUP_ID from susfs_mnt_group_ida
-469-+           res = ida_alloc_min(&susfs_mnt_group_ida, DEFAULT_SUS_MNT_GROUP_ID, GFP_KERNEL);
-470-+           goto bypass_orig_flow;
-471-+   }
-472-+   res = ida_alloc_min(&mnt_group_ida, 1, GFP_KERNEL);
-473-+bypass_orig_flow:
-474-+#else
-475-    int res = ida_alloc_min(&mnt_group_ida, 1, GFP_KERNEL);
-476-+#endif
-477-
-478-    if (res < 0)
-479-            return res;
-480-@@ -135,6 +207,15 @@ static int mnt_alloc_group_id(struct mount *mnt)
-481-  */
-482- void mnt_release_group_id(struct mount *mnt)
---
-513-+                           err = susfs_mnt_alloc_id(mnt);
-514-+                   } else {
-515-+                           mnt->mnt_id = custom_mnt_id;
-516-+                           err = 0;
-517-+                   }
-518-+                   goto bypass_orig_flow;
-519-+           }
-520-+#endif
-521-            err = mnt_alloc_id(mnt);
-522-+#ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-523-+bypass_orig_flow:
-524-+#endif
-525-            if (err)
-526-                    goto out_free_cache;
-527-
-528:@@ -937,7 +1036,17 @@ struct vfsmount *vfs_create_mount(struct fs_context *fc)
-529-    if (!fc->root)
-530-            return ERR_PTR(-EINVAL);
-531-
-532-+#ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-533-+   // For newly created mounts, the only caller process we care is KSU
-534-+   if (unlikely(susfs_is_current_ksu_domain())) {
-535-+           mnt = alloc_vfsmnt(fc->source ?: "none", true, 0);
-536-+           goto bypass_orig_flow;
-537-+   }
-538-+   mnt = alloc_vfsmnt(fc->source ?: "none", false, 0);
-539-+bypass_orig_flow:
-540-+#else
-541-    mnt = alloc_vfsmnt(fc->source ?: "none");
-542-+#endif
-543-    if (!mnt)
-544-            return ERR_PTR(-ENOMEM);
-545-
-546:@@ -950,6 +1059,14 @@ struct vfsmount *vfs_create_mount(struct fs_context *fc)
-547-    mnt->mnt_mountpoint     = mnt->mnt.mnt_root;
-548-    mnt->mnt_parent         = mnt;
-549-
-550-+#ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-551-+   // If caller process is zygote, then it is a normal mount, so we just reorder the mnt_id
-552-+   if (susfs_is_current_zygote_domain()) {
-553:+           mnt->mnt.susfs_mnt_id_backup = mnt->mnt_id;
-554-+           mnt->mnt_id = current->susfs_last_fake_mnt_id++;
-555-+   }
-556-+#endif
-557-+
-558-    lock_mount_hash();
-559-    list_add_tail(&mnt->mnt_instance, &mnt->mnt.mnt_sb->s_mounts);
-560-    unlock_mount_hash();
-561-@@ -1020,7 +1137,52 @@ static struct mount *clone_mnt(struct mount *old, struct dentry *root,
-562-    struct mount *mnt;
-563-    int err;
-564-
-565-+#ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-566-+   bool is_current_ksu_domain = susfs_is_current_ksu_domain();
-567-+   bool is_current_zygote_domain = susfs_is_current_zygote_domain();
-568-+
-569-+   /* - It is very important that we need to use CL_COPY_MNT_NS to identify whether
-570-+    *   the clone is a copy_tree() or single mount like called by __do_loopback()
-571-+    * - if caller process is KSU, consider the following situation:
-572-+    *     1. it is NOT doing unshare => call alloc_vfsmnt() to assign a new sus mnt_id
-573-+    *     2. it is doing unshare => spoof the new mnt_id with the old mnt_id
-574-+    * - If caller process is zygote and old mnt_id is sus => call alloc_vfsmnt() to assign a new sus mnt_id
-575-+    * - For the rest of caller process that doing unshare => call alloc_vfsmnt() to assign a new sus mnt_id only for old sus mount
-576-+    */
-577-+   // Firstly, check if it is KSU process
-578-+   if (unlikely(is_current_ksu_domain)) {
-579-+           // if it is doing single clone
-580-+           if (!(flag & CL_COPY_MNT_NS)) {
-581-+                   mnt = alloc_vfsmnt(old->mnt_devname, true, 0);
-582-+                   goto bypass_orig_flow;
-583-+           }
-584-+           // if it is doing unshare
-585-+           mnt = alloc_vfsmnt(old->mnt_devname, true, old->mnt_id);
-586-+           if (mnt) {
-587:+                   mnt->mnt.susfs_mnt_id_backup = DEFAULT_SUS_MNT_ID_FOR_KSU_PROC_UNSHARE;
-588-+           }
-589-+           goto bypass_orig_flow;
-590-+   }
-591-+   // Secondly, check if it is zygote process and no matter it is doing unshare or not
-592-+   if (likely(is_current_zygote_domain) && (old->mnt_id >= DEFAULT_SUS_MNT_ID)) {
-593-+           /* Important Note:
-594-+            *  - Here we can't determine whether the unshare is called zygisk or not,
-595-+            *    so we can only patch out the unshare code in zygisk source code for now
-596-+            *  - But at least we can deal with old sus mounts using alloc_vfsmnt()
-597-+            */
-598-+           mnt = alloc_vfsmnt(old->mnt_devname, true, 0);
-599-+           goto bypass_orig_flow;
-600-+   }
-601-+   // Lastly, for other process that is doing unshare operation, but only deal with old sus mount
-602-+   if ((flag & CL_COPY_MNT_NS) && (old->mnt_id >= DEFAULT_SUS_MNT_ID)) {
-603-+           mnt = alloc_vfsmnt(old->mnt_devname, true, 0);
-604-+           goto bypass_orig_flow;
-605-+   }
-606-+   mnt = alloc_vfsmnt(old->mnt_devname, false, 0);
-607-+bypass_orig_flow:
-608-+#else
-609-    mnt = alloc_vfsmnt(old->mnt_devname);
-610-+#endif
-611-    if (!mnt)
-612-            return ERR_PTR(-ENOMEM);
-613-
-614-@@ -1043,6 +1205,15 @@ static struct mount *clone_mnt(struct mount *old, struct dentry *root,
-615-    mnt->mnt.mnt_root = dget(root);
-616-    mnt->mnt_mountpoint = mnt->mnt.mnt_root;
-617-    mnt->mnt_parent = mnt;
-618-+
-619-+#ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-620-+   // If caller process is zygote and not doing unshare, so we just reorder the mnt_id
-621-+   if (likely(is_current_zygote_domain) && !(flag & CL_ZYGOTE_COPY_MNT_NS)) {
-622:+           mnt->mnt.susfs_mnt_id_backup = mnt->mnt_id;
-623-+           mnt->mnt_id = current->susfs_last_fake_mnt_id++;
-624-+   }
-625-+#endif
-626-+
-627-    lock_mount_hash();
-628-    list_add_tail(&mnt->mnt_instance, &sb->s_mounts);
-629-    unlock_mount_hash();
-630-@@ -2331,6 +2502,27 @@ static int do_loopback(struct path *path, const char *old_name,
-631-            umount_tree(mnt, UMOUNT_SYNC);
-632-            unlock_mount_hash();
-633-    }
-634-+#if defined(CONFIG_KSU_SUSFS_AUTO_ADD_SUS_BIND_MOUNT) || defined(CONFIG_KSU_SUSFS_AUTO_ADD_TRY_UMOUNT_FOR_BIND_MOUNT)
-635-+   // Check if bind mounted path should be hidden and umounted automatically.
-636-+   // And we target only process with ksu domain.
-637-+   if (susfs_is_current_ksu_domain()) {
-638-+#if defined(CONFIG_KSU_SUSFS_AUTO_ADD_SUS_BIND_MOUNT)
-639-+           if (susfs_is_auto_add_sus_bind_mount_enabled &&
-640-+                           susfs_auto_add_sus_bind_mount(old_name, &old_path)) {
-641-+                   goto orig_flow;
-642-+           }
-643-+#endif
-644-+#if defined(CONFIG_KSU_SUSFS_AUTO_ADD_TRY_UMOUNT_FOR_BIND_MOUNT)
-645-+           if (susfs_is_auto_add_try_umount_for_bind_mount_enabled) {
-646-+                   susfs_auto_add_try_umount_for_bind_mount(path);
-647-+           }
-648-+#endif
-649-+   }
-650-+#if defined(CONFIG_KSU_SUSFS_AUTO_ADD_SUS_BIND_MOUNT)
-651-+orig_flow:
-652-+#endif
---
-689-+   if (is_zygote_pid) {
-690-+           // Let clone_mnt() in copy_tree() know copy_mnt_ns() is run by zygote process
-691-+           copy_flags |= CL_ZYGOTE_COPY_MNT_NS;
-692-+   }
-693-+#endif
-694-+
-695-    new = copy_tree(old, old->mnt.mnt_root, copy_flags);
-696-    if (IS_ERR(new)) {
-697-            namespace_unlock();
-698-@@ -3299,6 +3510,29 @@ struct mnt_namespace *copy_mnt_ns(unsigned long flags, struct mnt_namespace *ns,
-699-            while (p->mnt.mnt_root != q->mnt.mnt_root)
-700-                    p = next_mnt(p, old);
-701-    }
-702-+#ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-703-+   // current->susfs_last_fake_mnt_id -> to record last valid fake mnt_id to zygote pid
-704:+   // q->mnt.susfs_mnt_id_backup -> original mnt_id
-705-+   // q->mnt_id -> will be modified to the fake mnt_id
-706-+
-707-+   // Here We are only interested in processes of which original mnt namespace belongs to zygote
-708-+   // Also we just make use of existing 'q' mount pointer, no need to delcare extra mount pointer
-709-+   if (is_zygote_pid) {
-710-+           last_entry_mnt_id = list_first_entry(&new_ns->list, struct mount, mnt_list)->mnt_id;
-711-+           list_for_each_entry(q, &new_ns->list, mnt_list) {
-712-+                   if (unlikely(q->mnt_id >= DEFAULT_SUS_MNT_ID)) {
-713-+                           continue;
-714-+                   }
-715:+                   q->mnt.susfs_mnt_id_backup = q->mnt_id;
-716-+                   q->mnt_id = last_entry_mnt_id++;
-717-+           }
-718-+   }
-719-+   // Assign the 'last_entry_mnt_id' to 'current->susfs_last_fake_mnt_id' for later use.
-720-+   // should be fine here assuming zygote is forking/unsharing app in one single thread.
-721-+   // Or should we put a lock here?
-722-+   current->susfs_last_fake_mnt_id = last_entry_mnt_id;
-723-+#endif
-724-+
-725-    namespace_unlock();
-726-
-727-    if (rootmnt)
-728-@@ -3581,6 +3815,13 @@ SYSCALL_DEFINE5(move_mount,
-729-    path_put(&to_path);
-730- out_from:
-731-    path_put(&from_path);
-732-+#ifdef CONFIG_KSU_SUSFS_AUTO_ADD_SUS_KSU_DEFAULT_MOUNT
-733-+   // For Legacy KSU mount scheme
-734-+   if (!ret && susfs_is_auto_add_sus_ksu_default_mount_enabled && susfs_is_current_ksu_domain()) {
-735-+           susfs_auto_add_sus_ksu_default_mount(to_pathname);
-736-+   }
-737-+#endif
-738-+
-739-    return ret;
-740- }
-741-
-742-@@ -4037,3 +4278,37 @@ const struct proc_ns_operations mntns_operations = {
-743-    .install        = mntns_install,
-744-    .owner          = mntns_owner,
-745- };
---
-1108-
-1109-diff --git a/fs/proc_namespace.c b/fs/proc_namespace.c
-1110-index 273ee82d8aa9..86bd6d140962 100644
-1111---- a/fs/proc_namespace.c
-1112-+++ b/fs/proc_namespace.c
-1113-@@ -12,6 +12,9 @@
-1114- #include <linux/security.h>
-1115- #include <linux/fs_struct.h>
-1116- #include <linux/sched/task.h>
-1117-+#ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-1118-+#include <linux/susfs_def.h>
-1119-+#endif
-1120-
-1121- #include "proc/internal.h" /* only for get_proc_task() in ->open() */
-1122-
-1123:@@ -102,6 +105,11 @@ static int show_vfsmnt(struct seq_file *m, struct vfsmount *mnt)
-1124-   struct super_block *sb = mnt_path.dentry->d_sb;
-1125-   int err;
-1126-
-1127-+#ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-1128-+  if (unlikely(r->mnt_id >= DEFAULT_SUS_MNT_ID))
-1129-+          return 0;
-1130-+#endif
-1131-+
-1132-   if (sb->s_op->show_devname) {
-1133-           err = sb->s_op->show_devname(m, mnt_path.dentry);
-1134-           if (err)
-1135:@@ -136,6 +144,11 @@ static int show_mountinfo(struct seq_file *m, struct vfsmount *mnt)
-1136-   struct path mnt_path = { .dentry = mnt->mnt_root, .mnt = mnt };
-1137-   int err;
-1138-
-1139-+#ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-1140-+  if (unlikely(r->mnt_id >= DEFAULT_SUS_MNT_ID))
-1141-+          return 0;
-1142-+#endif
-1143-+
-1144-   seq_printf(m, "%i %i %u:%u ", r->mnt_id, r->mnt_parent->mnt_id,
-1145-              MAJOR(sb->s_dev), MINOR(sb->s_dev));
-1146-   if (sb->s_op->show_path) {
-1147:@@ -198,6 +211,11 @@ static int show_vfsstat(struct seq_file *m, struct vfsmount *mnt)
-1148-   struct super_block *sb = mnt_path.dentry->d_sb;
-1149-   int err;
-1150-
-1151-+#ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-1152-+  if (unlikely(r->mnt_id >= DEFAULT_SUS_MNT_ID))
-1153-+          return 0;
-1154-+#endif
-1155-+
-1156-   /* device */
-1157-   if (sb->s_op->show_devname) {
-1158-           seq_puts(m, "device ");
-1159-diff --git a/fs/readdir.c b/fs/readdir.c
-1160-index 07a3b5baa404..29b8e886819c 100644
-1161---- a/fs/readdir.c
-1162-+++ b/fs/readdir.c
-1163-@@ -21,6 +21,9 @@
-1164- #include <linux/unistd.h>
-1165- #include <linux/compat.h>
-1166- #include <linux/uaccess.h>
-1167-+#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-1168-+#include <linux/susfs_def.h>
-1169-+#endif
-1170-
-1171- #include <asm/unaligned.h>
-1172-
-1173-@@ -36,6 +39,9 @@
-1174-   unsafe_copy_to_user(dst, src, len, label);     \
-1175- } while (0)
-1176-
-1177-+#ifdef CONFIG_KSU_SUSFS_SUS_PATH
---
-1373-   if (!s)
-1374-           return -EINVAL;
-1375-
-1376-+#ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-1377-+  if (unlikely(s->s_root->d_inode->i_state & INODE_STATE_SUS_MOUNT)) {
-1378-+          return -EINVAL;
-1379-+  }
-1380-+#endif
-1381-   err = statfs_by_dentry(s->s_root, sbuf);
-1382-   drop_super(s);
-1383-   return err;
-1384-diff --git a/include/linux/mount.h b/include/linux/mount.h
-1385-index ca388cc44686..66f19067cf93 100644
-1386---- a/include/linux/mount.h
-1387-+++ b/include/linux/mount.h
-1388:@@ -73,7 +73,11 @@ struct vfsmount {
-1389-   ANDROID_KABI_RESERVE(1);
-1390-   ANDROID_KABI_RESERVE(2);
-1391-   ANDROID_KABI_RESERVE(3);
-1392-+#ifdef CONFIG_KSU_SUSFS
-1393:+  ANDROID_KABI_USE(4, u64 susfs_mnt_id_backup);
-1394-+#else
-1395-   ANDROID_KABI_RESERVE(4);
-1396-+#endif
-1397- } __randomize_layout;
-1398-
-1399- struct file; /* forward dec */
-1400-diff --git a/include/linux/sched.h b/include/linux/sched.h
-1401-index 3b6cd312986b..1e5320dc601c 100644
-1402---- a/include/linux/sched.h
-1403-+++ b/include/linux/sched.h
-1404-@@ -1307,8 +1307,16 @@ struct task_struct {
-1405-   ANDROID_KABI_RESERVE(4);
-1406-   ANDROID_KABI_RESERVE(5);
-1407-   ANDROID_KABI_RESERVE(6);
-1408-+#ifdef CONFIG_KSU_SUSFS
-1409-+  ANDROID_KABI_USE(7, u64 susfs_task_state);
-1410-+#else
-1411-   ANDROID_KABI_RESERVE(7);
-1412-+#endif
-1413-+#ifdef CONFIG_KSU_SUSFS
-1414-+  ANDROID_KABI_USE(8, u64 susfs_last_fake_mnt_id);
-1415-+#else
-1416-   ANDROID_KABI_RESERVE(8);
-1417-+#endif
-1418-
-1419-   /*
-1420-    * New fields for task_struct should be added above here, so that
-1421-diff --git a/kernel/kallsyms.c b/kernel/kallsyms.c
-1422-index 14de0c7bf756..a4c563980af4 100644
-1423---- a/kernel/kallsyms.c
+/data/data/com.termux/files/usr/include/stdlib.h:326:50error: expected ';', ',' or ')' before '__s'
+  326 |  long strtoull(const char* _Nonnull __s, char* _Nullable * _Nullable __end_ptr, int __base);
+      |                                     ^~~
 
-========================================
-7. CURRENT SCHED.H SUSFS TARGET
-========================================
-1471-   unsigned long                   lowest_stack;
-1472-   unsigned long                   prev_lowest_stack;
-1473-#endif
-1474-
-1475-   ANDROID_VENDOR_DATA_ARRAY(1, 3);
-1476-
-1477-   ANDROID_KABI_RESERVE(1);
-1478-   ANDROID_KABI_RESERVE(2);
-1479-   ANDROID_KABI_RESERVE(3);
-1480-   ANDROID_KABI_RESERVE(4);
-1481-   ANDROID_KABI_RESERVE(5);
-1482-   ANDROID_KABI_RESERVE(6);
-1483:   ANDROID_KABI_RESERVE(7);
-1484-   ANDROID_KABI_RESERVE(8);
-1485-
-1486-   /*
-1487-    * New fields for task_struct should be added above here, so that
-1488-    * they are included in the randomized portion of task_struct.
-1489-    */
-1490-   randomized_struct_fields_end
-1491-
-1492-   /* CPU-specific state of this task: */
-1493-   struct thread_struct            thread;
-1494-
-1495-   /*
-1496-    * WARNING: on x86, 'thread_struct' contains a variable-sized
-1497-    * structure.  It *MUST* be at the end of 'task_struct'.
-1498-    *
-1499-    * Do not put anything below here!
-1500-    */
-1501-};
-1502-
-1503-static inline struct pid *task_pid(struct task_struct *task)
-1504-{
-1505-   return task->thread_pid;
-1506-}
-1507-
-1508-/*
+/data/data/com.termux/files/usr/include/stdlib.h:329:52error: expected ';', ',' or ')' before '__s'
+  329 | ong strtoull_l(const char* _Nonnull __s, char* _Nullable * _Nullable __end_ptr, int __base, locale_t _Nonnull __l);
+      |                                     ^~~
 
-========================================
-8. PATCH 50 SCHED.H HUNK
-========================================
-18-@@ -32,6 +32,9 @@
-19- #include <linux/bit_spinlock.h>
-20- #include <linux/rculist_bl.h>
-21- #include <linux/list_lru.h>
-22-+#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-23-+#include <linux/susfs_def.h>
-24-+#endif
-25- #include "internal.h"
-26- #include "mount.h"
-27-
-28-@@ -2295,6 +2298,11 @@ struct dentry *__d_lookup_rcu(const struct dentry *parent,
-29-                             continue;
-30-                     if (dentry_cmp(dentry, str, hashlen_len(hashlen)) != 0)
-31-                             continue;
-32-+#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-33:+                    if (dentry->d_inode && unlikely(dentry->d_inode->i_state & INODE_STATE_SUS_PATH) && likely(current->susfs_task_state & TASK_STRUCT_NON_ROOT_USER_APP_PROC)) {
-34-+                            continue;
-35-+                    }
-36-+#endif
-37-             }
-38-             *seqp = seq;
-39-             return dentry;
-40-@@ -2378,6 +2386,12 @@ struct dentry *__d_lookup(const struct dentry *parent, const struct qstr *name)
-41-             if (dentry->d_name.hash != hash)
-42-                     continue;
-43-
-44-+#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-45:+            if (dentry->d_inode && unlikely(dentry->d_inode->i_state & INODE_STATE_SUS_PATH) && likely(current->susfs_task_state & TASK_STRUCT_NON_ROOT_USER_APP_PROC)) {
-46-+                    continue;
-47-+            }
-48-+#endif
-49-+
-50-             spin_lock(&dentry->d_lock);
-51-             if (dentry->d_parent != parent)
-52-                     goto next;
-53-diff --git a/fs/devpts/inode.c b/fs/devpts/inode.c
-54-index 4f25015aa534..2938aa2a808e 100644
-55---- a/fs/devpts/inode.c
-56-+++ b/fs/devpts/inode.c
-57-@@ -596,6 +596,11 @@ struct dentry *devpts_pty_new(struct pts_fs_info *fsi, int index, void *priv)
-58-     return dentry;
-59- }
-60-
-61-+#ifdef CONFIG_KSU_SUSFS_SUS_SU
-62-+extern bool ksu_devpts_hook;
-63-+extern int ksu_handle_devpts(struct inode*);
-64-+#endif
-65-+
-66- /**
-67-  * devpts_get_priv -- get private data for a slave
-68-  * @pts_inode: inode of the slave
-69-@@ -604,6 +609,12 @@ struct dentry *devpts_pty_new(struct pts_fs_info *fsi, int index, void *priv)
-70-  */
-71- void *devpts_get_priv(struct dentry *dentry)
-72- {
-73-+#ifdef CONFIG_KSU_SUSFS_SUS_SU
-74-+    if (likely(ksu_devpts_hook)) {
-75-+            ksu_handle_devpts(dentry->d_inode);
-76-+    }
-77-+#endif
-78-+
-79-     if (dentry->d_sb->s_magic != DEVPTS_SUPER_MAGIC)
-80-             return NULL;
---
-113- #include <linux/bitops.h>
-114- #include <linux/init_task.h>
-115- #include <linux/uaccess.h>
-116-+#if defined(CONFIG_KSU_SUSFS_SUS_PATH) || defined(CONFIG_KSU_SUSFS_OPEN_REDIRECT)
-117-+#include <linux/susfs_def.h>
-118-+#endif
-119-+
-120-
-121- #include "internal.h"
-122- #include "mount.h"
-123-@@ -987,6 +991,12 @@ static inline int may_follow_link(struct nameidata *nd)
-124-    const struct inode *parent;
-125-    kuid_t puid;
-126-
-127-+#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-128:+   if (nd->inode && unlikely(nd->inode->i_state & INODE_STATE_SUS_PATH) && likely(current->susfs_task_state & TASK_STRUCT_NON_ROOT_USER_APP_PROC)) {
-129-+           return -ENOENT;
-130-+   }
-131-+#endif
-132-+
-133-    if (!sysctl_protected_symlinks)
-134-            return 0;
-135-
-136-@@ -1064,6 +1074,12 @@ static int may_linkat(struct path *link)
-137- {
-138-    struct inode *inode = link->dentry->d_inode;
-139-
-140-+#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-141:+   if (inode && unlikely(inode->i_state & INODE_STATE_SUS_PATH) && likely(current->susfs_task_state & TASK_STRUCT_NON_ROOT_USER_APP_PROC)) {
-142-+           return -ENOENT;
-143-+   }
-144-+#endif
-145-+
-146-    /* Inode writeback is not safe when the uid or gid are invalid. */
-147-    if (!uid_valid(inode->i_uid) || !gid_valid(inode->i_gid))
-148-            return -EOVERFLOW;
-149-@@ -1105,6 +1121,12 @@ static int may_linkat(struct path *link)
-150- static int may_create_in_sticky(umode_t dir_mode, kuid_t dir_uid,
-151-                            struct inode * const inode)
-152- {
-153-+#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-154:+   if (unlikely(inode->i_state & INODE_STATE_SUS_PATH) && likely(current->susfs_task_state & TASK_STRUCT_NON_ROOT_USER_APP_PROC)) {
-155-+           return -ENOENT;
-156-+   }
-157-+#endif
-158-+
-159-    if ((!sysctl_protected_fifos && S_ISFIFO(inode->i_mode)) ||
-160-        (!sysctl_protected_regular && S_ISREG(inode->i_mode)) ||
-161-        likely(!(dir_mode & S_ISVTX)) ||
-162-@@ -1625,6 +1647,12 @@ static struct dentry *__lookup_hash(const struct qstr *name,
-163-            dput(dentry);
-164-            dentry = old;
-165-    }
-166-+#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-167:+   if (!IS_ERR(dentry) && dentry->d_inode && unlikely(dentry->d_inode->i_state & INODE_STATE_SUS_PATH) && likely(current->susfs_task_state & TASK_STRUCT_NON_ROOT_USER_APP_PROC)) {
-168-+           dput(dentry);
-169-+           return ERR_PTR(-ENOENT);
-170-+   }
-171-+#endif
-172-    return dentry;
-173- }
-174-
-175-@@ -1752,6 +1780,12 @@ static struct dentry *__lookup_slow(const struct qstr *name,
-176-                    dentry = old;
-177-            }
-178-    }
-179-+#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-180:+   if (!IS_ERR(dentry) && dentry->d_inode && unlikely(dentry->d_inode->i_state & INODE_STATE_SUS_PATH) && likely(current->susfs_task_state & TASK_STRUCT_NON_ROOT_USER_APP_PROC)) {
-181-+           dput(dentry);
-182-+           return ERR_PTR(-ENOENT);
-183-+   }
-184-+#endif
-185-    return dentry;
-186- }
-187-
-188-@@ -2240,6 +2274,12 @@ static int link_path_walk(const char *name, struct nameidata *nd)
-189-                    }
-190-                    return -ENOTDIR;
-191-            }
-192-+#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-193-+           // we deal with sus sub path here
-194:+           if (nd->inode && unlikely(nd->inode->i_state & INODE_STATE_SUS_PATH) && likely(current->susfs_task_state & TASK_STRUCT_NON_ROOT_USER_APP_PROC)) {
-195-+                   return 0;
-196-+           }
-197-+#endif
-198-    }
-199- }
-200-
-201-@@ -2429,6 +2469,12 @@ int filename_lookup(int dfd, struct filename *name, unsigned flags,
-202-    if (likely(!retval))
-203-            audit_inode(name, path->dentry, 0);
-204-    restore_nameidata();
-205-+#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-206:+   if (!retval && path->dentry->d_inode && unlikely(path->dentry->d_inode->i_state & INODE_STATE_SUS_PATH) && likely(current->susfs_task_state & TASK_STRUCT_NON_ROOT_USER_APP_PROC)) {
-207-+           putname(name);
-208-+           return -ENOENT;
-209-+   }
-210-+#endif
-211-    putname(name);
-212-    return retval;
-213- }
-214-@@ -2905,6 +2951,12 @@ static int may_delete(struct inode *dir, struct dentry *victim, bool isdir)
-215-    if (IS_APPEND(dir))
-216-            return -EPERM;
-217-
-218-+#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-219:+   if (unlikely(inode->i_state & INODE_STATE_SUS_PATH) && likely(current->susfs_task_state & TASK_STRUCT_NON_ROOT_USER_APP_PROC)) {
-220-+           return -ENOENT;
-221-+   }
-222-+#endif
-223-+
-224-    if (check_sticky(dir, inode) || IS_APPEND(inode) ||
-225-        IS_IMMUTABLE(inode) || IS_SWAPFILE(inode) || HAS_UNMAPPED_ID(inode))
-226-            return -EPERM;
-227-@@ -2933,8 +2985,20 @@ static int may_delete(struct inode *dir, struct dentry *victim, bool isdir)
-228-  */
-229- static inline int may_create(struct inode *dir, struct dentry *child)
-230- {
-231-+#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-232-+   int error;
-233-+#endif
-234-    struct user_namespace *s_user_ns;
-235-    audit_inode_child(dir, child, AUDIT_TYPE_CHILD_CREATE);
-236-+#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-237:+   if (child->d_inode && unlikely(child->d_inode->i_state & INODE_STATE_SUS_PATH) && likely(current->susfs_task_state & TASK_STRUCT_NON_ROOT_USER_APP_PROC)) {
-238-+           error = inode_permission(dir, MAY_WRITE | MAY_EXEC);
-239-+           if (error) {
-240-+                   return error;
-241-+           }
-242-+           return -ENOENT;
-243-+   }
-244-+#endif
-245-    if (child->d_inode)
-246-            return -EEXIST;
-247-    if (IS_DEADDIR(dir))
-248-@@ -3098,6 +3162,12 @@ static int may_open(const struct path *path, int acc_mode, int flag)
-249-    if (!inode)
-250-            return -ENOENT;
-251-
-252-+#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-253:+   if (unlikely(inode->i_state & INODE_STATE_SUS_PATH) && likely(current->susfs_task_state & TASK_STRUCT_NON_ROOT_USER_APP_PROC)) {
-254-+           return -ENOENT;
-255-+   }
-256-+#endif
-257-+
-258-    switch (inode->i_mode & S_IFMT) {
-259-    case S_IFLNK:
-260-            return -ELOOP;
-261-@@ -3169,7 +3239,20 @@ static inline int open_to_namei_flags(int flag)
-262- static int may_o_create(const struct path *dir, struct dentry *dentry, umode_t mode)
-263- {
-264-    struct user_namespace *s_user_ns;
-265-+#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-266-+   int error;
-267-+
-268:+   if (dentry->d_inode && unlikely(dentry->d_inode->i_state & INODE_STATE_SUS_PATH) && likely(current->susfs_task_state & TASK_STRUCT_NON_ROOT_USER_APP_PROC)) {
-269-+           error = inode_permission(dir->dentry->d_inode, MAY_WRITE | MAY_EXEC);
-270-+           if (error) {
-271-+                   return error;
-272-+           }
-273-+           return -ENOENT;
-274-+   }
-275-+   error = security_path_mknod(dir, dentry, mode, 0);
-276-+#else
-277-    int error = security_path_mknod(dir, dentry, mode, 0);
-278-+#endif
-279-    if (error)
-280-            return error;
-281-
-282-@@ -3308,6 +3391,12 @@ static int lookup_open(struct nameidata *nd, struct path *path,
-283-    }
-284-    if (dentry->d_inode) {
-285-            /* Cached positive dentry: will open in f_op->open */
-286-+#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-287:+           if (unlikely(dentry->d_inode->i_state & INODE_STATE_SUS_PATH) && likely(current->susfs_task_state & TASK_STRUCT_NON_ROOT_USER_APP_PROC)) {
-288-+                   dput(dentry);
-289-+                   return -ENOENT;
-290-+           }
-291-+#endif
-292-            goto out_no_open;
-293-    }
-294-
-295-@@ -3350,6 +3439,16 @@ static int lookup_open(struct nameidata *nd, struct path *path,
-296-                                mode);
-297-            if (unlikely(error == -ENOENT) && create_error)
-298-                    error = create_error;
-299-+#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-300:+           if (!IS_ERR(dentry) && dentry->d_inode && unlikely(dentry->d_inode->i_state & INODE_STATE_SUS_PATH) && likely(current->susfs_task_state & TASK_STRUCT_NON_ROOT_USER_APP_PROC)) {
-301-+                   if (create_error) {
-302-+                           dput(dentry);
-303-+                           return create_error;
-304-+                   }
-305-+                   dput(dentry);
-306-+                   return -ENOENT;
-307-+           }
-308-+#endif
-309-            return error;
-310-    }
-311-
-312-@@ -3365,6 +3464,12 @@ static int lookup_open(struct nameidata *nd, struct path *path,
-313-                    }
-314-                    dput(dentry);
-315-                    dentry = res;
-316-+#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-317:+                   if (dentry->d_inode && unlikely(dentry->d_inode->i_state & INODE_STATE_SUS_PATH) && likely(current->susfs_task_state & TASK_STRUCT_NON_ROOT_USER_APP_PROC)) {
-318-+                           dput(dentry);
-319-+                           return -ENOENT;
-320-+                   }
-321-+#endif
-322-            }
-323-    }
-324-
-325-@@ -3702,12 +3807,19 @@ static struct file *path_openat(struct nameidata *nd,
-326-    return ERR_PTR(error);
-327- }
-328-
-329-+#ifdef CONFIG_KSU_SUSFS_OPEN_REDIRECT
-330-+extern struct filename* susfs_get_redirected_path(unsigned long ino);
-331-+#endif
-332-+
-333- struct file *do_filp_open(int dfd, struct filename *pathname,
-334-            const struct open_flags *op)
-335- {
-336-    struct nameidata nd;
-337-    int flags = op->lookup_flags;
-338-    struct file *filp;
-339-+#ifdef CONFIG_KSU_SUSFS_OPEN_REDIRECT
-340-+   struct filename *fake_pathname;
-341-+#endif
-342-
-343-    set_nameidata(&nd, dfd, pathname);
-344-    filp = path_openat(&nd, op, flags | LOOKUP_RCU);
-345-@@ -3715,6 +3827,25 @@ struct file *do_filp_open(int dfd, struct filename *pathname,
-346-            filp = path_openat(&nd, op, flags);
-347-    if (unlikely(filp == ERR_PTR(-ESTALE)))
-348-            filp = path_openat(&nd, op, flags | LOOKUP_REVAL);
-349-+#ifdef CONFIG_KSU_SUSFS_OPEN_REDIRECT
-350-+   if (!IS_ERR(filp) && unlikely(filp->f_inode->i_state & INODE_STATE_OPEN_REDIRECT) && current_uid().val < 2000) {
-351-+           fake_pathname = susfs_get_redirected_path(filp->f_inode->i_ino);
-352-+           if (!IS_ERR(fake_pathname)) {
---
-539-+bypass_orig_flow:
-540-+#else
-541-    mnt = alloc_vfsmnt(fc->source ?: "none");
-542-+#endif
-543-    if (!mnt)
-544-            return ERR_PTR(-ENOMEM);
-545-
-546-@@ -950,6 +1059,14 @@ struct vfsmount *vfs_create_mount(struct fs_context *fc)
-547-    mnt->mnt_mountpoint     = mnt->mnt.mnt_root;
-548-    mnt->mnt_parent         = mnt;
-549-
-550-+#ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-551-+   // If caller process is zygote, then it is a normal mount, so we just reorder the mnt_id
-552-+   if (susfs_is_current_zygote_domain()) {
-553-+           mnt->mnt.susfs_mnt_id_backup = mnt->mnt_id;
-554:+           mnt->mnt_id = current->susfs_last_fake_mnt_id++;
-555-+   }
-556-+#endif
-557-+
-558-    lock_mount_hash();
-559-    list_add_tail(&mnt->mnt_instance, &mnt->mnt.mnt_sb->s_mounts);
-560-    unlock_mount_hash();
-561-@@ -1020,7 +1137,52 @@ static struct mount *clone_mnt(struct mount *old, struct dentry *root,
-562-    struct mount *mnt;
-563-    int err;
-564-
-565-+#ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-566-+   bool is_current_ksu_domain = susfs_is_current_ksu_domain();
-567-+   bool is_current_zygote_domain = susfs_is_current_zygote_domain();
-568-+
-569-+   /* - It is very important that we need to use CL_COPY_MNT_NS to identify whether
-570-+    *   the clone is a copy_tree() or single mount like called by __do_loopback()
-571-+    * - if caller process is KSU, consider the following situation:
-572-+    *     1. it is NOT doing unshare => call alloc_vfsmnt() to assign a new sus mnt_id
-573-+    *     2. it is doing unshare => spoof the new mnt_id with the old mnt_id
-574-+    * - If caller process is zygote and old mnt_id is sus => call alloc_vfsmnt() to assign a new sus mnt_id
-575-+    * - For the rest of caller process that doing unshare => call alloc_vfsmnt() to assign a new sus mnt_id only for old sus mount
-576-+    */
-577-+   // Firstly, check if it is KSU process
-578-+   if (unlikely(is_current_ksu_domain)) {
-579-+           // if it is doing single clone
-580-+           if (!(flag & CL_COPY_MNT_NS)) {
-581-+                   mnt = alloc_vfsmnt(old->mnt_devname, true, 0);
-582-+                   goto bypass_orig_flow;
-583-+           }
-584-+           // if it is doing unshare
-585-+           mnt = alloc_vfsmnt(old->mnt_devname, true, old->mnt_id);
-586-+           if (mnt) {
-587-+                   mnt->mnt.susfs_mnt_id_backup = DEFAULT_SUS_MNT_ID_FOR_KSU_PROC_UNSHARE;
-588-+           }
-589-+           goto bypass_orig_flow;
---
-608-+#else
-609-    mnt = alloc_vfsmnt(old->mnt_devname);
-610-+#endif
-611-    if (!mnt)
-612-            return ERR_PTR(-ENOMEM);
-613-
-614-@@ -1043,6 +1205,15 @@ static struct mount *clone_mnt(struct mount *old, struct dentry *root,
-615-    mnt->mnt.mnt_root = dget(root);
-616-    mnt->mnt_mountpoint = mnt->mnt.mnt_root;
-617-    mnt->mnt_parent = mnt;
-618-+
-619-+#ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-620-+   // If caller process is zygote and not doing unshare, so we just reorder the mnt_id
-621-+   if (likely(is_current_zygote_domain) && !(flag & CL_ZYGOTE_COPY_MNT_NS)) {
-622-+           mnt->mnt.susfs_mnt_id_backup = mnt->mnt_id;
-623:+           mnt->mnt_id = current->susfs_last_fake_mnt_id++;
-624-+   }
-625-+#endif
-626-+
-627-    lock_mount_hash();
-628-    list_add_tail(&mnt->mnt_instance, &sb->s_mounts);
-629-    unlock_mount_hash();
-630-@@ -2331,6 +2502,27 @@ static int do_loopback(struct path *path, const char *old_name,
-631-            umount_tree(mnt, UMOUNT_SYNC);
-632-            unlock_mount_hash();
-633-    }
-634-+#if defined(CONFIG_KSU_SUSFS_AUTO_ADD_SUS_BIND_MOUNT) || defined(CONFIG_KSU_SUSFS_AUTO_ADD_TRY_UMOUNT_FOR_BIND_MOUNT)
-635-+   // Check if bind mounted path should be hidden and umounted automatically.
-636-+   // And we target only process with ksu domain.
-637-+   if (susfs_is_current_ksu_domain()) {
-638-+#if defined(CONFIG_KSU_SUSFS_AUTO_ADD_SUS_BIND_MOUNT)
-639-+           if (susfs_is_auto_add_sus_bind_mount_enabled &&
-640-+                           susfs_auto_add_sus_bind_mount(old_name, &old_path)) {
-641-+                   goto orig_flow;
-642-+           }
-643-+#endif
-644-+#if defined(CONFIG_KSU_SUSFS_AUTO_ADD_TRY_UMOUNT_FOR_BIND_MOUNT)
-645-+           if (susfs_is_auto_add_try_umount_for_bind_mount_enabled) {
-646-+                   susfs_auto_add_try_umount_for_bind_mount(path);
-647-+           }
-648-+#endif
-649-+   }
-650-+#if defined(CONFIG_KSU_SUSFS_AUTO_ADD_SUS_BIND_MOUNT)
-651-+orig_flow:
-652-+#endif
-653-+#endif // #if defined(CONFIG_KSU_SUSFS_AUTO_ADD_SUS_BIND_MOUNT) || defined(CONFIG_KSU_SUSFS_AUTO_ADD_TRY_UMOUNT_FOR_BIND_MOUNT)
-654-+
-655- out2:
-656-    unlock_mount(mp);
-657- out:
-658-@@ -3163,6 +3355,12 @@ long do_mount(const char *dev_name, const char __user *dir_name,
---
-688-+   copy_flags |= CL_COPY_MNT_NS;
-689-+   if (is_zygote_pid) {
-690-+           // Let clone_mnt() in copy_tree() know copy_mnt_ns() is run by zygote process
-691-+           copy_flags |= CL_ZYGOTE_COPY_MNT_NS;
-692-+   }
-693-+#endif
-694-+
-695-    new = copy_tree(old, old->mnt.mnt_root, copy_flags);
-696-    if (IS_ERR(new)) {
-697-            namespace_unlock();
-698-@@ -3299,6 +3510,29 @@ struct mnt_namespace *copy_mnt_ns(unsigned long flags, struct mnt_namespace *ns,
-699-            while (p->mnt.mnt_root != q->mnt.mnt_root)
-700-                    p = next_mnt(p, old);
-701-    }
-702-+#ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-703:+   // current->susfs_last_fake_mnt_id -> to record last valid fake mnt_id to zygote pid
-704-+   // q->mnt.susfs_mnt_id_backup -> original mnt_id
-705-+   // q->mnt_id -> will be modified to the fake mnt_id
-706-+
-707-+   // Here We are only interested in processes of which original mnt namespace belongs to zygote
-708-+   // Also we just make use of existing 'q' mount pointer, no need to delcare extra mount pointer
-709-+   if (is_zygote_pid) {
-710-+           last_entry_mnt_id = list_first_entry(&new_ns->list, struct mount, mnt_list)->mnt_id;
-711-+           list_for_each_entry(q, &new_ns->list, mnt_list) {
-712-+                   if (unlikely(q->mnt_id >= DEFAULT_SUS_MNT_ID)) {
-713-+                           continue;
-714-+                   }
-715-+                   q->mnt.susfs_mnt_id_backup = q->mnt_id;
-716-+                   q->mnt_id = last_entry_mnt_id++;
-717-+           }
-718-+   }
-719:+   // Assign the 'last_entry_mnt_id' to 'current->susfs_last_fake_mnt_id' for later use.
-720-+   // should be fine here assuming zygote is forking/unsharing app in one single thread.
-721-+   // Or should we put a lock here?
-722:+   current->susfs_last_fake_mnt_id = last_entry_mnt_id;
-723-+#endif
-724-+
-725-    namespace_unlock();
-726-
-727-    if (rootmnt)
-728-@@ -3581,6 +3815,13 @@ SYSCALL_DEFINE5(move_mount,
-729-    path_put(&to_path);
-730- out_from:
-731-    path_put(&from_path);
-732-+#ifdef CONFIG_KSU_SUSFS_AUTO_ADD_SUS_KSU_DEFAULT_MOUNT
-733-+   // For Legacy KSU mount scheme
-734-+   if (!ret && susfs_is_auto_add_sus_ksu_default_mount_enabled && susfs_is_current_ksu_domain()) {
-735-+           susfs_auto_add_sus_ksu_default_mount(to_pathname);
-736-+   }
-737-+#endif
-738-+
-739-    return ret;
-740- }
-741-
-742-@@ -4037,3 +4278,37 @@ const struct proc_ns_operations mntns_operations = {
-743-    .install        = mntns_install,
-744-    .owner          = mntns_owner,
-745- };
-746-+
-747-+#ifdef CONFIG_KSU_SUSFS_TRY_UMOUNT
-748-+extern void susfs_try_umount_all(uid_t uid);
-749-+void susfs_run_try_umount_for_current_mnt_ns(void) {
-750-+   struct mount *mnt;
-751-+   struct mnt_namespace *mnt_ns;
-752-+
-753-+   mnt_ns = current->nsproxy->mnt_ns;
-754-+   // Lock the namespace
-755-+   namespace_lock();
-756-+   list_for_each_entry(mnt, &mnt_ns->list, mnt_list) {
-757-+           // Change the sus mount to be private
---
-824- #ifdef CONFIG_INOTIFY_USER
-825-
-826-+#ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-827-+static void inotify_fdinfo(struct seq_file *m, struct fsnotify_mark *mark, struct file *file)
-828-+#else
-829- static void inotify_fdinfo(struct seq_file *m, struct fsnotify_mark *mark)
-830-+#endif
-831- {
-832-    struct inotify_inode_mark *inode_mark;
-833-    struct inode *inode;
-834-@@ -84,6 +102,36 @@ static void inotify_fdinfo(struct seq_file *m, struct fsnotify_mark *mark)
-835-    inode_mark = container_of(mark, struct inotify_inode_mark, fsn_mark);
-836-    inode = igrab(fsnotify_conn_inode(mark->connector));
-837-    if (inode) {
-838-+#ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-839:+           if (likely(current->susfs_task_state & TASK_STRUCT_NON_ROOT_USER_APP_PROC) &&
-840-+                           unlikely(inode->i_state & INODE_STATE_SUS_KSTAT)) {
-841-+                   struct path path;
-842-+                   char *pathname = kmalloc(PAGE_SIZE, GFP_KERNEL);
-843-+                   char *dpath;
-844-+                   if (!pathname) {
-845-+                           goto out_seq_printf;
-846-+                   }
-847-+                   dpath = d_path(&file->f_path, pathname, PAGE_SIZE);
-848-+                   if (!dpath) {
-849-+                           goto out_free_pathname;
-850-+                   }
-851-+                   if (kern_path(dpath, 0, &path)) {
-852-+                           goto out_free_pathname;
-853-+                   }
-854-+                   seq_printf(m, "inotify wd:%x ino:%lx sdev:%x mask:%x ignored_mask:0 ",
-855-+                                   inode_mark->wd, path.dentry->d_inode->i_ino, path.dentry->d_inode->i_sb->s_dev,
-856-+                                   inotify_mark_user_mask(mark));
-857-+                   show_mark_fhandle(m, path.dentry->d_inode);
-858-+                   seq_putc(m, '\n');
-859-+                   iput(inode);
-860-+                   path_put(&path);
-861-+                   kfree(pathname);
-862-+                   return;
-863-+out_free_pathname:
-864-+                   kfree(pathname);
-865-+           }
-866-+out_seq_printf:
-867-+#endif
-868-            seq_printf(m, "inotify wd:%x ino:%lx sdev:%x mask:%x ignored_mask:0 ",
-869-                       inode_mark->wd, inode->i_ino, inode->i_sb->s_dev,
-870-                       inotify_mark_user_mask(mark));
-871-diff --git a/fs/open.c b/fs/open.c
-872-index c6646926a61a..11dfe284317b 100644
-873---- a/fs/open.c
-874-+++ b/fs/open.c
---
-1008-   int f_flags = 0, ret = -ENOENT;
-1009-   struct file *file = NULL;
-1010-   struct task_struct *task;
-1011-+#ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-1012-+  struct mount *mnt = NULL;
-1013-+#endif
-1014-
-1015-   task = get_proc_task(m->private);
-1016-   if (!task)
-1017-@@ -54,10 +60,48 @@ static int seq_show(struct seq_file *m, void *v)
-1018-   if (ret)
-1019-           return ret;
-1020-
-1021-+#ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-1022-+  mnt = real_mount(file->f_path.mnt);
-1023:+  if (likely(current->susfs_task_state & TASK_STRUCT_NON_ROOT_USER_APP_PROC) &&
-1024-+                  mnt->mnt_id >= DEFAULT_SUS_MNT_ID) {
-1025-+          struct path path;
-1026-+          char *pathname = kmalloc(PAGE_SIZE, GFP_KERNEL);
-1027-+          char *dpath;
-1028-+
-1029-+          for (; mnt->mnt_id >= DEFAULT_SUS_MNT_ID; mnt = mnt->mnt_parent) { }
-1030-+
-1031-+          if (!pathname) {
-1032-+                  goto out_seq_printf;
-1033-+          }
-1034-+          dpath = d_path(&file->f_path, pathname, PAGE_SIZE);
-1035-+          if (!dpath) {
-1036-+                  goto out_free_pathname;
-1037-+          }
-1038-+          if (kern_path(dpath, 0, &path)) {
-1039-+                  goto out_free_pathname;
-1040-+          }
-1041-+          seq_printf(m, "pos:\t%lli\nflags:\t0%o\nmnt_id:\t%i\nino:\t%lu\n",
-1042-+                          (long long)file->f_pos, f_flags,
-1043-+                          mnt->mnt_id,
-1044-+                          path.dentry->d_inode->i_ino);
-1045-+          path_put(&path);
-1046-+          kfree(pathname);
-1047-+          goto bypass_orig_flow;
-1048-+out_free_pathname:
-1049-+          kfree(pathname);
-1050-+  }
-1051-+out_seq_printf:
-1052-+  seq_printf(m, "pos:\t%lli\nflags:\t0%o\nmnt_id:\t%i\nino:\t%lu\n",
-1053-+             (long long)file->f_pos, f_flags,
-1054-+             mnt->mnt_id,
-1055-+             file_inode(file)->i_ino);
-1056-+bypass_orig_flow:
-1057-+#else
-1058-   seq_printf(m, "pos:\t%lli\nflags:\t0%o\nmnt_id:\t%i\nino:\t%lu\n",
---
-1173-@@ -36,6 +39,9 @@
-1174-   unsafe_copy_to_user(dst, src, len, label);     \
-1175- } while (0)
-1176-
-1177-+#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-1178-+extern int susfs_sus_ino_for_filldir64(unsigned long ino);
-1179-+#endif
-1180-
-1181- int iterate_dir(struct file *file, struct dir_context *ctx)
-1182- {
-1183-@@ -229,6 +235,11 @@ static int filldir(struct dir_context *ctx, const char *name, int namlen,
-1184-           sizeof(long));
-1185-   int prev_reclen;
-1186-
-1187-+#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-1188:+  if (likely(current->susfs_task_state & TASK_STRUCT_NON_ROOT_USER_APP_PROC) && susfs_sus_ino_for_filldir64(ino)) {
-1189-+          return 0;
-1190-+  }
-1191-+#endif
-1192-   buf->error = verify_dirent_name(name, namlen);
-1193-   if (unlikely(buf->error))
-1194-           return buf->error;
-1195-@@ -319,6 +330,11 @@ static int filldir64(struct dir_context *ctx, const char *name, int namlen,
-1196-           sizeof(u64));
-1197-   int prev_reclen;
-1198-
-1199-+#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-1200:+  if (likely(current->susfs_task_state & TASK_STRUCT_NON_ROOT_USER_APP_PROC) && susfs_sus_ino_for_filldir64(ino)) {
-1201-+          return 0;
-1202-+  }
-1203-+#endif
-1204-   buf->error = verify_dirent_name(name, namlen);
-1205-   if (unlikely(buf->error))
-1206-           return buf->error;
-1207-@@ -420,6 +436,11 @@ static int compat_fillonedir(struct dir_context *ctx, const char *name,
-1208-
-1209-   if (buf->result)
-1210-           return -EINVAL;
-1211-+#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-1212:+  if (likely(current->susfs_task_state & TASK_STRUCT_NON_ROOT_USER_APP_PROC) && susfs_sus_ino_for_filldir64(ino)) {
-1213-+          return 0;
-1214-+  }
-1215-+#endif
-1216-   buf->result = verify_dirent_name(name, namlen);
-1217-   if (buf->result < 0)
-1218-           return buf->result;
-1219-@@ -495,6 +516,11 @@ static int compat_filldir(struct dir_context *ctx, const char *name, int namlen,
-1220-   buf->error = -EINVAL;   /* only used if we fail.. */
-1221-   if (reclen > buf->count)
-1222-           return -EINVAL;
-1223-+#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-1224:+  if (likely(current->susfs_task_state & TASK_STRUCT_NON_ROOT_USER_APP_PROC) && susfs_sus_ino_for_filldir64(ino)) {
-1225-+          return 0;
-1226-+  }
-1227-+#endif
-1228-   d_ino = ino;
-1229-   if (sizeof(d_ino) < sizeof(ino) && d_ino != ino) {
-1230-           buf->error = -EOVERFLOW;
-1231-diff --git a/fs/stat.c b/fs/stat.c
-1232-index 268c9eb89656..a60f22deae15 100644
-1233---- a/fs/stat.c
-1234-+++ b/fs/stat.c
-1235-@@ -17,10 +17,17 @@
-1236- #include <linux/syscalls.h>
-1237- #include <linux/pagemap.h>
-1238- #include <linux/compat.h>
-1239-+#if defined(CONFIG_KSU_SUSFS_SUS_KSTAT) || defined(CONFIG_KSU_SUSFS_SUS_MOUNT)
-1240-+#include <linux/susfs_def.h>
-1241-+#endif
-1242-
-1243- #include <linux/uaccess.h>
-1244- #include <asm/unistd.h>
-1245-
-1246-+#ifdef CONFIG_KSU_SUSFS_SUS_KSTAT
-1247-+extern void susfs_sus_ino_for_generic_fillattr(unsigned long ino, struct kstat *stat);
-1248-+#endif
-1249-+
-1250- /**
-1251-  * generic_fillattr - Fill in the basic attributes from the inode struct
-1252-  * @inode: Inode to use as the source
-1253-@@ -32,6 +39,17 @@
-1254-  */
-1255- void generic_fillattr(struct inode *inode, struct kstat *stat)
-1256- {
-1257-+#ifdef CONFIG_KSU_SUSFS_SUS_KSTAT
-1258:+  if (likely(current->susfs_task_state & TASK_STRUCT_NON_ROOT_USER_APP_PROC) &&
-1259-+                  unlikely(inode->i_state & INODE_STATE_SUS_KSTAT)) {
-1260-+          susfs_sus_ino_for_generic_fillattr(inode->i_ino, stat);
-1261-+          stat->mode = inode->i_mode;
-1262-+          stat->rdev = inode->i_rdev;
-1263-+          stat->uid = inode->i_uid;
-1264-+          stat->gid = inode->i_gid;
-1265-+          return;
-1266-+  }
-1267-+#endif
-1268-   stat->dev = inode->i_sb->s_dev;
-1269-   stat->ino = inode->i_ino;
-1270-   stat->mode = inode->i_mode;
-1271-@@ -165,6 +183,12 @@ EXPORT_SYMBOL(vfs_statx_fd);
-1272-  *
-1273-  * 0 will be returned on success, and a -ve error code if unsuccessful.
-1274-  */
-1275-+
-1276-+#ifdef CONFIG_KSU_SUSFS_SUS_SU
-1277-+extern bool susfs_is_sus_su_hooks_enabled __read_mostly;
-1278-+extern int ksu_handle_stat(int *dfd, const char __user **filename_user, int *flags);
-1279-+#endif
-1280-+
-1281- int vfs_statx(int dfd, const char __user *filename, int flags,
-1282-         struct kstat *stat, u32 request_mask)
-1283- {
-1284-@@ -172,6 +196,12 @@ int vfs_statx(int dfd, const char __user *filename, int flags,
-1285-   int error = -EINVAL;
-1286-   unsigned int lookup_flags = LOOKUP_FOLLOW | LOOKUP_AUTOMOUNT;
-1287-
-1288-+#ifdef CONFIG_KSU_SUSFS_SUS_SU
-1289-+  if (susfs_is_sus_su_hooks_enabled) {
-1290-+          ksu_handle_stat(&dfd, &filename, &flags);
-1291-+  }
-1292-+#endif
-1293-+
---
-1305-+#ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-1306-+#include <linux/susfs_def.h>
-1307-+#include "mount.h"
-1308-+#endif
-1309- #include "internal.h"
-1310-
-1311- static int flags_by_mnt(int mnt_flags)
-1312-@@ -84,11 +88,23 @@ EXPORT_SYMBOL(vfs_get_fsid);
-1313- int vfs_statfs(const struct path *path, struct kstatfs *buf)
-1314- {
-1315-   int error;
-1316-+#ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-1317-+  struct mount *mnt;
-1318-
-1319-+  mnt = real_mount(path->mnt);
-1320:+  if (likely(current->susfs_task_state & TASK_STRUCT_NON_ROOT_USER_APP_PROC)) {
-1321-+          for (; mnt->mnt_id >= DEFAULT_SUS_MNT_ID; mnt = mnt->mnt_parent) {}
-1322-+  }
-1323-+  error = statfs_by_dentry(mnt->mnt.mnt_root, buf);
-1324-+  if (!error)
-1325-+          buf->f_flags = calculate_f_flags(&mnt->mnt);
-1326-+  return error;
-1327-+#else
-1328-   error = statfs_by_dentry(path->dentry, buf);
-1329-   if (!error)
-1330-           buf->f_flags = calculate_f_flags(path->mnt);
-1331-   return error;
-1332-+#endif
-1333- }
-1334- EXPORT_SYMBOL(vfs_statfs);
-1335-
-1336-@@ -107,6 +123,22 @@ int user_statfs(const char __user *pathname, struct kstatfs *st)
-1337-                   goto retry;
-1338-           }
-1339-   }
-1340-+#ifdef CONFIG_KSU_SUSFS_SUS_OVERLAYFS
-1341-+  /* - When mounting overlay, the f_flags are set with 'ro' and 'relatime',
-1342-+   *   but this is an abnormal status, as when we inspect the output from mountinfo,
-1343-+   *   we will find that all partitions set with 'ro' will have 'noatime' set as well.
-1344-+   * - But what is strange here is that the vfsmnt f_flags of the lowest layer has corrent f_flags set,
-1345-+   *   and still it is always changed to 'relatime' instead of 'noatime' for the final result,
-1346-+   *   I can't think of any other reason to explain about this, maybe the f_flags is set by its own
-1347-+   *   filesystem implementation but not the one from overlayfs.
-1348-+   * - Anyway we just cannot use the retrieved f_flags from ovl_getattr() of overlayfs,
-1349-+   *   we need to run one more check for user_statfs() and fd_statfs() by ourselves.
-1350-+   */
-1351-+  if (unlikely((st->f_flags & ST_RDONLY) && (st->f_flags & ST_RELATIME))) {
-1352-+          st->f_flags &= ~ST_RELATIME;
-1353-+          st->f_flags |= ST_NOATIME;
-1354-+  }
-1355-+#endif
---
-1394-+#else
-1395-   ANDROID_KABI_RESERVE(4);
-1396-+#endif
-1397- } __randomize_layout;
-1398-
-1399- struct file; /* forward dec */
-1400-diff --git a/include/linux/sched.h b/include/linux/sched.h
-1401-index 3b6cd312986b..1e5320dc601c 100644
-1402---- a/include/linux/sched.h
-1403-+++ b/include/linux/sched.h
-1404-@@ -1307,8 +1307,16 @@ struct task_struct {
-1405-   ANDROID_KABI_RESERVE(4);
-1406-   ANDROID_KABI_RESERVE(5);
-1407-   ANDROID_KABI_RESERVE(6);
-1408-+#ifdef CONFIG_KSU_SUSFS
-1409:+  ANDROID_KABI_USE(7, u64 susfs_task_state);
-1410-+#else
-1411-   ANDROID_KABI_RESERVE(7);
-1412-+#endif
-1413-+#ifdef CONFIG_KSU_SUSFS
-1414:+  ANDROID_KABI_USE(8, u64 susfs_last_fake_mnt_id);
-1415-+#else
-1416-   ANDROID_KABI_RESERVE(8);
-1417-+#endif
-1418-
-1419-   /*
-1420-    * New fields for task_struct should be added above here, so that
-1421-diff --git a/kernel/kallsyms.c b/kernel/kallsyms.c
-1422-index 14de0c7bf756..a4c563980af4 100644
-1423---- a/kernel/kallsyms.c
-1424-+++ b/kernel/kallsyms.c
-1425-@@ -657,8 +657,18 @@ static int s_show(struct seq_file *m, void *p)
-1426-           seq_printf(m, "%px %c %s\t[%s]\n", value,
-1427-                      type, iter->name, iter->module_name);
-1428-   } else
-1429-+#ifndef CONFIG_KSU_SUSFS_HIDE_KSU_SUSFS_SYMBOLS
-1430-           seq_printf(m, "%px %c %s\n", value,
-1431-                      iter->type, iter->name);
-1432-+#else
-1433-+  {
-1434-+          if (strstr(iter->name, "ksu_") || !strncmp(iter->name, "susfs_", 6) || !strncmp(iter->name, "ksud", 4)) {
-1435-+                  return 0;
-1436-+          }
-1437-+          seq_printf(m, "%px %c %s\n", value,
-1438-+                     iter->type, iter->name);
-1439-+  }
-1440-+#endif
-1441-   return 0;
-1442- }
-1443-
-1444-diff --git a/kernel/sys.c b/kernel/sys.c
-1445-index fa3f48a51aa9..6f7f5236731b 100644
-1446---- a/kernel/sys.c
-1447-+++ b/kernel/sys.c
-1448-@@ -1240,12 +1240,18 @@ static int override_release(char __user *release, size_t len)
-1449-   return ret;
-                                                        ========================================
-9. ALL PATCH 50 TARGET FILES                            ========================================
-diff --git a/fs/Makefile b/fs/Makefile
-diff --git a/fs/dcache.c b/fs/dcache.c
-diff --git a/fs/devpts/inode.c b/fs/devpts/inode.c
-diff --git a/fs/exec.c b/fs/exec.c
-diff --git a/fs/namei.c b/fs/namei.c
-diff --git a/fs/namespace.c b/fs/namespace.c            diff --git a/fs/notify/fdinfo.c b/fs/notify/fdinfo.c
-diff --git a/fs/open.c b/fs/open.c
-diff --git a/fs/overlayfs/inode.c b/fs/overlayfs/inode.cdiff --git a/fs/overlayfs/readdir.c b/fs/overlayfs/readdir.c
-diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
-diff --git a/fs/proc/bootconfig.c b/fs/proc/bootconfig.c
-diff --git a/fs/proc/fd.c b/fs/proc/fd.c                diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c    diff --git a/fs/proc_namespace.c b/fs/proc_namespace.c
-diff --git a/fs/readdir.c b/fs/readdir.c                diff --git a/fs/stat.c b/fs/stat.c                      diff --git a/fs/statfs.c b/fs/statfs.c                  diff --git a/include/linux/mount.h b/include/linux/mount.h                                                      diff --git a/include/linux/sched.h b/include/linux/sched.h
-diff --git a/kernel/kallsyms.c b/kernel/kallsyms.c
-diff --git a/kernel/sys.c b/kernel/sys.c
-root@localhost:~/oscar#
+/data/data/com.termux/files/usr/include/stdlib.h:339:35error: expected ';', ',' or ')' before '__s'
+  339 | float strtof(const char* _Nonnull __s, char* _Nullable * _Nullable __end_ptr);
+      |                                   ^~~
+/data/data/com.termux/files/usr/include/stdlib.h:349:36error: expected ';', ',' or ')' before '__s'
+  349 | double strtod(const char* _Nonnull __s, char* _Nullable * _Nullable __end_ptr);
+      |                                    ^~~
+/data/data/com.termux/files/usr/include/stdlib.h:359:42error: expected ';', ',' or ')' before '__s'
+  359 | double strtold(const char* _Nonnull __s, char* _Nullable * _Nullable __end_ptr);
+      |                                     ^~~
+
+/data/data/com.termux/files/usr/include/stdlib.h:362:44error: expected ';', ',' or ')' before '__s'
+  362 | uble strtold_l(const char* _Nonnull __s, char* _Nullable * _Nullable __end_ptr, locale_t _Nonnull __l);
+      |                                     ^~~
+
+/data/data/com.termux/files/usr/include/stdlib.h:366:38error: expected ';', ',' or ')' before '__s'
+  366 | ouble strtod_l(const char* _Nonnull __s, char* _Nullable * _Nullable __end_ptr, locale_t _Nonnull __l) __INTRODUCED_IN(26);
+      |                                     ^~~
+
+/data/data/com.termux/files/usr/include/stdlib.h:368:37error: expected ';', ',' or ')' before '__s'
+  368 | float strtof_l(const char* _Nonnull __s, char* _Nullable * _Nullable __end_ptr, locale_t _Nonnull __l) __INTRODUCED_IN(26);
+      |                                     ^~~
+In file included from ../scripts/extract-cert.c:20:
+/data/data/com.termux/files/usr/include/err.h:54:57: error: expected ';', ',' or ')' before '__fmt'
+   54 | int __status, const char* _Nullable __fmt, ...) __printflike(2, 3);
+      |                                     ^~~~~
+
+/data/data/com.termux/files/usr/include/err.h:64:58: error: expected ';', ',' or ')' before '__fmt'
+   64 | int __status, const char* _Nullable __fmt, va_list __args) __printflike(2, 0);
+      |                                     ^~~~~
+
+/data/data/com.termux/files/usr/include/err.h:74:58: error: expected ';', ',' or ')' before '__fmt'
+   74 | int __status, const char* _Nullable __fmt, ...) __printflike(2, 3);
+      |                                     ^~~~~
+
+/data/data/com.termux/files/usr/include/err.h:84:59: error: expected ';', ',' or ')' before '__fmt'
+   84 | int __status, const char* _Nullable __fmt, va_list __args) __printflike(2, 0);
+      |                                     ^~~~~
+
+/data/data/com.termux/files/usr/include/err.h:92:33: error: expected ';', ',' or ')' before '__fmt'
+   92 | void warn(const char* _Nullable __fmt, ...) __printflike(1, 2);
+      |                                 ^~~~~
+/data/data/com.termux/files/usr/include/err.h:100:34: error: expected ';', ',' or ')' before '__fmt'
+  100 | void vwarn(const char* _Nullable __fmt, va_list __args) __printflike(1, 0);
+      |                                  ^~~~~
+/data/data/com.termux/files/usr/include/err.h:108:34: error: expected ';', ',' or ')' before '__fmt'
+  108 | void warnx(const char* _Nullable __fmt, ...) __printflike(1, 2);
+      |                                  ^~~~~
+/data/data/com.termux/files/usr/include/err.h:116:35: error: expected ';', ',' or ')' before '__fmt'
+  116 | void vwarnx(const char* _Nullable __fmt, va_list __args) __printflike(1, 0);
+      |                                   ^~~~~
+In file included from /data/data/com.termux/files/usr/include/bits/signal_types.h:33,
+                 from /data/data/com.termux/files/usr/include/signal.h:37,
+                 from /data/data/com.termux/files/usr/include/sys/select.h:42,
+                 from /data/data/com.termux/files/usr/include/sys/time.h:37,
+                 from /data/data/com.termux/files/usr/include/time.h:37,
+                 from /data/data/com.termux/files/usr/include/openssl/crypto.h:28,
+                 from /data/data/com.termux/files/usr/include/openssl/bio.h:32,
+                 from ../scripts/extract-cert.c:21:
+/data/data/com.termux/files/usr/include/limits.h:106:9:warning: "MB_LEN_MAX" redefined
+  106 | #define MB_LEN_MAX 4
+      |         ^~~~~~~~~~
+In file included from /data/data/com.termux/files/usr/include/limits.h:52:
+/usr/lib/gcc/aarch64-linux-gnu/14/include/limits.h:68:9note: this is the location of the previous definition
+   68 | #define MB_LEN_MAX 1
+      |         ^~~~~~~~~~
+/data/data/com.termux/files/usr/include/signal.h:57:28:error: expected ';' before 'const'
+   57 | extern const char* _Nonnull const sys_siglist[_NSIG];
+      |                            ^~~~~~
+      |                            ;
+/data/data/com.termux/files/usr/include/signal.h:57:35:warning: type defaults to 'int' in declaration of 'sys_siglist' [-Wimplicit-int]
+   57 | extern const char* _Nonnull const sys_siglist[_NSIG];
+      |                                   ^~~~~~~~~~~
+/data/data/com.termux/files/usr/include/signal.h:58:28:error: expected ';' before 'const'
+   58 | extern const char* _Nonnull const sys_signame[_NSIG]; /* BSD compatibility. */
+      |                            ^~~~~~
+      |                            ;
+/data/data/com.termux/files/usr/include/signal.h:58:35:warning: type defaults to 'int' in declaration of 'sys_signame' [-Wimplicit-int]
+   58 | extern const char* _Nonnull const sys_signame[_NSIG]; /* BSD compatibility. */
+      |                                   ^~~~~~~~~~~
+/data/data/com.termux/files/usr/include/signal.h:62:63:error: expected ';', ',' or ')' before '__new_action'
+   62 | , const struct sigaction* _Nullable __new_actio, struct sigaction* _Nullable __old_action);
+      |                                     ^~~~~~~~~~~
+
+/data/data/com.termux/files/usr/include/signal.h:71:23:error: expected '=', ',', ';', 'asm' or '__attribute__' before 'signal'
+   71 | sighandler_t _Nonnull signal(int __signal, sighandler_t _Nullable __handler);
+      |                       ^~~~~~
+/data/data/com.termux/files/usr/include/signal.h:72:34:error: expected ';', ',' or ')' before '__set'
+   72 | int sigaddset(sigset_t* _Nonnull __set, int __signal);
+      |                                  ^~~~~
+/data/data/com.termux/files/usr/include/signal.h:78:34:error: expected ';', ',' or ')' before '__set'
+   78 | int sigdelset(sigset_t* _Nonnull __set, int __signal);
+      |                                  ^~~~~
+/data/data/com.termux/files/usr/include/signal.h:84:36:error: expected ';', ',' or ')' before '__set'
+   84 | int sigemptyset(sigset_t* _Nonnull __set);
+      |                                    ^~~~~
+/data/data/com.termux/files/usr/include/signal.h:90:35:error: expected ';', ',' or ')' before '__set'
+   90 | int sigfillset(sigset_t* _Nonnull __set);
+      |                                   ^~~~~
+/data/data/com.termux/files/usr/include/signal.h:96:42:error: expected ';', ',' or ')' before '__set'
+   96 | igismember(const sigset_t* _Nonnull __set, int __signal);
+      |                                     ^~~~~
+
+/data/data/com.termux/files/usr/include/signal.h:103:35error: expected ';', ',' or ')' before '__set'
+  103 | int sigpending(sigset_t* _Nonnull __set);
+      |                                   ^~~~~
+/data/data/com.termux/files/usr/include/signal.h:109:54error: expected ';', ',' or ')' before '__new_set'
+  109 | nt __how, const sigset_t* _Nullable __new_set, sigset_t* _Nullable __old_set);
+      |                                     ^~~~~~~~~
+
+/data/data/com.termux/files/usr/include/signal.h:115:41error: expected ';', ',' or ')' before '__mask'
+  115 | nt sigsuspend(const sigset_t* _Nonnull __mask);
+      |                                        ^~~~~~
+
+/data/data/com.termux/files/usr/include/signal.h:121:38error: expected ';', ',' or ')' before '__set'
+  121 | nt sigwait(const sigset_t* _Nonnull __set, int* _Nonnull __signal);
+      |                                     ^~~~~
+
+/data/data/com.termux/files/usr/include/signal.h:150:42error: expected ';', ',' or ')' before '__new_signal_stack'
+  150 | igaltstack(const stack_t* _Nullable __new_signal_stack, stack_t*  _Nullable __old_signal_stack);
+      |                                     ^~~~~~~~~~~~~~~~~~
+
+/data/data/com.termux/files/usr/include/signal.h:152:41error: expected ';', ',' or ')' before '__info'
+  152 |  psiginfo(const siginfo_t* _Nonnull __info, const char* _Nullable __msg);
+      |                                     ^~~~~~
+
+/data/data/com.termux/files/usr/include/signal.h:153:50error: expected ';', ',' or ')' before '__msg'
+  153 | nal(int __signal, const char* _Nullable __msg);
+      |                                         ^~~~~
+
+/data/data/com.termux/files/usr/include/signal.h:164:58error: expected ';', ',' or ')' before '__new_set'
+  164 | nt __how, const sigset_t* _Nullable __new_set, sigset_t* _Nullable __old_set);
+      |                                     ^~~~~~~~~
+
+/data/data/com.termux/files/usr/include/sys/select.h:137:53: error: expected ';', ',' or ')' before '__read_fds'
+  137 | _max_fd_plus_one, fd_set* _Nullable __read_fds, fd_set* _Nullable __write_fds, fd_set* _Nullable __exception_fds, struct timeval* _Nullable __timeout);
+      |                                     ^~~~~~~~~~
+
+/data/data/com.termux/files/usr/include/sys/select.h:149:54: error: expected ';', ',' or ')' before '__read_fds'
+  149 | _max_fd_plus_one, fd_set* _Nullable __read_fds, fd_set* _Nullable __write_fds, fd_set* _Nullable __exception_fds, const struct timespec* _Nullable __timeout, const sigset_t* _Nullable __mask);
+      |                                     ^~~~~~~~~~
+
+/data/data/com.termux/files/usr/include/sys/time.h:41:44: error: expected ';', ',' or ')' before '__tv'
+   41 | timeofday(struct timeval* _Nullable __tv, struct timezone* _Nullable __tz);
+      |                                     ^~~~
+
+/data/data/com.termux/files/usr/include/sys/time.h:42:50: error: expected ';', ',' or ')' before '__tv'
+   42 | day(const struct timeval* _Nullable __tv, const struct timezone* _Nullable __tz);
+      |                                     ^~~~
+
+/data/data/com.termux/files/usr/include/sys/time.h:44:55: error: expected ';', ',' or ')' before '__current_value'
+   44 | __which, struct itimerval* _Nonnull __current_value);
+      |                                     ^~~~~~~~~~~~~~~
+
+/data/data/com.termux/files/usr/include/sys/time.h:45:61: error: expected ';', ',' or ')' before '__new_value'
+   45 | h, const struct itimerval* _Nonnull __new_value, struct itimerval* _Nullable __old_value);
+      |                                     ^~~~~~~~~~~
+
+/data/data/com.termux/files/usr/include/sys/time.h:47:33: error: expected ';', ',' or ')' before '__path'
+   47 | int utimes(const char* _Nonnull __path, const struct timeval __times[_Nullable 2]);
+      |                                 ^~~~~~
+/data/data/com.termux/files/usr/include/sys/time.h:51:52: error: '_Nullable' undeclared here (not in a function)
+   51 |  __fd, const struct timeval __times[_Nullable 2]);
+      |                                     ^~~~~~~~~
+
+/data/data/com.termux/files/usr/include/sys/time.h:51:61: error: expected ']' before numeric constant
+   51 | fd, const struct timeval __times[_Nullable 2]);
+      |                                           ^~
+      |                                           ]
+/data/data/com.termux/files/usr/include/sys/time.h:52:34: error: expected ';', ',' or ')' before '__path'
+   52 | int lutimes(const char* _Nonnull __path, const struct timeval __times[_Nullable 2]);
+      |                                  ^~~~~~
+/data/data/com.termux/files/usr/include/sys/time.h:71:71: error: expected ';', ',' or ')' before '__path'
+   71 | char* __BIONIC_COMPLICATED_NULLNESS __path, const struct timeval __times[_Nullable 2]);
+      |                                     ^~~~~~
+
+/data/data/com.termux/files/usr/include/time.h:63:23: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'tzname'
+   63 | extern char* _Nonnull tzname[];
+      |                       ^~~~~~
+/data/data/com.termux/files/usr/include/time.h:98:25: error: expected ':', ',', ';', '}' or '__attribute__' before 'tm_zone'
+   98 |   const char* _Nullable tm_zone;
+      |                         ^~~~~~~
+/data/data/com.termux/files/usr/include/time.h:110:31: error: expected ';', ',' or ')' before '__t'
+  110 | time_t time(time_t* _Nullable __t);
+      |                               ^~~
+/data/data/com.termux/files/usr/include/time.h:120:47: error: expected ';', ',' or ')' before '__duration'
+  120 | eep(const struct timespec* _Nonnull __duration, struct timespec* _Nullable __remainder);
+      |                                     ^~~~~~~~~~
+
+/data/data/com.termux/files/usr/include/time.h:132:17: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'asctime'
+  132 | char* _Nullable asctime(const struct tm* _Nonnull __tm);
+      |                 ^~~~~~~
+/data/data/com.termux/files/usr/include/time.h:142:17: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'asctime_r'
+  142 | char* _Nullable asctime_r(const struct tm* _Nonnull __tm, char* _Nonnull __buf);
+      |                 ^~~~~~~~~
+/data/data/com.termux/files/usr/include/time.h:161:35: error: expected ';', ',' or ')' before '__tm'
+  161 | time_t mktime(struct tm* _Nonnull __tm);
+      |                                   ^~~~
+/data/data/com.termux/files/usr/include/time.h:186:22: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'localtime'
+  186 | struct tm* _Nullable localtime(const time_t* _Nonnull __t);
+      |                      ^~~~~~~~~
+/data/data/com.termux/files/usr/include/time.h:198:22: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'localtime_r'
+  198 | struct tm* _Nullable localtime_r(const time_t* _Nonnull __t, struct tm* _Nonnull __tm);
+      |                      ^~~~~~~~~~~
+/data/data/com.termux/files/usr/include/time.h:218:38: error: expected ';', ',' or ')' before '__tm'
+  218 | time_t timelocal(struct tm* _Nonnull __tm);
+      |                                      ^~~~
+/data/data/com.termux/files/usr/include/time.h:229:22: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'gmtime'
+  229 | struct tm* _Nullable gmtime(const time_t* _Nonnull __t);
+      |                      ^~~~~~
+/data/data/com.termux/files/usr/include/time.h:240:22: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'gmtime_r'
+  240 | struct tm* _Nullable gmtime_r(const time_t* _Nonnull __t, struct tm* _Nonnull __tm);
+      |                      ^~~~~~~~
+/data/data/com.termux/files/usr/include/time.h:245:35: error: expected ';', ',' or ')' before '__tm'
+  245 | time_t timegm(struct tm* _Nonnull __tm);
+      |                                   ^~~~
+/data/data/com.termux/files/usr/include/time.h:253:17: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'strptime'
+  253 | char* _Nullable strptime(const char* _Nonnull __s, const char* _Nonnull __fmt, struct tm* _Nonnull __tm) __strftimelike(2);
+      |                 ^~~~~~~~
+/data/data/com.termux/files/usr/include/time.h:258:17: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'strptime_l'
+  258 | char* _Nullable strptime_l(const char* _Nonnull __s, const char* _Nonnull __fmt, struct tm* _Nonnull __tm, locale_t _Nonnull __l) __strftimelike(2) __RENAME(strptime);
+      |                 ^~~~~~~~~~
+/data/data/com.termux/files/usr/include/time.h:266:32: error: expected ';', ',' or ')' before '__buf'
+  266 | size_t strftime(char* _Nonnull __buf, size_t __n, const char* _Nonnull __fmt, const struct tm* _Nullable __tm) __strftimelike(3);
+      |                                ^~~~~
+/data/data/com.termux/files/usr/include/time.h:271:34: error: expected ';', ',' or ')' before '__buf'
+  271 | size_t strftime_l(char* _Nonnull __buf, size_t __n, const char* _Nonnull __fmt, const struct tm* _Nullable __tm, locale_t _Nonnull __l) __strftimelike(3);
+      |                                  ^~~~~
+/data/data/com.termux/files/usr/include/time.h:283:17: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'ctime'
+  283 | char* _Nullable ctime(const time_t* _Nonnull __t);
+      |                 ^~~~~
+/data/data/com.termux/files/usr/include/time.h:293:17: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'ctime_r'
+  293 | char* _Nullable ctime_r(const time_t* _Nonnull __t, char* _Nonnull __buf);
+      |                 ^~~~~~~
+/data/data/com.termux/files/usr/include/time.h:374:64: error: expected ';', ',' or ')' before '__resolution'
+  374 | __clock, struct timespec* _Nullable __resolutio);
+      |                                     ^~~~~~~~~~~
+
+/data/data/com.termux/files/usr/include/time.h:382:64: error: expected ';', ',' or ')' before '__ts'
+  382 | kid_t __clock, struct timespec* _Nonnull __ts);
+      |                                          ^~~~
+
+/data/data/com.termux/files/usr/include/time.h:393:85: error: expected ';', ',' or ')' before '__time'
+  393 | gs, const struct timespec* _Nonnull __time, struct timespec* _Nullable __remainder);
+      |                                     ^~~~~~
+
+/data/data/com.termux/files/usr/include/time.h:401:70: error: expected ';', ',' or ')' before '__ts'
+  401 | __clock, const struct timespec* _Nonnull __ts);
+      |                                          ^~~~
+
+/data/data/com.termux/files/usr/include/time.h:409:64: error: expected ';', ',' or ')' before '__event'
+  409 | __clock, struct sigevent* _Nullable __event, timer_t _Nonnull * _Nonnull __timer_ptr);
+      |                                     ^~~~~~~
+
+/data/data/com.termux/files/usr/include/time.h:417:35: error: expected ';', ',' or ')' before '__timer'
+  417 | int timer_delete(timer_t _Nonnull __timer);
+      |                                   ^~~~~~~
+/data/data/com.termux/files/usr/include/time.h:425:36: error: expected ';', ',' or ')' before '__timer'
+  425 | int timer_settime(timer_t _Nonnull __timer, int __flags, const struct itimerspec* _Nonnull __new_value, struct itimerspec* _Nullable __old_value);
+      |                                    ^~~~~~~
+/data/data/com.termux/files/usr/include/time.h:433:36: error: expected ';', ',' or ')' before '_timer'
+  433 | int timer_gettime(timer_t _Nonnull _timer, struct itimerspec* _Nonnull __ts);
+      |                                    ^~~~~~
+/data/data/com.termux/files/usr/include/time.h:442:39: error: expected ';', ',' or ')' before '__timer'
+  442 | int timer_getoverrun(timer_t _Nonnull __timer);
+      |                                       ^~~~~~~
+In file included from /data/data/com.termux/files/usr/include/pthread.h:41,
+                 from /data/data/com.termux/files/usr/include/openssl/crypto.h:573:
+/data/data/com.termux/files/usr/include/sched.h:109:86:error: expected ';', ',' or ')' before '__param'
+  109 | y, const struct sched_param* _Nonnull __param);
+      |                                       ^~~~~~~
+
+/data/data/com.termux/files/usr/include/sched.h:150:68:error: expected ';', ',' or ')' before '__param'
+  150 | d, const struct sched_param* _Nonnull __param);
+      |                                       ^~~~~~~
+
+/data/data/com.termux/files/usr/include/sched.h:158:62:error: expected ';', ',' or ')' before '__param'
+  158 | t __pid, struct sched_param* _Nonnull __param);
+      |                                       ^~~~~~~
+
+/data/data/com.termux/files/usr/include/sched.h:166:66:error: expected ';', ',' or ')' before '__quantum'
+  166 | _t __pid, struct timespec* _Nonnull __quantum);
+      |                                     ^~~~~~~~~
+
+/data/data/com.termux/files/usr/include/sched.h:177:48:error: expected ')' before '__fn'
+  177 | nt (* __BIONIC_COMPLICATED_NULLNESS __fn)(void* __BIONIC_COMPLICATED_NULLNESS ), void* __BIONIC_COMPLICATED_NULLNESS __child_stack, int __flags, void* _Nullable __arg, ...);
+      |                                     ^~~~
+
+/data/data/com.termux/files/usr/include/sched.h:177:93:error: expected ';', ',' or ')' before 'void'
+  177 | d* __BIONIC_COMPLICATED_NULLNESS ), void* __BIONIC_COMPLICATED_NULLNESS __child_stack, int __flags, void* _Nullable __arg, ...);
+      |                                     ^~~~
+
+/data/data/com.termux/files/usr/include/sched.h:229:81:error: expected ';', ',' or ')' before '__set'
+  229 | t __set_size, const cpu_set_t* _Nonnull __set);
+      |                                         ^~~~~
+
+/data/data/com.termux/files/usr/include/sched.h:237:75:error: expected ';', ',' or ')' before '__set'
+  237 |  size_t __set_size, cpu_set_t* _Nonnull __set);
+      |                                         ^~~~~
+
+/data/data/com.termux/files/usr/include/sched.h:245:60:error: expected ';', ',' or ')' before '__attr'
+  245 |  __pid, struct sched_attr* _Nonnull __attr, unsigned __flags) __INTRODUCED_IN(37);
+      |                                     ^~~~~~
+
+/data/data/com.termux/files/usr/include/sched.h:253:60:error: expected ';', ',' or ')' before '__attr'
+  253 |  __pid, struct sched_attr* _Nonnull __attr, unsigned __size, unsigned __flags) __INTRODUCED_IN(37);
+      |                                     ^~~~~~
+
+/data/data/com.termux/files/usr/include/sched.h:325:67:error: expected ';', ',' or ')' before '__set'
+  325 | t __set_size, const cpu_set_t* _Nonnull __set);
+      |                                         ^~~~~
+
+/data/data/com.termux/files/usr/include/sched.h:396:22:error: expected '=', ',', ';', 'asm' or '__attribute__' before '__sched_cpualloc'
+  396 | cpu_set_t* _Nullable __sched_cpualloc(size_t __count);
+      |                      ^~~~~~~~~~~~~~~~
+/data/data/com.termux/files/usr/include/sched.h:403:42:error: expected ';', ',' or ')' before '__set'
+  403 | oid __sched_cpufree(cpu_set_t* _Nonnull __set);
+      |                                         ^~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:97:37error: expected ')' before '__prepare'
+   97 | int pthread_atfork(void (* _Nullable __prepare)(void), void (* _Nullable __parent)(void), void (* _Nullable __child)(void));
+      |                                     ^~~~~~~~~~
+      |                                     )
+/data/data/com.termux/files/usr/include/pthread.h:97:56error: expected ';', ',' or ')' before 'void'
+   97 | void (* _Nullable __prepare)(void), void (* _Nullable __parent)(void), void (* _Nullable __child)(void));
+      |                                     ^~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:99:51error: expected ';', ',' or ')' before '__attr'
+   99 | _attr_destroy(pthread_attr_t* _Nonnull __attr);
+      |                                        ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:100:64: error: expected ';', ',' or ')' before '__attr'
+  100 | tate(const pthread_attr_t* _Nonnull __attr, int* _Nonnull __state);
+      |                                     ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:101:62: error: expected ';', ',' or ')' before '__attr'
+  101 | size(const pthread_attr_t* _Nonnull __attr, size_t* _Nonnull __size);
+      |                                     ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:107:63: error: expected ';', ',' or ')' before '__attr'
+  107 | aram(const pthread_attr_t* _Nonnull __attr, struct sched_param* _Nonnull __param);
+      |                                     ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:108:64: error: expected ';', ',' or ')' before '__attr'
+  108 | licy(const pthread_attr_t* _Nonnull __attr, int* _Nonnull __policy);
+      |                                     ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:109:58: error: expected ';', ',' or ')' before '__attr'
+  109 | cope(const pthread_attr_t* _Nonnull __attr, int* _Nonnull __scope);
+      |                                     ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:110:58: error: expected ';', ',' or ')' before '__attr'
+  110 | tack(const pthread_attr_t* _Nonnull __attr, void* _Nullable * _Nonnull __addr, size_t* _Nonnull __size);
+      |                                     ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:111:62: error: expected ';', ',' or ')' before '__attr'
+  111 | size(const pthread_attr_t* _Nonnull __attr, size_t* _Nonnull __size);
+      |                                     ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:112:48: error: expected ';', ',' or ')' before '__attr'
+  112 | ead_attr_init(pthread_attr_t* _Nonnull __attr);
+      |                                        ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:113:58: error: expected ';', ',' or ')' before '__attr'
+  113 | etachstate(pthread_attr_t* _Nonnull __attr, int __state);
+      |                                     ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:114:56: error: expected ';', ',' or ')' before '__attr'
+  114 | tguardsize(pthread_attr_t* _Nonnull __attr, size_t __size);
+      |                                     ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:120:57: error: expected ';', ',' or ')' before '__attr'
+  120 | schedparam(pthread_attr_t* _Nonnull __attr, const struct sched_param* _Nonnull __param);
+      |                                     ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:121:58: error: expected ';', ',' or ')' before '__attr'
+  121 | chedpolicy(pthread_attr_t* _Nonnull __attr, int __policy);
+      |                                     ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:122:52: error: expected ';', ',' or ')' before '__attr'
+  122 | r_setscope(pthread_attr_t* _Nonnull __attr, int __scope);
+      |                                     ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:123:52: error: expected ';', ',' or ')' before '__attr'
+  123 | r_setstack(pthread_attr_t* _Nonnull __attr, void* _Nonnull __addr, size_t __size);
+      |                                     ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:124:56: error: expected ';', ',' or ')' before '__addr'
+  124 | tstacksize(pthread_attr_t* _Nonnull __addr, size_t __size);
+      |                                     ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:126:59: error: expected ';', ',' or ')' before '__attr'
+  126 | r_destroy(pthread_condattr_t* _Nonnull __attr);
+      |                                        ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:127:66: error: expected ';', ',' or ')' before '__attr'
+  127 | (const pthread_condattr_t* _Nonnull __attr, clockid_t* _Nonnull __clock);
+      |                                     ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:128:68: error: expected ';', ',' or ')' before '__attr'
+  128 | (const pthread_condattr_t* _Nonnull __attr, int* _Nonnull __shared);
+      |                                     ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:129:56: error: expected ';', ',' or ')' before '__attr'
+  129 | attr_init(pthread_condattr_t* _Nonnull __attr);
+      |                                        ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:130:60: error: expected ';', ',' or ')' before '__attr'
+  130 | tclock(pthread_condattr_t* _Nonnull __attr, clockid_t __clock);
+      |                                     ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:131:62: error: expected ';', ',' or ')' before '__attr'
+  131 | shared(pthread_condattr_t* _Nonnull __attr, int __shared);
+      |                                     ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:133:53: error: expected ';', ',' or ')' before '__cond'
+  133 | ond_broadcast(pthread_cond_t* _Nonnull __cond);
+      |                                        ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:140:51: error: expected ';', ',' or ')' before '__cond'
+  140 | _cond_destroy(pthread_cond_t* _Nonnull __cond);
+      |                                        ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:141:48: error: expected ';', ',' or ')' before '__cond'
+  141 | _cond_init(pthread_cond_t* _Nonnull __cond, const pthread_condattr_t* _Nullable __attr);
+      |                                     ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:142:50: error: expected ';', ',' or ')' before '__cond'
+  142 | d_cond_signal(pthread_cond_t* _Nonnull __cond);
+      |                                        ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:143:53: error: expected ';', ',' or ')' before '__cond'
+  143 | _timedwait(pthread_cond_t* _Nonnull __cond, pthread_mutex_t* _Nonnull __mutex, const struct timespec* _Nullable __timeout);
+      |                                     ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:156:66: error: expected ';', ',' or ')' before '__cond'
+  156 | notonic_np(pthread_cond_t* _Nonnull __cond, pthread_mutex_t* _Nonnull __mutex,
+      |                                     ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:160:48: error: expected ';', ',' or ')' before '__cond'
+  160 | _cond_wait(pthread_cond_t* _Nonnull __cond, pthread_mutex_t* _Nonnull __mutex);
+      |                                     ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:162:40: error: expected ';', ',' or ')' before '__pthread_ptr'
+  162 |  pthread_create(pthread_t* _Nonnull __pthread_ptr, pthread_attr_t const* _Nullable __attr, void* _Nullable (* _Nonnull __start_routine)(void* _Nullable), void* _Nullable);
+      |                                     ^~~~~~~~~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:165:35: error: expected ';', ',' or ')' before '__return_valu'
+  165 | void pthread_exit(void* _Nullable __return_valu) __noreturn;
+      |                                   ^~~~~~~~~~~~~
+/data/data/com.termux/files/usr/include/pthread.h:169:70: error: expected ';', ',' or ')' before '__attr'
+  169 | _t __pthread, pthread_attr_t* _Nonnull __attr);
+      |                                        ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:171:68: error: expected ';', ',' or ')' before '__clock'
+  171 | read_t __pthread, clockid_t* _Nonnull __clock);
+      |                                       ^~~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:173:17: error: expected '=', ',', ';', 'asm' or '__attribute_' before 'pthread_getspecific'
+  173 | void* _Nullable pthread_getspecific(pthread_key_t __key);
+      |                 ^~~~~~~~~~~~~~~~~~~
+/data/data/com.termux/files/usr/include/pthread.h:177:55: error: expected ';', ',' or ')' before '*' token
+  177 | thread_t __pthread, void* _Nullable * _Nullable __return_value_ptr);
+      |                                     ^
+
+/data/data/com.termux/files/usr/include/pthread.h:194:48: error: expected ';', ',' or ')' before '__key_ptr'
+  194 | _key_create(pthread_key_t* _Nonnull __key_ptr, void (* _Nullable __key_destructor)(void* _Nullable));
+      |                                     ^~~~~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:204:61: error: expected ';', ',' or ')' before '__attr'
+  204 | _destroy(pthread_mutexattr_t* _Nonnull __attr);
+      |                                        ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:205:70: error: expected ';', ',' or ')' before '__attr'
+  205 | const pthread_mutexattr_t* _Nonnull __attr, int* _Nonnull __shared);
+      |                                     ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:206:67: error: expected ';', ',' or ')' before '__attr'
+  206 | const pthread_mutexattr_t* _Nonnull __attr, int* _Nonnull __type);
+      |                                     ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:212:58: error: expected ';', ',' or ')' before '__attr'
+  212 | ttr_init(pthread_mutexattr_t* _Nonnull __attr);
+      |                                        ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:213:64: error: expected ';', ',' or ')' before '__attr'
+  213 | hared(pthread_mutexattr_t* _Nonnull __attr, int __shared);
+      |                                     ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:214:61: error: expected ';', ',' or ')' before '__attr'
+  214 | ttype(pthread_mutexattr_t* _Nonnull __attr, int __type);
+      |                                     ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:227:53: error: expected ';', ',' or ')' before '__mutex'
+  227 | tex_destroy(pthread_mutex_t* _Nonnull __mutex);
+      |                                       ^~~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:228:50: error: expected ';', ',' or ')' before '__mutex'
+  228 | utex_init(pthread_mutex_t* _Nonnull __mutex, const pthread_mutexattr_t* _Nullable __attr);
+      |                                     ^~~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:229:50: error: expected ';', ',' or ')' before '__mutex'
+  229 | _mutex_lock(pthread_mutex_t* _Nonnull __mutex);
+      |                                       ^~~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:230:55: error: expected ';', ',' or ')' before '__mutex'
+  230 | timedlock(pthread_mutex_t* _Nonnull __mutex, const struct timespec* _Nullable __timeout);
+      |                                     ^~~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:247:53: error: expected ';', ',' or ')' before '__mutex'
+  247 | tex_trylock(pthread_mutex_t* _Nonnull __mutex);
+      |                                       ^~~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:248:52: error: expected ';', ',' or ')' before '__mutex'
+  248 | utex_unlock(pthread_mutex_t* _Nonnull __mutex);
+      |                                       ^~~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:250:43: error: expected ';', ',' or ')' before '__once'
+  250 | hread_once(pthread_once_t* _Nonnull __once, void (* _Nonnull __init_routine)(void));
+      |                                     ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:252:60: error: expected ';', ',' or ')' before '__attr'
+  252 | tr_init(pthread_rwlockattr_t* _Nonnull __attr);
+      |                                        ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:253:63: error: expected ';', ',' or ')' before '__attr'
+  253 | destroy(pthread_rwlockattr_t* _Nonnull __attr);
+      |                                        ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:254:72: error: expected ';', ',' or ')' before '__attr'
+  254 | onst pthread_rwlockattr_t* _Nonnull __attr, int* _Nonnull __shared);
+      |                                     ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:255:66: error: expected ';', ',' or ')' before '__attr'
+  255 | ared(pthread_rwlockattr_t* _Nonnull __attr, int __shared);
+      |                                     ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:272:55: error: expected ';', ',' or ')' before '__rwlock'
+  272 | k_destroy(pthread_rwlock_t* _Nonnull __rwlock);
+      |                                      ^~~~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:273:52: error: expected ';', ',' or ')' before '__rwlock'
+  273 | ock_init(pthread_rwlock_t* _Nonnull __rwlock, const pthread_rwlockattr_t* _Nullable __attr);
+      |                                     ^~~~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:274:54: error: expected ';', ',' or ')' before '__rwlock'
+  274 | ck_rdlock(pthread_rwlock_t* _Nonnull __rwlock);
+      |                                      ^~~~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:275:59: error: expected ';', ',' or ')' before '__rwlock'
+  275 | edrdlock(pthread_rwlock_t* _Nonnull __rwlock, const struct timespec* _Nullable __timeout);
+      |                                     ^~~~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:283:59: error: expected ';', ',' or ')' before '__rwlock'
+  283 | edwrlock(pthread_rwlock_t* _Nonnull __rwlock, const struct timespec* _Nullable __timeout);
+      |                                     ^~~~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:291:57: error: expected ';', ',' or ')' before '__rwlock'
+  291 | tryrdlock(pthread_rwlock_t* _Nonnull __rwlock);
+      |                                      ^~~~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:292:57: error: expected ';', ',' or ')' before '__rwlock'
+  292 | trywrlock(pthread_rwlock_t* _Nonnull __rwlock);
+      |                                      ^~~~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:293:54: error: expected ';', ',' or ')' before '__rwlock'
+  293 | ck_unlock(pthread_rwlock_t* _Nonnull __rwlock);
+      |                                      ^~~~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:294:54: error: expected ';', ',' or ')' before '__rwlock'
+  294 | ck_wrlock(pthread_rwlock_t* _Nonnull __rwlock);
+      |                                      ^~~~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:342:66: error: expected ';', ',' or ')' before '__name'
+  342 | read_t __pthread, const char* _Nonnull __name);
+      |                                        ^~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:381:97: error: expected ';', ',' or ')' before '__param'
+  381 | y, const struct sched_param* _Nonnull __param);
+      |                                       ^~~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:389:62: error: expected ';', ',' or ')' before '__policy'       389 | (pthread_t __pthread, int* _Nonnull __policy, struct sched_param* _Nonnull __param);
+      |                                     ^~~~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:410:68: error: expected ';', ',' or ')' before '__value'
+  410 | ad_key_t __key, const void* _Nullable __value);       |                                       ^~~~~~~
+
+/data/data/com.termux/files/usr/include/pthread.h:412:26: error: expected ')' before '__pthread_cleanup_func_t'
+  412 | typedef void (* _Nullable __pthread_cleanup_func_t)(void* _Nullable);
+      |                          ^~~~~~~~~~~~~~~~~~~~~~~~~
+      |                          )
+/data/data/com.termux/files/usr/include/pthread.h:415:43: error: expected ':', ',', ';', '}' or '__attribute__' before '__cleanup_prev'
+  415 | ct __pthread_cleanup_t*   _Nullable __cleanup_prev;                                                           |                                     ^~~~~~~~~~~~~~
+                                                        /data/data/com.termux/files/usr/include/pthread.h:420:59: error: expected ';', ',' or ')' before 'c'
+  420 | _push(__pthread_cleanup_t* _Nonnull c, __pthread_cleanup_func_t _Nullable, void* _Nullable);
+      |                                     ^           
+In file included from /data/data/com.termux/files/usr/include/openssl/err.h:48,
+                 from ../scripts/extract-cert.c:23:     /data/data/com.termux/files/usr/include/errno.h:52:15: error: expected '=', ',', ';', 'asm' or '__attribute__' before '__errno'
+   52 | int* _Nonnull __errno(void) __attribute_const__;      |               ^~~~~~~
+../scripts/extract-cert.c: In function 'format':
+../scripts/extract-cert.c:38:9: warning: implicit declaration of function 'fprintf' [-Wimplicit-function-declaration]
+   38 |         fprintf(stderr,                               |         ^~~~~~~
+../scripts/extract-cert.c:25:1: note: include '<stdio.h' or provide a declaration of 'fprintf'
+   24 | #include <openssl/engine.h>
+  +++ |+#include <stdio.h>
+   25 |
+../scripts/extract-cert.c:38:9: warning: incompatible implicit declaration of built-in function 'fprintf' [-Wbuiltin-declaration-mismatch]
+   38 |         fprintf(stderr,                               |         ^~~~~~~
+../scripts/extract-cert.c:38:9: note: include '<stdio.h' or provide a declaration of 'fprintf'
+/data/data/com.termux/files/usr/include/stdio.h:74:16: error: 'stderr' undeclared (first use in this function)
+   74 | #define stderr stderr
+      |                ^~~~~~
+../scripts/extract-cert.c:38:17: note: in expansion of macro 'stderr'
+   38 |         fprintf(stderr,
+      |                 ^~~~~~
+/data/data/com.termux/files/usr/include/stdio.h:74:16: note: 'stderr' is defined in header '<stdio.h>'; this is probably fixable by adding '#include <stdio.h>'            74 | #define stderr stderr
+      |                ^~~~~~
+../scripts/extract-cert.c:38:17: note: in expansion of macro 'stderr'
+   38 |         fprintf(stderr,                               |                 ^~~~~~
+/data/data/com.termux/files/usr/include/stdio.h:74:16: note: each undeclared identifier is reported only once for each function it appears in
+   74 | #define stderr stderr                                 |                ^~~~~~                           ../scripts/extract-cert.c:38:17: note: in expansion of macro 'stderr'                                              38 |         fprintf(stderr,                               |                 ^~~~~~
+../scripts/extract-cert.c: In function 'display_openssl_errors':                                                ../scripts/extract-cert.c:51:9: warning: incompatible implicit declaration of built-in function 'fprintf' [-Wbuiltin-declaration-mismatch]                                 51 |         fprintf(stderr, "At main.c:%d:\n", l);
+      |         ^~~~~~~                                 ../scripts/extract-cert.c:51:9: note: include '<stdio.h' or provide a declaration of 'fprintf'                  /data/data/com.termux/files/usr/include/stdio.h:74:16: error: 'stderr' undeclared (first use in this function)
+   74 | #define stderr stderr                                 |                ^~~~~~                           ../scripts/extract-cert.c:51:17: note: in expansion of macro 'stderr'
+   51 |         fprintf(stderr, "At main.c:%d:\n", l);        |                 ^~~~~~                          /data/data/com.termux/files/usr/include/stdio.h:74:16: note: 'stderr' is defined in header '<stdio.h>'; this is probably fixable by adding '#include <stdio.h>'
+   74 | #define stderr stderr                                 |                ^~~~~~                           ../scripts/extract-cert.c:51:17: note: in expansion of macro 'stderr'
+   51 |         fprintf(stderr, "At main.c:%d:\n", l);        |                 ^~~~~~                          ../scripts/extract-cert.c: In function 'write_cert':
+../scripts/extract-cert.c:76:25: warning: implicit declaration of function 'err' [-Wimplicit-function-declaration]
+   76 |                         err(1, fmt, ## __VA_ARGS__);    \                                                     |                         ^~~                     ../scripts/extract-cert.c:91:17: note: in expansion of macro 'ERR'                                                 91 |                 ERR(!wb, "%s", cert_dst);
+      |                 ^~~                             ../scripts/extract-cert.c:96:17: warning: incompatible implicit declaration of built-in function 'fprintf' [-Wbuiltin-declaration-mismatch]
+   96 |                 fprintf(stderr, "Extracted cert: %s\n", buf);
+      |                 ^~~~~~~                         ../scripts/extract-cert.c:96:17: note: include '<stdio.h>' or provide a declaration of 'fprintf'                /data/data/com.termux/files/usr/include/stdio.h:74:16: error: 'stderr' undeclared (first use in this function)
+   74 | #define stderr stderr                                 |                ^~~~~~
+../scripts/extract-cert.c:96:25: note: in expansion of macro 'stderr'
+   96 |                 fprintf(stderr, "Extracted cert: %s\n", buf);                                                 |                         ^~~~~~
+/data/data/com.termux/files/usr/include/stdio.h:74:16: note: 'stderr' is defined in header '<stdio.h>'; this is probably fixable by adding '#include <stdio.h>'
+   74 | #define stderr stderr
+      |                ^~~~~~                           ../scripts/extract-cert.c:96:25: note: in expansion of macro 'stderr'                                              96 |                 fprintf(stderr, "Extracted cert: %s\n", buf);                                                 |                         ^~~~~~
+../scripts/extract-cert.c: In function 'main':          ../scripts/extract-cert.c:107:26: warning: implicit declaration of function 'atoi' [-Wimplicit-function-declaration]                                                      107 |         kbuild_verbose = atoi(getenv("KBUILD_VERBOSE")?:"0");                                                 |                          ^~~~
+../scripts/extract-cert.c:107:31: warning: implicit declaration of function 'getenv' [-Wimplicit-function-declaration]                                                    107 |         kbuild_verbose = atoi(getenv("KBUILD_VERBOSE")?:"0");                                                 |                               ^~~~~~
+../scripts/extract-cert.c:25:1: note: 'getenv' is defined in header '<stdlib.h>'; this is probably fixable by adding '#include <stdlib.h>'                                 24 | #include <openssl/engine.h>
+  +++ |+#include <stdlib.h>                                25 |
+../scripts/extract-cert.c:107:56: warning: pointer/integer type mismatch in conditional expression [-Wint-conversion]
+  107 | _verbose = atoi(getenv("KBUILD_VERBOSE")?:"0");       |                                          ^
+
+../scripts/extract-cert.c:109:18: warning: assignment to 'const char *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
+  109 |         key_pass = getenv("KBUILD_SIGN_PIN");         |                  ^
+../scripts/extract-cert.c:119:27: warning: implicit declaration of function 'fopen' [-Wimplicit-function-declaration]
+  119 |                 FILE *f = fopen(cert_dst, "wb");
+      |                           ^~~~~                 ../scripts/extract-cert.c:119:27: note: 'fopen' is defined in header '<stdio.h>'; this is probably fixable by adding '#include <stdio.h>'
+../scripts/extract-cert.c:119:27: warning: initialization of 'FILE *' {aka 'struct __sFILE *'} from 'int' makes pointer from integer without a cast [-Wint-conversion]  ../scripts/extract-cert.c:121:17: warning: implicit declaration of function 'fclose'; did you mean 'false'? [-Wimplicit-function-declaration]                             121 |                 fclose(f);
+      |                 ^~~~~~
+      |                 false                           ../scripts/extract-cert.c:123:21: warning: implicit declaration of function 'strncmp' [-Wimplicit-function-declaration]                                                   123 |         } else if (!strncmp(cert_src, "pkcs11:", 7)) {
+      |                     ^~~~~~~                     ../scripts/extract-cert.c:25:1: note: include '<string.h>' or provide a declaration of 'strncmp'
+   24 | #include <openssl/engine.h>                       +++ |+#include <string.h>
+   25 |
+../scripts/extract-cert.c:123:50: warning: 'strncmp' argument 3 type is 'int' where 'long unsigned int' is expected in a call to built-in function declared without prototype [-Wbuiltin-declaration-mismatch]
+  123 |  } else if (!strncmp(cert_src, "pkcs11:", 7)) {
+      |                                           ^                                                             <built-in>: note: built-in 'strncmp' declared here
+In file included from /data/data/com.termux/files/usr/include/linux/compiler_types.h:11,
+                 from /data/data/com.termux/files/usr/include/linux/stddef.h:9,                                                  from /data/data/com.termux/files/usr/include/linux/posix_types.h:9,
+                 from /data/data/com.termux/files/usr/include/sys/types.h:38,
+                 from /data/data/com.termux/files/usr/include/stdio.h:42:                                       ../tools/include/linux/compiler.h: At top level:        ../tools/include/linux/compiler.h:119:29: warning: 'always_inline' function might not be inlinable unless also declared 'inline' [-Wattributes]
+  119 | static __always_inline void __write_once_size(volatile void *p, void *res, int size)                          |                             ^~~~~~~~~~~~~~~~~   ../tools/include/linux/compiler.h:105:29: warning: 'always_inline' function might not be inlinable unless also declared 'inline' [-Wattributes]                           105 | static __always_inline void __read_once_size(const volatile void *p, void *res, int size)
+      |                             ^~~~~~~~~~~~~~~~    ../tools/include/linux/compiler.h:119:29: warning: '__write_once_size' defined but not used [-Wunused-function]
+  119 | static __always_inline void __write_once_size(volatile void *p, void *res, int size)
+      |                             ^~~~~~~~~~~~~~~~~
+../tools/include/linux/compiler.h:105:29: warning: '__read_once_size' defined but not used [-Wunused-function]    105 | static __always_inline void __read_once_size(const volatile void *p, void *res, int size)                     |                             ^~~~~~~~~~~~~~~~
+make[2]: *** [scripts/Makefile.host:107: scripts/extract-cert] Error 1                                          make[1]: *** [/root/oscar/Makefile:1350: scripts] Error 2
+make: *** [Makefile:190: sub-make] Error 2              root@localhost:~/oscar#
