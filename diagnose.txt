@@ -1,782 +1,980 @@
-root@localhost:~/oscar/KernelSU-Next# cd /root/oscar/KernelSU-Next                                              
-git reset --hard HEAD
-git clean -fd
-HEAD is now at a54e4fa4 kernel: Don't use kprobes if we don't have functional kprobes                           Removing 10_enable_susfs_for_ksu.patch
-Removing kernel/Kconfig.orig
-Removing kernel/Makefile.orig
-Removing kernel/Makefile.rej
-Removing kernel/selinux/rules.c.orig                    Removing kernel/selinux/rules.c.rej
-Removing kernel/selinux/selinux.c.orig
-Removing kernel/selinux/selinux.c.rej
-Removing kernel/selinux/selinux.h.orig
-Removing kernel/selinux/selinux.h.rej
-root@localhost:~/oscar/KernelSU-Next# git status --shortroot@localhost:~/oscar/KernelSU-Next# find kernel -name "*.rej" -o -name "*.orig"                               root@localhost:~/oscar/KernelSU-Next# grep -nE 'KSU_KPROBES_HOOK|KSU_SUSFS|KPROBES' kernel/Kconfig
-8:        Requires CONFIG_KPROBES for kernel hooking support.
-47:     default y if !KPROBES                           52:config KSU_KPROBES_HOOK
-55:     depends on KRETPROBES && KPROBES && HAVE_SYSCALL_TRACEPOINTS
-56:     default y if KPROBES && KRETPROBES && HAVE_SYSCALL_TRACEPOINTS
-59:       Enable KPROBES, KRETPROBES and TRACEPOINT hook for KernelSU core.
-root@localhost:~/oscar/KernelSU-Next# find kernel -maxdepth 2 -type f | sort
-kernel/.clang-format
-kernel/.clangd
-kernel/.gitignore
-kernel/.vscode/c_cpp_properties.json
-kernel/.vscode/generate_compdb.py
-kernel/.vscode/tasks.json
-kernel/Kbuild
-kernel/Kconfig
-kernel/LICENSE
-kernel/Makefile
-kernel/compat/kernel_compat.c
-kernel/compat/kernel_compat.h
-kernel/core/init.c
-kernel/extras.c
-kernel/feature/adb_root.c
-kernel/feature/adb_root.h
-kernel/feature/kernel_umount.c
-kernel/feature/kernel_umount.h
-kernel/feature/selinux_hide.c
-kernel/feature/selinux_hide.h
-kernel/feature/sucompat.c
-kernel/feature/sucompat.h
-kernel/feature/sulog.c
-kernel/feature/sulog.h
-kernel/hook/hook_manager.c
-kernel/hook/hook_manager.h
-kernel/hook/lsm_hooks.c
-kernel/hook/setuid_hook.c
-kernel/hook/setuid_hook.h
-kernel/include/arch.h
-kernel/include/klog.h
-kernel/include/ksu.h
-kernel/infra/event_queue.c
-kernel/infra/event_queue.h
-kernel/infra/file_wrapper.c
-kernel/infra/file_wrapper.h
-kernel/infra/seccomp_cache.c
-kernel/infra/seccomp_cache.h
-kernel/infra/su_mount_ns.c
-kernel/infra/su_mount_ns.h
-kernel/manager/apk_sign.c
-kernel/manager/apk_sign.h
-kernel/manager/manager_identity.h
-kernel/manager/manager_observer.h
-kernel/manager/pkg_observer.c
-kernel/manager/pkg_observer_defs.h
-kernel/manager/throne_tracker.c
-kernel/manager/throne_tracker.h
-kernel/policy/allowlist.c
-kernel/policy/allowlist.h
-kernel/policy/app_profile.c
-kernel/policy/app_profile.h
-kernel/policy/feature.c
-kernel/policy/feature.h
-kernel/runtime/boot_event.c
-kernel/runtime/ksud.h
-kernel/runtime/ksud_boot.h
-kernel/runtime/ksud_integration.c
-kernel/selinux/Makefile
-kernel/selinux/rules.c
-kernel/selinux/selinux.c
-kernel/selinux/selinux.h
-kernel/selinux/sepolicy.c
-kernel/selinux/sepolicy.h
-kernel/setup.sh
-kernel/sulog/event.c
-kernel/sulog/event.h
-kernel/sulog/fd.c
-kernel/sulog/fd.h
-kernel/supercall/dispatch.c
-kernel/supercall/internal.h
-kernel/supercall/perm.c
-kernel/supercall/supercall.c
-kernel/supercall/supercall.h
-kernel/tools/check_symbol.c
+root@localhost:~/susfs4ksu# cd /root/oscar/KernelSU-Next                                                                                                                git log --all --format='%H %s' --reverse -- kernel/Kconfig kernel/Makefile kernel/selinux/rules.c kernel/selinux/selinux.c kernel/selinux/selinux.h | grep -B3 -A3 -Ei 'susfs|sus|kprobe|reorganiz'                             e9ed28077f2f1b4074dbd48d4be8b3ac3cb53270 kernel: add su compat mode                                             fcafc23a01807402311d6696d626aa3645db339c Add ci for manager and userspace (#2)                                  8e89b90b80f5e6bb44f6155ea4219aa8d5bcc5a8 Add ci for manager and userspace (#2)                                  b1cad53f3665cd84cb635dd2a911d81420629a62 Kconfig : Make KSU depends on KPROBES (#4)                             c19869c1cce782ba7aa590d15305351dcb0d6f97 Kconfig : Make KSU depends on KPROBES (#4)                             db153671c89ffc15db6fe3375529137f21151caf kernel: add ccflags (#11)
+92a3be8af996882bdceb3488dbe57b11e1f3c5c0 kernel: add ccflags (#11)                                              fa4362ddd6856943d2bcbe0432752891815608da kernel: avoding other root process being kprobed                       9aacf2a64dfe2e648131702f3fb3ccdaf53c2e79 kernel: avoding other root process being kprobed                       c17aed0d0231128eee50704f8881ef2debc04ef8 kernel: improve selinux for su context                                 319673154526705f2b1d86ef84c29584d7664460 kernel: improve selinux for su context                                 5f1d8136357dc464209c27a03942b054b01cf1a5 kernel: add selinux rules for allowlist                                --
+0c9ecf3abc0992a87b9b5eaa363430b457af2036 kernel: always apply sepolicy rules even if selinux is permissive
+6b9cb3401f879f75c9acb41da0d24009fb5e323c selinux: use grep to check api supports (#402)
+3452841752a1d2fe8ad98fad1c35f423ef7226a7 selinux: use grep to check api supports (#402)
+940f42b57930c0a6f3220981504d0baea068c935 kernel: Kconfig: Remove KPROBES dependancy (#453)
+432eb318acd0eac14af1f01e0a7644ac7973ef0e kernel: Kconfig: Remove KPROBES dependancy (#453)
+2a737435274a5d3663425277985da55418aac375 kernel: Modify and adjust KernelSU Kconfig (#538)
+b56448a9299f5df2a52a0d61ff17ccda005c088e kernel: Modify and adjust KernelSU Kconfig (#538)
+a3fdcdd90111ca8777cb866440e637ef2e22a7e1 kernel: remove no-macro-redefined
+--
+898e9d4f8ca9b2f46b0c6b36b80a872b5b88d899 [1.0] Drop Non-GKI Support (#1483)
+f881eca862cc09498f7d9d7bd110eee7fef54daf Convert devpts domain to ksu_file (#1801)
+78bf2493bf2b92a12636a4ec64ded21e33644441 Convert devpts domain to ksu_file (#1801)
+e1d30d55af5a77ad745322b60672d375b05a966c kernel: implement SuSFS v1.5.2
+f50ce0058c63a7819e9066fab83df802de899a31 kernel: implement SuSFS v1.5.2
+68c93178852e8d035021d7e130e89104a206ebfe kernel: additional custom v2_signature size/hash
+564249a9be5a40006c8dc0488e5abefa14b420a4 kernel: additional custom v2_signature size/hash
+b78c9adf491903cfeadf6bb79ed36874a7e39d7c kernel: susfs: CONFIG_KSU_SUSFS_INFO syscall to get susfs version & variant
+e1107e514dfdf74db76e581f27feb09c3dd6989a kernel: susfs: CONFIG_KSU_SUSFS_INFO syscall to get susfs version & variant
+2679f9176d6dcd7b9d1a582c4df39be112a2428a Revert "kernel: susfs: CONFIG_KSU_SUSFS_INFO syscall to get susfs version & variant"
+e9510cc3e4edceab4d8710ecf14152ea6174c38f kernel: added SuSFS version
+dc1bff449fc963878378e8748fe6b3f0b7337168 kernel: Removed SuSFS Patch
+e15516040dab005602b4bdc5893ed9ee2b5dac25 Revert "kernel: susfs: CONFIG_KSU_SUSFS_INFO syscall to get susfs version & variant"
+9e996d1d9d186e44fc9ee03cce4a3214cf485c48 Revert "kernel: susfs: CONFIG_KSU_SUSFS_INFO syscall to get susfs version & variant"
+c1d4f38c19104838ceb883957d04a6fbe63c6b41 kernel: added SuSFS version
+c77560a8d63d6ca113291a2230e8ce97c1cf5d41 kernel: added SuSFS version
+98a692370f9e91eb18e4757e8a7b2852874906a4 kernel: Removed SuSFS Patch
+7848dd16f351fdf34fa31210fe6f5fa7ed2bb962 kernel: Removed SuSFS Patch
+c5847b480c8f2613eb05d95eea70fc6e2b1a3a5c kernel: KSU_VERSION fallback version bumped -> 11998
+220d0350459b722bee074fea0ade1f468d1c2dcd kernel: KSU_VERSION fallback version bumped -> 11998
+f2fcb3687b729e53c507d222516c38899dc1e0f6 kernel: cleaned up remaining susfs code
+bfa4c9db62ab872311890fa9e5886222c5ad2995 kernel: cleaned up remaining susfs code
+68eb2fb6628ff89c170e64e85a5aa80667bd5dd8 kernel: expose allowlist workaround as Kconfig option Useful for situations where the SU allowlist is not kept after a reboot. As per upstream this is only used for < 4.10 and Huawei HiSilicon devices. but theres user reports having issues even on 4.14/4.19 samsung kernels. Expose this option so users affected can opt-in.
+5f2c1eef9c5ea9b5ae8d06aa3bc380309184c2bf kernel: expose allowlist workaround as Kconfig option Useful for situations where the SU allowlist is not kept after a reboot. As per upstream this is only used for < 4.10 and Huawei HiSilicon devices. but theres user reports having issues even on 4.14/4.19 samsung kernels. Expose this option so users affected can opt-in.
+1b70c44d89e4a3fc21803f7c4f30f687f151bd2f kernel: require path_umount backporting Most kernel builders have to touch their kernel source code anyway so we might as well tell them to backport path_umount to achieve some sort of feature parity.
+--
+f929e402956a836f80c211d9ea79bfbeb42a0fa8 Revert "[1.0] Drop Non-GKI Support (#1483)"
+1f58c7bf1229cb420112a5d8459ebf9ebf9ecc3b kernel: KSU_NEXT v2 signature size/hash added
+b3753838664d4bf95b68ff7b358e97cc22764e01 kernel: KSU_NEXT v2 signature size/hash added
+bdf81c08809fdcd1c813374eb6c50af9dc23fb2a kernel: added susfs v1.5.3
+091a35be7fd52580e5556e0ae2aef7f1d1639199 kernel: added susfs v1.5.3
+8fbddc959a43ac3403122e8b43929d7d07f2b3ec Revert "kernel: added susfs v1.5.3"
+a1553c52bd571c7f51e0d57375a82f881c72d61b Revert "kernel: added susfs v1.5.3"
+af5496de80c8e85f33f3eb75fda4cba1969e96dc kernel: auto backport path_umount and can_umount
+f0266d049dc0ec5346a36ae2b3d9c2bbe21f58de kernel: auto backport path_umount and can_umount
+79d4f99cf42cdcb9cabb87a9e06a6b37ee3abc6a kernel: small adjustment
+--
+14624ea966077fad3f03787f65bdd7802bee40a5 kernel: dynamic get_cred_rcu patch for appropriate atomic function and apply patch accordingly
+ae36e2085ccffe2a13d2c9771cc0b44cc2e1f32a kernel: handle optional backports (#99)
+5435992911a8adc035c9a4911db7f4533473e253 kernel: KernelSU-Next version fallback set to 11998
+097451d578e6d5f0a0a2a4f4744f074c558bebd5 kernel: guard functionality that requires kprobes
+5f871cd713fc62f43042500cd69ef4fb58202e56 kernel/selinux: fix pointer mismatch with 32-bit ksud on 64-bit kernels
+217d230b61b3297b93b511d766e5ff1896886f06 kernel: expose KSU_LSM_SECURITY_HOOKS on Kconfig
+26d3ec14a669743d821d1e689d1b914cd324c300 kernel: Makefile: sanity checks
+eed685507a77e267a0d16c190f584ef02b0257dc kernel: rename KSU_WITH_KPROBES to KSU_KPROBES_HOOK for better self explanitory
+d5dfecefeaa15e12413af86d5749eff4f6350861 Revert "kernel: Makefile: sanity checks"
+a37f398cc799d5dae065ccfddbc2b52ab15d9eba kernel/Makefile: check kernelsu driver version from online git repo first, if fails then check local .git and if that also fails then use hardcoded fallback
+b97fc2bec23057e71f20c0721c7cedd86394cce6 Revert "kernel/Makefile: check kernelsu driver version from online git repo first, if fails then check local .git and if that also fails then use hardcoded fallback"
+--
+62ba9358b895d760dcb4cdbad171ee56e1d3f34b kernel: refine syscall_hook_manager
+4c6a95b33cff77a4ce58703a836a1f7203c5eb5b kernel: remove OVERLAY_FS dependency
+5626c09a4a41c62a152865af86905c3ddc3357e0 kernel: Fix execve filename access on ARM64
+7b6916f92c2f55df56852b5efba05c055bf375ed kernel: remove redundant KSU_KPROBES_HOOK guard
+57e706cf705e999910b769f4ee2dd4e6cfef6daa kernel: remove unused functions and KSU_ALLOWLIST_WORKAROUND guard
+3e296ae85216c43b3eca14ce0a0697b12c219592 kernel: fix selinux
+07ad83deb13345156006e1f952167e0a09e8b94f kernel: update Makefile
+--
+b68370790476dd275ce482aa28626310fbf7496d kernel: use selinux_cred() method instead of directly use cred->security (#3111)
+d20831e4ebd1279e6f9951fecbf13a7d8caabb5b kernel: remove unused cflags
+5712ea72e663cc25fd2a0d6e9dfa9caeaa13dbf6 kernel: Add some backports and remove some compatibility code
+1551e9a0eec29e3f7f8adad0313141b1ae759483 kernel: set KSU_KPROBES_HOOK if not defined KSU_MANUAL_HOOK
+56879181aea063a2831652b0dc4a6c01ad3a46c6 selinux: Cache SID lookups for domain checks (https://github.com/tiann/KernelSU/pull/3128) (#1051)
+8de61e2305d02b927f32c41b91c05437c8a92425 kernel: Clean up selinux.c (https://github.com/tiann/KernelSU/pull/3132)
+ec215a2fc1f5561243212c11a40c89da9b38bbd6 kernel: Fix `setup_selinux` using `__task_cred` directly (https://github.com/tiann/KernelSU/pull/3189)
+--
+80bfcb7fd673921334a6773dcfc61bfbe4fbb07b kernel: legacy support for new sepolicy on legacy kernels
+b44b482b14ac47b0869ac19a1b4328caa56285d8 kernel: selinux/rules: backport handle_sepolicy to legacy policydb
+462182fa7e0e61e6756fe84e6ce77197a8e2dcae kernel: selinux: minify rules
+6d4aa8bfcd6795d1a612d8a305855d7bbd977587 kernel: reorganize source layout
+fa5c0f0bc821da9ceca789c2c5da19eb82490ea4 kernel: allow disable manager or policy
+32abc191ac708b02aa4d45f7b89d91d084d1b366 kernel: unified uapi header
+91e4c00908a3d44d1bf7b68950eaf3e333a642b8 kernel / userspace / manager: fix uapi
+--
+a587f23be7ff9da0f5aa21ff24bdd65ac460c52a selinux: add compatibility for pre-4.12 kernels
+1e65e8655158367e66302243e38d83fed1d5593a kernel: selinux: fix slow path string comparison and remove dead code
+f029653f7bf1c28453b96287ff8c1f93d00931d5 kernel: selinux: minify rules
+813bc8a7e0e0ce5e83b759b674d4503ef77c3c5a kernel: reorganize source layout
+765a69f61e24ebff280e003f50882c95f34e9140 kernel: allow disable manager or policy
+86624a96323951dafe16bfd0ecc1449941b23514 kernel: unified uapi header
+d0dd36c8ee8b6f7ccc72a67f4a268f7664e1f3b3 kernel: fix uapi
+--
+a97004c79a75fb34093d0a1a4ae00f7af7433b48 kernel, ksud: refactor sucompat (https://github.com/tiann/KernelSU/pull/3521)
+065a36ae6fe2497bcbdbdeb8fb9b8fdf3b9ccf7c kernel: Allow domain to use memfd created by ksu domain (https://github.com/tiann/KernelSU/pull/3528)
+430a739216f11769ebc72e0142e64922536b6181 sync legacy: sulog, SELinux hide, adb root (#1364)
+07692d96a56547e2f4419a8687372de6c55a1d04 kernel: purge SuSFS remnants
+cd1cb09f66964fad2c5665bc69820e80b648d001 kernel: add syscall dispatcher patching for x64 (https://github.com/tiann/KernelSU/pull/3562)
+835db282379dedba31b2b48168aa88baabff944b build: bump ddk to 20260828, support android17-6.18 (https://github.com/tiann/KernelSU/pull/3663)
+8b9d7a7a9cd4a45a6b297817a0925031bc9454a9 kernel: Support out-of-tree builds against generic Linux
 root@localhost:~/oscar/KernelSU-Next# cd /root/oscar/KernelSU-Next
-
-git status --short
-git log --oneline --all --decorate -20
-e94a5bf2 (origin/l10n_dev) New translations manager/app/src/main/res/values-it-rIT/strings.xml (bundle: 8)
-f9a69951 (origin/dev, origin/HEAD, dev) kernel: retain capabilities across execve for non-root profiles (https://github.com/tiann/KernelSU/pull/3710)
-36a6729b New translations manager/app/src/main/res/values-vi-rVN/strings.xml (bundle: 8)
-e7ddc574 New translations manager/app/src/main/res/values-uk-rUA/strings.xml (bundle: 8)
-e89ecf0d New translations manager/app/src/main/res/values-tr-rTR/strings.xml (bundle: 8)
-650638c9 New translations manager/app/src/main/res/values-th-rTH/strings.xml (bundle: 8)
-61b5085e New translations manager/app/src/main/res/values-sv-rSE/strings.xml (bundle: 8)
-27c2e925 New translations manager/app/src/main/res/values-es-rEM/strings.xml (bundle: 8)
-67fb01b2 New translations manager/app/src/main/res/values-ru-rRU/strings.xml (bundle: 8)
-f8ea5ca6 New translations manager/app/src/main/res/values-pt-rBR/strings.xml (bundle: 8)
-71829c7c New translations manager/app/src/main/res/values-pl-rPL/strings.xml (bundle: 8)
-6ea7c645 New translations manager/app/src/main/res/values-fa-rIR/strings.xml (bundle: 8)
-dab3dcad New translations manager/app/src/main/res/values-ko-rKR/strings.xml (bundle: 8)
-c5f68e1c New translations manager/app/src/main/res/values-ja-rJP/strings.xml (bundle: 8)
-d90036fd New translations manager/app/src/main/res/values-it-rIT/strings.xml (bundle: 8)
-0b562c98 New translations manager/app/src/main/res/values-in-rID/strings.xml (bundle: 8)
-5f863a74 New translations manager/app/src/main/res/values-hu-rHU/strings.xml (bundle: 8)
-ed11afc1 New translations manager/app/src/main/res/values-hi-rIN/strings.xml (bundle: 8)
-239efb68 New translations manager/app/src/main/res/values-de-rDE/strings.xml (bundle: 8)
-85b351cf New translations manager/app/src/main/res/values-fr-rFR/strings.xml (bundle: 8)
-root@localhost:~/oscar/KernelSU-Next# git log --all --oneline -- kernel/allowlist.c kernel/core_hook.c kernel/ksu.c kernel/ksud.c kernel/sucompat.c
-813bc8a7 kernel: reorganize source layout
-0306a23a feat: safe exit (https://github.com/tiann/KernelSU/pull/3317)
-7a26364c kernel: remove util.c and try_set_access_flag dead code
-917775f2 kernel: ksud: prevent atomic panics and fix 32-bit compat in fstat kretprobe
-bcb08758 fix(ksud): remove unsafe memory access hacks in execve kprobe
-1ff11c11 kernel: sucompat: align userspace stack buffer to 16 bytes
-916fc446 kernel: sucompat: safely read execve paths without preempt/access-flag hacks
-db9eae94 kernel: allowlist: optimize `ksu_get_root_profile` linear scan
-85421904 kernel: allowlist: use workqueue instead of init task_work for saving
-6d4aa8bf kernel: reorganize source layout
-785e0bb6 fix: restore missing LSM init for built-in/manual hooks
-6e4be193 kernel: handle ksud execve by syscall_hook_manager, use static_key
-ac5bb5d6 kernel: allow exit
-93d56b35 feat: safe exit (https://github.com/tiann/KernelSU/pull/3317)
-9707560b [PARTIAL] Bring back x86_64 support with a catch (https://github.com/tiann/KernelSU/pull/3328)
-e05540f4 kernel: use syscall table hook to avoid running in atomic context
-942853ee feat: jailbreak by Magica (https://github.com/tiann/KernelSU/pull/3268)
-9515aa4b kernel: enforcing selinux at late-load mode
-3bfc56a3 feat: add late-load mode support (https://github.com/tiann/KernelSU/pull/3258)
-71e0585c kernel: refine stackprotector workaround (https://github.com/tiann/KernelSU/pull/3264)
-1cd7fd81 kernel: make clang-format happy
-92e845f3 kernel: Only check CONFIG_STACKPROTECTOR_PER_TASK on arm64 (https://github.com/tiann/KernelSU/pull/3263)
-3f4eb7dd kernel: add missing attribute
-1d79ce51 kernel: Provide own stackprotector symbol if necessary
-dd808f86 [PARTIAL] feat: jailbreak by Magica (https://github.com/tiann/KernelSU/pull/3268)
-4693f14b kernel: enforcing selinux at late-load mode
-948f4771 feat: add late-load mode support (https://github.com/tiann/KernelSU/pull/3258)
-71363abb kernel: refine stackprotector workaround (https://github.com/tiann/KernelSU/pull/3264)
-fa060a8a kernel: make clang-format happy
-6e112b77 kernel: Only check CONFIG_STACKPROTECTOR_PER_TASK on arm64 (https://github.com/tiann/KernelSU/pull/3263)
-271b2be1 kernel: add missing attribute
-6a04abc6 kernel: Provide own stackprotector symbol if necessary
-d8fa0fc8 kernel: Use ksu cred to save allowlist (https://github.com/tiann/KernelSU/pull/3243)
-b3920c81 kernel: Use ksu cred to save allowlist (https://github.com/tiann/KernelSU/pull/3243)
-8f39f4a1 Revert "kernel: Explicitly check zygote start in execve hook (https://github.com/tiann/KernelSU/pull/3113) (#1038)"
-ff629805 kernel: Avoid malloc in remove_uid_from_arr()
-1a608613 kernel: use rcu to access allowlist, refactor get allowlist api
-6fb44f00 kernel: Avoid malloc in remove_uid_from_arr() (#3099)
-56074f8f kernel: use rcu to access allowlist, refactor get allowlist api
-85dde0cd kernel: ksud: Restore init.rc injection for manual hooks
-c24b3a1e kernel: ksud: read: add fallback to /init.rc
-93c19610 kernel: Use more reasonable symbol name for newfstatat
-8d7f119c kernel: Fixing symbol names causing x64 kernel compilation failure (#3147)
-f9df4c57 kernel: ksud: Refine rc injection, fix issue of Android Canary 2601
-21058f79 kernel: Explicitly check zygote start in execve hook (https://github.com/tiann/KernelSU/pull/3113) (#1038)
-863c1804 kernel: remove innecesary code in ksud.c
-46644093 selinux: Cache SID lookups for domain checks (https://github.com/tiann/KernelSU/pull/3128) (#1051)
-ed226983 kernel: Fix potential memory leaks (https://github.com/tiann/KernelSU/pull/3170) (#1082)
-a32cb83c kernel: Fix potential memory leaks (https://github.com/tiann/KernelSU/pull/3170) (#1082)
-5da83f74 kernel: Prune legacy (4.x) support (#1072)
-9b6c22b4 kernel: Use more reasonable symbol name for newfstatat
-81cd9e8b kernel: Fixing symbol names causing x64 kernel compilation failure (#3147)
-e822400c kernel: ksud: Refine rc injection, fix issue of Android Canary 2601
-00127f2d Revert "kernel: ksud: migrate init.rc handling to security_file_permission LSM" (#1056)
-56879181 selinux: Cache SID lookups for domain checks (https://github.com/tiann/KernelSU/pull/3128) (#1051)
-d7de833a Sync legacy with dev branch and update scope minimized manual hooks 1.7 (#1047)
-a30c086e kernel: Explicitly check zygote start in execve hook (https://github.com/tiann/KernelSU/pull/3113) (#1038)
-5712ea72 kernel: Add some backports and remove some compatibility code
-90ce7c45 kernel: Explicitly check zygote start in execve hook
-800a7a20 sync legacy with dev branch and other things (#1021)
-a7a85040 fix issues in legacy branch (#1007)
-81c604ad kernel: append to init.rc instead of prepending to atrace.rc (https://github.com/tiann/KernelSU/pull/3107) (#1017)
-391eb912 kernel: legacy, add missing early return in ksu_handle_execveat_sucompat (#1009)
-5abd0cbd sync legacy branch with dev branch (#998)
-c0944eb4 kernel: Refactor file_wrapper (#3070)
-cfd00dae kernel: fix compilation errors in non-gki kernels (#996)
-4f8090cd fix some issues in legacy branch (#995)
-bc376376 kernel: extras: add avc spoof impl
-a93da680 add support for legacy/non-gki kernels (#976)
-8490b465 Add mount namespace support <E6><B7><BB><E5>
-<8A><A0><E6><8C><82><E8><BD><BD><E5><91><BD><E5><90><8D><E7><A9><BA><E9><97><B4><E6><94><AF><E6><8C><81> (#2909)
-c5d2b28c kernel: sulog: basic ringbuffer su log
-da81be97 kernel: reformat codes, add workflow to check format (#3062)
-919953e9 kernel: Identify manager without PER_USER_RANGE (#3038)
-f8df0434 kernel: use our cred to unmount, remove sepolicy of zygote (#3032)
-37e48432 kernel: escape to ksu domain in execve hook, remove sepolicy between <E2><80><A6> (#3031)
-36075e36 kernel: Remove second stage init handling for old system
-7b6916f9 kernel: remove redundant KSU_KPROBES_HOOK guard
-5626c09a kernel: Fix execve filename access on ARM64
-eddcb0cc kernel: Add preempt_{disable|enable}_notrace for MODULE
-b4ecfe5a sucompat: Fix execve filename access on ARM64
-81923789 kernel: Remove unreachable vfs_statx handling
-039b6a2b kernel: Add nuke_ext4_sysfs interface
-02e7dbce kernel: Replace kmalloc() usages with kzalloc() (#2939)
-4813ad8f kernel: no need to remark process on post-fs-data and boot-completed
-a9a6b8b8 kernel: Prune allowlist only after boot completed
-62ba9358 kernel: refine syscall_hook_manager
-c94ea0c0 kernel: fix zygote mark on first boot (https://github.com/tiann/KernelSU/pull/2924)
-8f2994b6 kernel: Don't save allowlist on module exit
-a0a294b1 Clean up kernel code (https://github.com/tiann/KernelSU/pull/2898)
-a6741b73 update mark rules, add init mark tracker
-00ea2b07 refactor: kernel_umount setuid_hook
-cbcaf0f5 move reboot hook to supercall.c
-46aa63a5 use kprobe for reboot hook
-5b1befeb add zygote to hook target
-f75095d7 unified hook manager
-5b599128 refact: use app_profile
-25770bd4 on_module_mounted in ksud.c
-adcc1c2e kernel: fix put_task if alloc failed.
-ddf9bf83 use proxy file for pts (https://github.com/tiann/KernelSU/pull/2886)
-8693927a Fix missing unlock on error path
-f52469ac kernel: fix save allowlist
-190a54d5 kernel: remove unused kernel_compat
-5092ba77 kernel: Use real_parent to avoid interference from ptrace.
-c4e12481 kernel: remove unused wrapper for
-83bee9b8 kernel: remove ksu_compat_{open,read,write} because we're in the right context now
-275a6e27 kernel: remove workqueue for allowlist
-1f6bda46 Use force_sig(SIGKILL) to kill process
-1d2fbb83 Switch kretprobe to heap (https://github.com/tiann/KernelSU/pull/2880)
-5e9ca705 Replace mutex with spinlock for tracepoint registration (https://github.com/tiann/KernelSU/pull/2882)
-c07c5e97 build: remove -Wno-implicit-function-declaration
-d81f9098 Revert "kernel: remove unused workqueue"
-d8ef2cb0 revert: still using workqueue for allowlist
-ea5ae778 fix: enhanced security register
-a254da0a kill pgrp in enhanced security
-bdab674a add mutex for sucompat mark
-44888a7e fix: sucompat (https://github.com/tiann/KernelSU/pull/2874)
-c8576c00 kernel: clean headers
-53fef355 kernel: Set the tracepoint flag in a tracepoint manner
-e10edd24 feature: add enhanced security (https://github.com/tiann/KernelSU/pull/2873)
-b8a6973e kernel: remove unused workqueue
-3d6516ab fix: mark tif (https://github.com/tiann/KernelSU/pull/2871)
-bb0241fd kernel: use sys_enter tracepoint for sucompat (https://github.com/tiann/KernelSU/pull/2866)
-564158af support mainline kernel (https://github.com/tiann/KernelSU/pull/2869)
-d11d2d7e kernel: init/exit umount feature
-4615e2f5 kernel: rework umount with task_work
-d49bdd14 Revert "Implement workqueue for unmounting"
-1633e702 Reapply: "kernel: Allow to use in Private Space" (https://github.com/tiann/KernelSU/pull/2857)
-a301f131 kernel: disable setuid debug log
-67352ca7 use cap_task_fix_setuid hook to avoid inline issue
-e3684fe4 add name and print command value
-939acde9 fix security_task_fix_setuid_handler_pre
-13e34358 add fixme
-05cfaf57 fix
-08df3bea refact: use feature subsystem
-a1129d7b switch ns umount
-454b92b6 Implement workqueue for unmounting
-09ef83b3 back to kprobe setuid hook
-711549bc kernel: remove unused
-c2760bd5 fix: a lot again (https://github.com/tiann/KernelSU/pull/2845)
-b133475e fix: a lot (https://github.com/tiann/KernelSU/pull/2843)
-7398ef78 new supercall impl (https://github.com/tiann/KernelSU/pull/2835)
-cc10d042 kernel: replace renameat hook with fsnotify (#910)
-ad8a8446 Fix kernel panics caused by thread info flag corruption (#909)
-69be375d Revert "kernel: harden prctl check"
-11643ee6 Revert "kernel: align prctl harden commit from backslashxx/KernelSU"
-478394a6 kernel: align prctl harden commit from backslashxx/KernelSU SQUASHED: * kernel: harden barriers for arm/arm64 * kernel: core_hook: harden prctl handler
-f1c97b50 kernel: harden prctl check
-693ac0be Revert "Unmount isolated process which forks from zygote unconditionally (https://github.com/tiann/KernelSU/pull/2747) (#776)"
-363e8082 kernel: manager: get kernel driver version tag
-89a0d4c5 (tag: v1.1.0) kernel: sucompat: fix improper sizeof(su)
-dd44d421 kernel: ksud and core_hook: wrap execveat_hook checks with CONFIG_KSU_KPROBES_HOOK guard
-b0e99762 Revert "kernel: core_hook: expose prctl interface for umount list (5ec1cff#16)"
-427f724c Revert "kernel: core_hook: expose nuke_ext4_sysfs on prctl"
-88092246 kernel: sucompat: add missing import arch.h
-02823765 kernel: sucompat: ducplicate declaration, previous declaration is in kernel_compat
-e7a09032 kernel: ksud: provide is_ksu_transition check v2
-3cd88145 kernel: selinux: fix pointer mismatch with 32-bit ksud on 64-bit kernels
-8d8220b3 kernel: ksud: migrate ksud execution to security_bprm_check (tiann#2653)
-35a6c1d1 kernel: sucompat: increase reliability, commonize and micro-optimize (tiann#2656)
-1f95c35d kernel: core_hook: expose nuke_ext4_sysfs on prctl
-2d60fdb9 kernel: core_hook: expose prctl interface for umount list (5ec1cff#16)
-04c6bbf0 kernel: Remove duplicate include in core_hook (#784)
-cee92d69 Unmount isolated process which forks from zygote unconditionally (https://github.com/tiann/KernelSU/pull/2747) (#776)
-5bdb938e fix 'for' loop problem (https://github.com/tiann/KernelSU/pull/2745) (#772)
-a540992e Reset seccomp filter count when escaping to root (https://github.com/tiann/KernelSU/pull/2708) (#743)
-3f4c23a3 kernel: allow only perms for /{system | vendor | product | system_ext}/bin/su path kernel: guard kernelnosu perms if not using KSU_KPROBES_HOOK
-948975ba kernel: core_hook: add support for KernelNoSU
-45ad73e9 kernel: guard syscall hook types
-2c9078e0 kernel: use ksu_strncpy_from_user_retry when kprobes hook sucompat pagefaults
-81f4f09d ksud: Address pagefault in ksu_handle_execveat_ksud (#662)
-bd03c296 kernel/Makefile: remove redundant get_cred_rcu backports
-c6b60a24 ksud: Add second_stage init variant (#653)
-b567e9b2 kernel: add better error message if CMD_GET_MANAGWR_UID fails to fetch manager_uid
-4e3f06d4 kernel: added new prctl CMD_GET_MANAGER_UID to get the uid of the crowned manager
-80bd7977 kernel: ksud: remove remove read_iter requirement
-f15d9b18 kernel: ksud: d_is_reg to IS_REG
-adce6575 kernel: ksud: provide is_ksu_transition check v2
-d6601e1e kernel: core_hook: fix refcount leaks on try_umount (#2635)
-85f4e6ac Switch to prepare_creds/commit_creds (#2631)
-c91f9c18 Revert "kernel: ksud, throne_tracker: small changes for UL"
-3921175e kernel: core_hook: intercept devpts via security_inode_permission LSM (#480)
-c4deee1e kernel: ksud, throne_tracker: small changes for UL
-ce37e17c kernel: added CMD_HOOK_MODE prctl to get the enabled su hook mode value
-eed68550 kernel: rename KSU_WITH_KPROBES to KSU_KPROBES_HOOK for better self explanitory
-27d8bc45 kernel: sucompat: increase reliability of execve_sucompat
-980f71c1 kernel: core_hook: fixup 217d230b (#402)
-9e150b2c ksud/installer: /odm handling we move the folder out of system if it exists in real filesystem and it is not a symlink. this is already supported on init_event.rs so only handle_partition logic was needed to make it happen
-217d230b kernel: expose KSU_LSM_SECURITY_HOOKS on Kconfig
-5f871cd7 kernel/selinux: fix pointer mismatch with 32-bit ksud on 64-bit kernels
-4a37422a kernel/sucompat: sync to KSU pr #2506
-1c9705fd Set KSU_APP_PROFILE_VER for shell (#2481)
-f369297b kernel: fix sometimes sucompat can not toggle by manager (#2484)
-7218a504 kernel: ksud: add ksu_handle_execve_ksud (#217)
-7a08683c (tag: v1.0.5) kernel: remove unnecessary umount calls for configuration directories (evil modifications)
-487e7d00 kernel: simplify umount calls for configuration files
-0038ba65 Fix reference count leak in nuke_ext4_sysfs() (#2467)
-785d8143 kernel: remove KSU_WITH_KPROBES definition since it's already defined by Kconfig
-cd0031e8 kernel: expose variables used by manual hooks always
-15371bb1 kernel: add non-kprobe support for sucompat disable/enable
-097451d5 kernel: guard functionality that requires kprobes
-85866848 kernel: Allow to re-enable sucompat
-bb6c2033 kernel: add support for disable sucompat
-a89985f3 Allow toggling unmount setting for all apps (#2450)
-42896dfa kernel: add umount calls for pixelify gphotos spoof configs and lsposed dex2oat bin
-74171a29 kernel: unregister sysfs for module's ext4 image
-a2fcd157 Revert "kernel: do not umount modules by default"
-bbb05b29 kernel: do not umount modules by default
-87fc6b27 kernel: clear securebits
-a05b790d Avoid unnecessarily overriding capabilities (#2381)
-0ada4ee5 kernel: improve get_cred_rcu guard
-95584df0 kernel: Add fallback if user didn't implement 'get_cred_rcu'
-b18c39e9 Improve seccomp disable && Add locking to protect cred modifications in escape_to_root (#2320)
-72739fac kernel: expose allowlist workaround as Kconfig option Useful for situations where the SU allowlist is not kept after a reboot. As per upstream this is only used for < 4.10 and Huawei HiSilicon devices. but theres user reports having issues even on 4.14/4.19 samsung kernels. Expose this option so users affected can opt-in.
-9f30b48e kernel: try umount /system/etc/hosts & /system_ext
-7ea1579b kernel: try umount /system/etc/hosts & /system_ext
-4332b5ca fix: reset ambient capabilities to resolve D-Bus permission issues
-a5f12ffe fix: reset ambient capabilities to resolve D-Bus permission issues
-a1553c52 Revert "kernel: added susfs v1.5.3"
-8fbddc95 Revert "kernel: added susfs v1.5.3"
-091a35be kernel: added susfs v1.5.3
-bdf81c08 kernel: added susfs v1.5.3
-f929e402 Revert "[1.0] Drop Non-GKI Support (#1483)"
-1a84f69f Revert "[1.0] Drop Non-GKI Support (#1483)"
-cf75aa4a kernel: sync with upstream
-8d2b017c kernel: sync with upstream
-36fb6085 kernel: require path_umount backporting Most kernel builders have to touch their kernel source code anyway so we might as well tell them to backport path_umount to achieve some sort of feature parity.
-1b70c44d kernel: require path_umount backporting Most kernel builders have to touch their kernel source code anyway so we might as well tell them to backport path_umount to achieve some sort of feature parity.
-5f2c1eef kernel: expose allowlist workaround as Kconfig option Useful for situations where the SU allowlist is not kept after a reboot. As per upstream this is only used for < 4.10 and Huawei HiSilicon devices. but theres user reports having issues even on 4.14/4.19 samsung kernels. Expose this option so users affected can opt-in.
-68eb2fb6 kernel: expose allowlist workaround as Kconfig option Useful for situations where the SU allowlist is not kept after a reboot. As per upstream this is only used for < 4.10 and Huawei HiSilicon devices. but theres user reports having issues even on 4.14/4.19 samsung kernels. Expose this option so users affected can opt-in.
-38ca0334 kernel: slightly polish up code
-a545a3e8 kernel: slightly polish up code
-bfa4c9db kernel: cleaned up remaining susfs code
-f2fcb368 kernel: cleaned up remaining susfs code
-7848dd16 kernel: Removed SuSFS Patch
-98a69237 kernel: Removed SuSFS Patch
-9e996d1d Revert "kernel: susfs: CONFIG_KSU_SUSFS_INFO syscall to get susfs version & variant"
-e1551604 Revert "kernel: susfs: CONFIG_KSU_SUSFS_INFO syscall to get susfs version & variant"
-dc1bff44 kernel: Removed SuSFS Patch
-2679f917 Revert "kernel: susfs: CONFIG_KSU_SUSFS_INFO syscall to get susfs version & variant"
-e1107e51 kernel: susfs: CONFIG_KSU_SUSFS_INFO syscall to get susfs version & variant
-b78c9adf kernel: susfs: CONFIG_KSU_SUSFS_INFO syscall to get susfs version & variant
-f50ce005 kernel: implement SuSFS v1.5.2
-e1d30d55 kernel: implement SuSFS v1.5.2
-27bb2491 kernel: Relax dentry_path_raw compare in core_hook (#2041)
-3acb13df kernel: Relax dentry_path_raw compare in core_hook (#2041)
-bd24044e Revert "ksud: [Fix] grant root to the shell in debug mode" (#1860)
-d9fda971 Revert "ksud: [Fix] grant root to the shell in debug mode" (#1860)
-56c39545 ksud: [Fix] grant root to the shell in debug mode (#1853)
-894115e4 ksud: [Fix] grant root to the shell in debug mode (#1853)
-898e9d4f [1.0] Drop Non-GKI Support (#1483)
-97d70b40 [1.0] Drop Non-GKI Support (#1483)
-8e973bcb kernel: replace devpts kprobe
-31653b11 kernel: replace devpts kprobe
-5d6ef355 kernel: Allow to use in Private Space
-0576495b kernel: Allow to use in Private Space
-81033bcc kernel: fix devpts permission. close #1727
-123b66e8 kernel: fix devpts permission. close #1727
-0e656dd3 kernel: Fix compile error on 4.4. close #1720
-7af4f338 kernel: Fix compile error on 4.4. close #1720
-109442f8 (tag: v0.9.4) docs: Add devpts description for non gki
-1bec08ea docs: Add devpts description for non gki
-98757bcd kernel: transition devpts in kernel
-89818cf8 kernel: transition devpts in kernel
-efbc07fd kernel: use library import
-2efefcea kernel: use library import
-f9826838 kernel: refactor PR_REAL_REGS
-cd73307c kernel: refactor PR_REAL_REGS
-fcc3d2d3 kernel: no need to hook
-714990b7 kernel: no need to hook
-dedd54d8 kernel: use syscall hook for all version, remove code next version if works well
-2dc2dbfd kernel: use syscall hook for all version, remove code next version if works well
-2027ac32 Hook syscalls and stable symbols (#1657)
-e2b0721a Hook syscalls and stable symbols (#1657)
-fd17e852 kernel: no need to umount and mark as root for manager uid (#1549)
-a93a3566 kernel: no need to umount and mark as root for manager uid (#1549)
-44457473 Fix missing semicolon (#1551)
-ae8ffe2c Fix missing semicolon (#1551)
-4f05fe22 kernel:Add Huawei hisi check (#1545)
-4584aa7f kernel:Add Huawei hisi check (#1545)
-4ac203a7 kernel: Fix misleading log
-ea0ee056 kernel: Fix misleading log
-8fe19d38 kernel: fix issue with dfd parameter retrieval (#1543)
-2cc23124 kernel: fix issue with dfd parameter retrieval (#1543)
-cb7f414e kernel: guard "umount for uid" logprint with CONFIG_KSU_DEBUG (#1519)
-37410f85 kernel: guard "umount for uid" logprint with CONFIG_KSU_DEBUG (#1519)
-858ec910 kernel: clean memory when exit
-d8671b14 kernel: clean memory when exit
-dc5f911e kernel: remove become_manager and minor refactors
-478fda67 kernel: remove become_manager and minor refactors
-e1f9900b kernel: simplify prctl
-a91690ea kernel: simplify prctl
-9a042110 kernel: Let the kernel choose who is qualified to be the manager.
-a9b31087 kernel: Let the kernel choose who is qualified to be the manager.
-e38a5e52 kernel: we should take ownership over fd
-1ccb61c0 kernel: we should take ownership over fd
-b3a15e2b kernel: Fix the incorrect judgment condition.
-c0254fdb kernel: Fix the incorrect judgment condition.
-c5d423c4 kernel: ignore all non application uid
-91204e71 kernel: ignore all non application uid
-64908583 kernel: Fix compile warning
-7713b7ce kernel: Fix compile warning
-c408710b kernel: minor fixes
-4c9f201c kernel: minor fixes
-bc1e03fe kernel: remove unused headers
-895ad601 kernel: remove unused headers
-71b56ba7 kernel: fix panic cast
-fdb6b6a8 kernel: fix panic cast
-815f4d04 kernel: hook newfstatat/faccessat syscall instead of unstable symbol
-f69abf1e kernel: hook newfstatat/faccessat syscall instead of unstable symbol
-2a64784a kernel: hook syscall instead of unstable symbol
-2fdcdb2b kernel: hook syscall instead of unstable symbol
-247aa877 fixup! Suggest non-gki kernel users to backport path_umount (#1477)
-65bda4b5 fixup! Suggest non-gki kernel users to backport path_umount (#1477)
-ce0c397a kernel: support query working mode
-ae049019 kernel: support query working mode
-4bad691e kernel: don't remove from sysfs when debug is enabled
-68bee049 kernel: don't remove from sysfs when debug is enabled
-fefb02e5 kernel: remove it from sysfs
-85e2cd49 kernel: remove it from sysfs
-d6770467 kernel: Make it compile on 3.18 (maybe older) kernels (#1460)
-8a36c36e kernel: Make it compile on 3.18 (maybe older) kernels (#1460)
-b4cfc2f2 Suggest non-gki kernel users to backport path_umount (#1464)
-cbb215ea Suggest non-gki kernel users to backport path_umount (#1464)
-7568d55b Build KernelSU as LKM (#1254)
-3f5d6ca5 Build KernelSU as LKM (#1254)
-3e2de84a Guard a few logprint in prctl path with KSU_DEBUG (#1402)
-9b254e86 Guard a few logprint in prctl path with KSU_DEBUG (#1402)
-07e475c5 kernel: prevent become manager when failed. close #1328
-8e06088f kernel: prevent become manager when failed. close #1328
-e9997a07 kernel: avoding umount when there isn't any module. close #556
-802549d8 kernel: avoding umount when there isn't any module. close #556
-e3e4d2ee Try umount `/sbin` in kernel (#1257)
-cbf8f0aa Try umount `/sbin` in kernel (#1257)
-32b3ec98 kernel: truncate allowlist before save
-2f3862b1 kernel: truncate allowlist before save
-d6cbda49 kernel: fix out of bound reading. close #1227
-8197ddb3 kernel: fix out of bound reading. close #1227
-706cd1e7 Mount temp dir at /debug_ramdisk (#1226)
-c07b7d38 Mount temp dir at /debug_ramdisk (#1226)
-b7f937b7 kernel: fix su not working in shell for 6.1 kernel
-62117c60 kernel: fix su not working in shell for 6.1 kernel
-1b67c1b1 kernel: fix null pointer dereference for some case (#1075)
-d5985f74 kernel: fix null pointer dereference for some case (#1075)
-344c08bb kernel: make compiler happy
-86dcb02f kernel: make compiler happy
-75b5fdfb kernel: make su without any capabilities possible
-5c495a7e kernel: make su without any capabilities possible
-ce892bc4 kernel: don't umount for non zygote child process. fixes #1054,#1049,#1045
-6dd1b266 kernel: don't umount for non zygote child process. fixes #1054,#1049,#1045
-b1830049 kernel: prune allowlist with package name and uid
-165e450f kernel: prune allowlist with package name and uid
-79951f06 kernel: ignore path that's not mountpoint
-aefcb9c9 kernel: ignore path that's not mountpoint
-7747c0e2 kernel: umount modules mnt when needed. fix #991
-aca3eceb kernel: umount modules mnt when needed. fix #991
-54ee400d kernel: Adapt to low version Android init process (#973)
-b14ea03d kernel: Adapt to low version Android init process (#973)
-cbb98a1d Copy one extra byte from userspace filename (#958)
-c8d0f01c Copy one extra byte from userspace filename (#958)
-cde3e951 kernel: Fix manager recognize err
-a3b675c6 kernel: Fix manager recognize err
-beaa048b kernel: don't trigger page fault when become manager. fix #836
-2f5b4d97 kernel: don't trigger page fault when become manager. fix #836
-907bcad1 kernel: use ordered work queue to avoid timing issues
-f7c1c078 kernel: use ordered work queue to avoid timing issues
-cd952f5e kernel/ksu.c:Fix word mistakes when enabling CONFIG_KSU_DEBUG (#724)
-54214cdc kernel/ksu.c:Fix word mistakes when enabling CONFIG_KSU_DEBUG (#724)
-f4d2b0fe Distinguish different PT_REGS_PARM4 under x86 (#711)
-cd19ce2e Distinguish different PT_REGS_PARM4 under x86 (#711)
-c0066b68 kernel: support the case that init_task.mnt_ns != zygote.mnt_ns(WSA) (#698)
-c62c5f1d kernel: support the case that init_task.mnt_ns != zygote.mnt_ns(WSA) (#698)
-da959b4e kernel: fix compile err on lower kernel
-c7c5a07f kernel: fix compile err on lower kernel
-b644c124 kernel: copy filename ourself instead of getname
-8b7dcc67 kernel: copy filename ourself instead of getname
-f5cfb328 kernel: fix incorrect umount for apps
-f87d6eb9 kernel: fix incorrect umount for apps
-e17f3eab Revert "kernel: use vfs_fstatat on kernel 5.10+, vfs_statx may have cfi."
-a0abe9db Revert "kernel: use vfs_fstatat on kernel 5.10+, vfs_statx may have cfi."
-08884da4 kernel: don't alloc groups for default groups
-fc4f0b28 kernel: don't alloc groups for default groups
-5f1d70da Revert "kernel: getname might sleep in kprobe handler  (#670)"
-22e3e1fc Revert "kernel: getname might sleep in kprobe handler  (#670)"
-79bb9813 kernel: getname might sleep in kprobe handler  (#670)
-7fa7b5b8 kernel: getname might sleep in kprobe handler  (#670)
-cd3e2924 kernel: use vfs_fstatat on kernel 5.10+, vfs_statx may have cfi.
-d2647b2f kernel: use vfs_fstatat on kernel 5.10+, vfs_statx may have cfi.
-9b2f907a kernel: fix typo in allowlist.c (#663)
-3863d197 kernel: fix typo in allowlist.c (#663)
-90299ad0 kernel:Fix the issue of incompatible __maybe_unused in the GCC compiler kernel used in versions 4.4. x to 4.9. x. (#660)
-29169dde kernel:Fix the issue of incompatible __maybe_unused in the GCC compiler kernel used in versions 4.4. x to 4.9. x. (#660)
-ff8c6147 kernel: allow uid 1000(system_uid) to grant root. close #645
-0eb96082 kernel: allow uid 1000(system_uid) to grant root. close #645
-bd8434f4 Hook improvements (take 2) (#563)
-9fa6a0ce Hook improvements (take 2) (#563)
-c6973988 kernel: fix warning on x86_64, close #637
-6b326ffb kernel: fix warning on x86_64, close #637
-4218aa48 Fix error build when using GCC 12.0.0 (#609)
-3fffcde5 Fix error build when using GCC 12.0.0 (#609)
-3ad27c59 (tag: v0.6.0) kernel: use macro for default domain
-ba229c9e kernel: use macro for default domain
-5b27f6c0 kernel: Fix shell permission under KSU_DEBUG
-109472ae kernel: Fix shell permission under KSU_DEBUG
-5db70754 kernel: bump format version to force clear allowlist, prepare to release a new version
-6a11cb70 kernel: bump format version to force clear allowlist, prepare to release a new version
-1408175a kernel: fix set groups for kernel 4.9-
-19e00ac4 kernel: fix set groups for kernel 4.9-
-53be8612 kernel: support setting selinux context for profile
-bacd16a6 kernel: support setting selinux context for profile
-c7f6a7d1 kernel: support settings supplementary groups for profile
-893aebca kernel: support settings supplementary groups for profile
-710edb72 kernel: prevent root process to exec su, which makes app can escape root profile by exec it twice
-1a6e99bc kernel: prevent root process to exec su, which makes app can escape root profile by exec it twice
-076e5d36 kernel: make the profile uid, gid, capabilities really work
-fc961726 kernel: make the profile uid, gid, capabilities really work
-8af5a903 kernel: fix set app profile may override other user's
-9abe9687 kernel: fix set app profile may override other user's
-990626cf kernel: Fixing the issue of a delay in updating the default profile.
-27cca2a2 kernel: Fixing the issue of a delay in updating the default profile.
-fc77ca98 kernel: use uid instead of package to compare allowlist, fix #580
-20a9c6ec kernel: use uid instead of package to compare allowlist, fix #580
-2ce39760 Fixup: build under linux 4.14 (#581)
-da45d906 Fixup: build under linux 4.14 (#581)
-63ec5318 kernel: dont prune uid used for app profile
-395711c9 kernel: dont prune uid used for app profile
-5980c113 kernel: respect the app profile's umount modules field for kernel umounting
-bc9e3da5 kernel: respect the app profile's umount modules field for kernel umounting
-005404f5 kernel: support load/restore default profiles
-0e539cce kernel: support load/restore default profiles
-b31fc471 kernel: support CMD_IS_UID_GRANTED_ROOT and CMD_IS_UID_SHOULD_UMOUNT
-14b13868 kernel: support CMD_IS_UID_GRANTED_ROOT and CMD_IS_UID_SHOULD_UMOUNT
-82d5ec3c kernel: fix CMD_GET_ALLOW_LIST error
-e030ca48 kernel: fix CMD_GET_ALLOW_LIST error
-de72eedb kernel: don't copy profile when not found
-b4f63022 kernel: don't copy profile when not found
-89f6cd04 kernel: minor fixes for profiles
-f8b18c06 kernel: minor fixes for profiles
-bd3a1291 kernel: don't fill default value for app profile
-cb5cd080 kernel: don't fill default value for app profile
-3abb7e4c kernel: baby version of profile
-e8d234ae kernel: baby version of profile
-d014947a change warning about disable kprobes (#549)
-7428ee02 change warning about disable kprobes (#549)
-8f3e5980 kernel: fix format warnning
-976f2610 kernel: fix format warnning
-b80e0625 Revert "Add option to enable global namespace (#497)"
-dc8e6342 Revert "Add option to enable global namespace (#497)"
-f81caf75 Add option to enable global namespace (#497)
-00a459a9 Add option to enable global namespace (#497)
-2716ec58 (tag: v0.5.7) Revert 67667b6 (#500)
-5b4655f8 Revert 052a3d3 (#500)
-294d6fa0 kernel: don't umount for process in global namespace
-002969e9 kernel: don't umount for process in global namespace
-72ee14e6 kernel: revert init stage for x86_64 temporarily
-9d24e592 kernel: revert init stage for x86_64 temporarily
-36ed99d1 ksud.c : Include compat.h (#450)
-5b284d27 ksud.c : Include compat.h (#450)
-67667b6d kernel: umount by lazy
-052a3d3a kernel: umount by lazy
-45c229dc (tag: v0.5.3) kernel: fix snprintf
-168f1f1d kernel: fix snprintf
-f35e03d8 kernel: allow manager to be installed in work profile
-fa25a4fe kernel: allow manager to be installed in work profile
-5504b0dd Revert "kernel: don't save allowlist in worker"
-6b8b02c4 Revert "kernel: don't save allowlist in worker"
-f0dcddd3 kernel: don't show log when get allowlist
-79655229 kernel: don't show log when get allowlist
-c569d803 kernel: don't save allowlist in worker
-54461bc4 kernel: don't save allowlist in worker
-dc45eb6e kernel: Make sure logd has started before post-fs-data.
-8a5c94c3 kernel: Make sure logd has started before post-fs-data.
-a343aa5e Try to solve 4.14 build don't pass problem  (#368)
-3a3fcaad Try to solve 4.14 build don't pass problem  (#368)
-2d36e982  kernel: make /system/bin/init second_stage more precisely (#357)
-8ba6ef20  kernel: make /system/bin/init second_stage more precisely (#357)
-fabaa612 kernel: check CONFIG_SECCOMP status (#351)
-54e5e8fc kernel: check CONFIG_SECCOMP status (#351)
-a3874dd0 kernel: use ksud as root shell instead of /system/bin/sh
-978839da kernel: use ksud as root shell instead of /system/bin/sh
-62bbee56 kernel: fix incorrect dput
-4933b045 kernel: fix incorrect dput
-ec4a233e kernel: basicly umount overlayfs in kernel
-44444b2a kernel: basicly umount overlayfs in kernel
-814d65cc kernel: Fix side channel attack
-a8bd9f19 kernel: Fix side channel attack
-77056a71 kernel: remove unused poll wait becuase we always call this in post-fs-data, no need to wait for /data mounted
-8cd4ccf7 kernel: remove unused poll wait becuase we always call this in post-fs-data, no need to wait for /data mounted
-40d7d62a kernel: optimize vfs_read probe.
-dbcdc29b kernel: optimize vfs_read probe.
-09fb118d kernel: return early for prctl command
-6ae2a73a kernel: return early for prctl command
-683ba112 kernel: add prefix to avoid symbol confliction
-4f5c35c3 kernel: add prefix to avoid symbol confliction
-a161c318 kernel: allow root processes to get allow/deny list (#256)
-f946ef77 kernel: allow root processes to get allow/deny list (#256)
-051fc53a kernel: count time of volumedown to enter safemode
-70829a42 kernel: count time of volumedown to enter safemode
-ca950d90 kernel: press KEY_VOLUMEDOWN over 2 seconds will enter safemode and disable all modules
-20fcc971 kernel: press KEY_VOLUMEDOWN over 2 seconds will enter safemode and disable all modules
-0c322a33 kernel: fix filp_open on older kernel's kworker (#205)
-9b8f8fac kernel: fix filp_open on older kernel's kworker (#205)
-199f5cc2 fix some typos introduced in #166 (#181)
-4a811576 fix some typos introduced in #166 (#181)
-4f2b8b70 kernel: backport to 4.4 (#166)
-b085db50 kernel: backport to 4.4 (#166)
-46913671 kernel, ksud: collect binaries into /data/adb/ksu (#161)
-d1632001 kernel, ksud: collect binaries into /data/adb/ksu (#161)
-b9e27621 kernel: support sepolicy
-3603778a kernel: support sepolicy
-ee7065bc kernel: minor fix (#122)
-fa1b6f6d kernel: minor fix (#122)
-8446f07a kernel: update debug warning (#121)
-cdee2f87 kernel: update debug warning (#121)
-db600d5e kernel: precise trigger timing of post-fs-data (#118)
-443c5867 kernel: precise trigger timing of post-fs-data (#118)
-22b66b66 kernel: opt allowlist persist and log (#119)
-21ecb29d kernel: opt allowlist persist and log (#119)
-06aaae13 kernel: fix missing log tag (#117)
-9fe636cd kernel: fix missing log tag (#117)
-2f970f7a kernel: refact (#113)
-3d07b728 kernel: refact (#113)
-47a736f5 kernel: allow to change manager in debug mode (#111)
-ecfe4e9e kernel: allow to change manager in debug mode (#111)
-fbd7d0f9 kernel: enable sucompat iff KPROBES enabled, close #100
-b3fb2564 kernel: enable sucompat iff KPROBES enabled, close #100
-4c28932c kernel: run ksu_kprobe_init if build as module (#109)
-3cd2e0d4 kernel: run ksu_kprobe_init if build as module (#109)
-fe11fcd6 kernel: Migrate the reference of task_stack() (#102)
-7be4d887 kernel: Migrate the reference of task_stack() (#102)
-c252492a kernel: add __init for init funcs
-58c1ebaa kernel: add __init for init funcs
-da377a9f kernel: fix unused-variable
-029241e3 kernel: fix unused-variable
-deac6163 kernel: 1. use prctl lsm hook; 2. refine sucompat hook
-0b14cac8 kernel: 1. use prctl lsm hook; 2. refine sucompat hook
-830c2736 kernel: unify workqueue
-a9dd171f kernel: unify workqueue
-5b2efd65 (tag: v0.3.3) kernel: add null check (#84)
-88161ba7 kernel: add null check (#84)
-2724c621 kernel: put original group_info (#82)
-5dee70a8 kernel: put original group_info (#82)
-3d5effb6 kernel: fix panic in #79 (#80)
-d2c6b9ae kernel: fix panic in #79 (#80)
-2a1e91cb kernel: don't use 0(root uid) as manager init uid
-aa6ab8fc kernel: don't use 0(root uid) as manager init uid
-ab36e1fa kernel: add uid observer, correctly prune uid allowlist when app is installed/uninstalled.
-7da51893 kernel: add uid observer, correctly prune uid allowlist when app is installed/uninstalled.
-bf3edfd0 kernel: fix init_groups not exist int 5.15
-a0852cd7 kernel: fix init_groups not exist int 5.15
-ece66a3c kernel: setgroup to root for su
-610b6aba kernel: setgroup to root for su
-fb73a7f8 kernel: fix typo
-a1aa5644 kernel: fix typo
-2222a999 kernel: version 9
-c70917b0 kernel: version 9
-00b1d753 kernel: support ksud services
-d776da4d kernel: support ksud services
-886c7d97 kernel: fix stack frame size exceeds
-cbb1cb39 kernel: fix stack frame size exceeds
-4f99d865 kernel: make kernel correctly response CMD_GRANT_ROOT (#73)
-d91e4027 kernel: make kernel correctly response CMD_GRANT_ROOT (#73)
-a30aab1d [skip ci] minor fixup (#72)
-6ad3f47d [skip ci] minor fixup (#72)
-2359b165 backport to 4.14 (#59)
-9150cfed backport to 4.14 (#59)
-0b86cd69 [skip ci] kernel: allow root processes to get version (#63)
-f590f95b [skip ci] kernel: allow root processes to get version (#63)
-5e77d1cd kernel: add CONFIG_KSU_DEBUG (#19)
-c4cfd45f kernel: add CONFIG_KSU_DEBUG (#19)
-0e0a812a kernel: backport to 4.19 (#36)
-0caaf53c kernel: backport to 4.19 (#36)
-43bea506 kernel: fix syscall_work version
-2f0349ae kernel: fix syscall_work version
-94d0d5ac kernel: syscall_work is introduced above 5.10
-17268b5c kernel: syscall_work is introduced above 5.10
-35d6e27c kernel: change vold.rc to atrace.rc temporarily
-0e847f1a kernel: change vold.rc to atrace.rc temporarily
-d7cfa6b6 kernel: version -> 8
-a45fd72e kernel: version -> 8
-91ec1631 kernel: Add boot_completed init event
-a66328dd kernel: Add boot_completed init event
-d3d66010 kernel: version -> 7
-681a5036 kernel: version -> 7
-b3f7d1f0 kernel: use exec instead of init service
-d2888f71 kernel: use exec instead of init service
-5229b815 kernel: make injected init service name random
-c4ad1545 kernel: make injected init service name random
-2e8645b5 kernel: unregister vfs_read hook to avoid read performance
-a9192b7d kernel: unregister vfs_read hook to avoid read performance
-ae18ab2b kernel: inject userspace init events
-808f4b88 kernel: inject userspace init events
-00b40253 kernel: become_manager return true iff it is manager
-92de8fbc kernel: become_manager return true iff it is manager
-b427c86a misc: code format(use kernel code stype: https://www.kernel.org/doc/html/v6.1/process/coding-style.html
-95656d61 misc: code format(use kernel code stype: https://www.kernel.org/doc/html/v6.1/process/coding-style.html
-0661dda1 kernel: fix wrong args
-8f25280e kernel: fix wrong args
-82161dec kernel: fix path leak
-ea9f71e2 kernel: fix path leak
-7b60a1e5 kernel: improve manager validation
-64931d4a kernel: improve manager validation
-2a891a47 kernel: version -> 5
-6901464d kernel: version -> 5
-fa594347 kernel: add selinux rules for allowlist
-5f1d8136 kernel: add selinux rules for allowlist
-dcb1d38a kernel: fix seccomp, this is actually a fix of previous commit
-dacf57f4 kernel: fix seccomp, this is actually a fix of previous commit
-31967315 kernel: improve selinux for su context
-c17aed0d kernel: improve selinux for su context
-301406d0 kernel: fix seccomp. it may crash in https://elixir.bootlin.com/linux/v5.10.161/source/kernel/seccomp.c#L1079
-24c2ddc2 kernel: fix seccomp. it may crash in https://elixir.bootlin.com/linux/v5.10.161/source/kernel/seccomp.c#L1079
-e6d40afe <F0><9F><92><9A> kernel: fix ci build (#16)
-b83d3673 <F0><9F><92><9A> kernel: fix ci build (#16)
-47b0f7bd kernel: manager's parent must be zygote(uid=0)
-99ebc30c kernel: manager's parent must be zygote(uid=0)
-9aacf2a6 kernel: avoding other root process being kprobed
-fa4362dd kernel: avoding other root process being kprobed
-78fc2507 kernel: version -> 4
-0563f6fa kernel: version -> 4
-5053e207 kernel: switch to syscall_work if CONFIG_GENERIC_ENTRY is enabled (#12)
-7d5297c1 kernel: switch to syscall_work if CONFIG_GENERIC_ENTRY is enabled (#12)
-758c8eb8 kernel: fix compile errors & warnings on android13-5.15 gki
-5ccaa584 kernel: fix compile errors & warnings on android13-5.15 gki
-c5da14ae need to import namespace (#7)
-f15575cd need to import namespace (#7)
-96139986 kernel: Include task_stack.h in sucompat.c (#6)
-fbfed680 kernel: Include task_stack.h in sucompat.c (#6)
-85d4cbd9 Fix `su` file not found after su (#5)
-7194c7b3 Fix `su` file not found after su (#5)
-223f5588 kernel: always disable seccomp
-d69f7609 kernel: always disable seccomp
-be91d4ed kernel: emit compile error when KPROBES disabled
-09f0b78c kernel: emit compile error when KPROBES disabled
-91f3b3ef kernel: load_allow_list when /data prepared
-bb91686c kernel: load_allow_list when /data prepared
-fc497546 kernel: fix free kmem err
-2ae0af7b kernel: fix free kmem err
-c6300ccf kernel: fix memory leaks and x86_64 args
-ccf0675f kernel: fix memory leaks and x86_64 args
-e9ed2807 kernel: add su compat mode
-44af9c5d kernel: add su compat mode
-28066012 kernel: don't setenforce if kernel is already permissive
-84ebb680 kernel: don't setenforce if kernel is already permissive
-0d8785ec kernel: support x86_64
-facd3d90 kernel: support x86_64
-304581ca kernel: fix selinux when load/save allowlist
-5fd16bd7 kernel: fix selinux when load/save allowlist
-820d84e5 kernel: make allowlist available cross boot
-b1a33f86 kernel: make allowlist available cross boot
-730a522f kernel: fmt
-c7af4720 kernel: fmt
-51c84400 Init
-2f6031ad Init
-root@localhost:~/oscar/KernelSU-Next# cd /root/susfs4ksu
+                                                        git log --all --format='%H %s' --reverse -- \
+kernel/allowlist.c \                                    kernel/apk_sign.c \
+kernel/apk_sign.h \                                     kernel/core_hook.c \
+kernel/kernel_compat.c \                                kernel/kernel_compat.h \
+kernel/ksu.c \                                          kernel/ksud.c \
+kernel/ksud.h \
+kernel/manager.h \                                      kernel/selinux/rules.c \                                kernel/selinux/selinux.c \
+kernel/selinux/selinux.h \                              kernel/sucompat.c \                                     kernel/throne_tracker.c
+2f6031ad679a6e6092116d6194db21aa56ab6843 Init           51c84400cfdf3a3bb36a392c5573c8b770a0e03a Init
+a860e208d65e2c9ae56cbb0f56d27f8a13ba3737 kernel: use release sign
+210d36f91c218f3bf07a44bde240f41da4bf26a4 kernel: use release sign                                               c7af4720fc85451d65c0ac0ff5ed81ee7467d7b6 kernel: fmt
+730a522f874ac1ca57a61ea928585d919d69151f kernel: fmt    b1a33f869b4885f3b9bad0f6cb376ca11203a5a5 kernel: make allowlist available cross boot
+820d84e512fd92172af39b8662e5218d4c7de54c kernel: make allowlist available cross boot
+5fd16bd7cff244c381a480cfe81b168a28947754 kernel: fix selinux when load/save allowlist
+304581cab4877b374098e20f16642b15d64c5f99 kernel: fix selinux when load/save allowlist
+facd3d90f290c9b28eb3efe5307e49c54938ce9f kernel: support x86_64
+0d8785ec789ee71392af4bc35aceaeac91c24956 kernel: support x86_64
+84ebb6800a24cd396959302d9c7f067d7675d5b8 kernel: don't setenforce if kernel is already permissive
+280660125faec888b9703eb8fdaa8565c90554fa kernel: don't setenforce if kernel is already permissive
+44af9c5d2baaf23d61f76aae0d698aef5bc96deb kernel: add su compat mode
+e9ed28077f2f1b4074dbd48d4be8b3ac3cb53270 kernel: add su compat mode
+ccf0675f8ac5c64929cc96941da9b14fccf7e2ed kernel: fix memory leaks and x86_64 args
+c6300ccf942c0f555a0d9d2fe1e469b65ce14cc5 kernel: fix memory leaks and x86_64 args
+2ae0af7be6cebedfc65dc600df4c5f32ceb06915 kernel: fix free kmem err
+fc497546cc28232079762c4490bee445632595cd kernel: fix free kmem err
+fcafc23a01807402311d6696d626aa3645db339c Add ci for manager and userspace (#2)
+8e89b90b80f5e6bb44f6155ea4219aa8d5bcc5a8 Add ci for manager and userspace (#2)
+bb91686c3c7d2970178f03f4be4f95ddf84c2a85 kernel: load_allow_list when /data prepared
+91f3b3ef1c3ffb34c9402c57a8c595a1acb599a3 kernel: load_allow_list when /data prepared
+09f0b78c8445ca401977bf5ea49ab12900be8014 kernel: emit compile error when KPROBES disabled
+be91d4edafe3e2db7983daf5713f20bd4869a620 kernel: emit compile error when KPROBES disabled
+d69f7609608b330f0dcf60f0660ba33b136d0bf1 kernel: always disable seccomp
+223f5588df4aece8595637e354c0c1d20e8d367d kernel: always disable seccomp
+7194c7b3dfb19c75cae2e7a08e0f22038ac69592 Fix `su` file not found after su (#5)
+85d4cbd92da35ba0c86cbb1bbe5514685d552125 Fix `su` file not found after su (#5)
+fbfed680349d121038a81a2d593b199349a69351 kernel: Include task_stack.h in sucompat.c (#6)
+96139986b39d0c3e915689ed3f57e5393cdf824e kernel: Include task_stack.h in sucompat.c (#6)
+f15575cd574f0c430b801a935b899e20c523ce34 need to import namespace (#7)
+c5da14ae4b1a567e0d32ef9821b3345f844fcaa3 need to import namespace (#7)
+5ccaa58448b8e7256e0653b3f200f5c8959fb397 kernel: fix compile errors & warnings on android13-5.15 gki
+758c8eb8450d9c6e7fb3eae4aadd9d18eebc1f85 kernel: fix compile errors & warnings on android13-5.15 gki
+7d5297c133b64a14bd8c4612ad54db03dc55de92 kernel: switch to syscall_work if CONFIG_GENERIC_ENTRY is enabled (#12)
+5053e20778c4631c729a59ae16a60d000b8a1244 kernel: switch to syscall_work if CONFIG_GENERIC_ENTRY is enabled (#12)
+0563f6fa27ffbb26a28acb7c86bab9251fad9da3 kernel: version -> 4
+78fc250778e80c3547c06df9789213561bd73eb3 kernel: version -> 4
+fa4362ddd6856943d2bcbe0432752891815608da kernel: avoding other root process being kprobed
+9aacf2a64dfe2e648131702f3fb3ccdaf53c2e79 kernel: avoding other root process being kprobed
+99ebc30c8fd1c4e1e2133623a603d92e6abf8350 kernel: manager's parent must be zygote(uid=0)
+47b0f7bdeb6ad3782672320bc2747506feec61da kernel: manager's parent must be zygote(uid=0)
+b83d367388df160d8f26bb6a82fec3accdba338d <F0><9F><92>
+<9A> kernel: fix ci build (#16)
+e6d40afe76d448ecd93cc61f4b14bc1022d871a6 <F0><9F><92>
+<9A> kernel: fix ci build (#16)
+24c2ddc206af2f2e4b7ff0ec812bd18fdbe2fe3f kernel: fix seccomp. it may crash in https://elixir.bootlin.com/linux/v5.10.161/source/kernel/seccomp.c#L1079
+301406d051d1d60037dfe868b6ac54614ed0d909 kernel: fix seccomp. it may crash in https://elixir.bootlin.com/linux/v5.10.161/source/kernel/seccomp.c#L1079
+c17aed0d0231128eee50704f8881ef2debc04ef8 kernel: improve selinux for su context
+319673154526705f2b1d86ef84c29584d7664460 kernel: improve selinux for su context
+dacf57f4895c411a25b5ba519a061b4af81470c5 kernel: fix seccomp, this is actually a fix of previous commit
+dcb1d38a37b9d1ef87b91553905fdba9d08c4efb kernel: fix seccomp, this is actually a fix of previous commit
+5f1d8136357dc464209c27a03942b054b01cf1a5 kernel: add selinux rules for allowlist
+fa59434753df427a24ce3d96b7818ebbc4163f8b kernel: add selinux rules for allowlist
+e44b1c2a952051bc0e7cdb71bbc97ccfc00a3ed7 kernel: don't apply rules for permissive/disabled selinux
+87d1158313fea16769c155b1d8e825fede2dee5b kernel: don't apply rules for permissive/disabled selinux
+6901464d3bb35d10dae1b7aa08df927812ac4758 kernel: version -> 5
+2a891a478ced389b6c877f9f0c1ab0b8ec358563 kernel: version -> 5
+2bdd7c38683d13822424ca0c1017503353e64f9f kernel: fix compile err
+33096754ddf8f801e4f4e7011ed1f0f139c291ea kernel: fix compile err
+64931d4ad1a0c1ff56fcdff18c286bdaf1dcd67f kernel: improve manager validation
+7b60a1e5f8bda89aa2977f2c8c02153bfd1241c7 kernel: improve manager validation
+ea9f71e2624f1ea32b4ee43109990cdfabead167 kernel: fix path leak
+82161dec800233ee8e17d3e5c72d88826f46a315 kernel: fix path leak
+ba1ae8d7ffb89cd43158d065e46d40596ddef312 <F0><9F><9A>
+<A8> [kernel] remove warnings (#20)
+4c9942dd3f6768b7aed7c214d037fa4a3fa54a9b <F0><9F><9A>
+<A8> [kernel] remove warnings (#20)
+8f25280eef71de5c603421368f13407d86e2d0ab kernel: fix wrong args
+0661dda1644d87be10bfcf30c60966666733f56f kernel: fix wrong args
+d9a2356edccdb355010d67b2900b1b00665955c6 kernel: support xperms for sepolicy
+342910771b5cfe07ae819582c329def96f694bfe kernel: support xperms for sepolicy
+95656d61adb61a7c205b38485b75be28e54d1f49 misc: code format(use kernel code stype: https://www.kernel.org/doc/html/v6.1/process/coding-style.html
+b427c86ab30f017f46a6a737ec3a0cf81b00e0a8 misc: code format(use kernel code stype: https://www.kernel.org/doc/html/v6.1/process/coding-style.html
+92de8fbccbc6fecbc311ec44f8d68ab2ac5479b2 kernel: become_manager return true iff it is manager
+00b4025325c45d33da16e973905bda7b3b4256b1 kernel: become_manager return true iff it is manager
+808f4b88753879fb298650f1b8ee81a5dc5e6fa0 kernel: inject userspace init events
+ae18ab2b5e98e1a9c60ff13c2b18d227ca5cc17e kernel: inject userspace init events
+a9192b7d63d38a6178b0b3d9771696d3d3acdf92 kernel: unregister vfs_read hook to avoid read performance
+2e8645b50ec4c0c3ed80ae4bee8f993d03f4d0b0 kernel: unregister vfs_read hook to avoid read performance
+c4ad1545f8e2d61900820030389e3ffe74ad76cf kernel: make injected init service name random
+5229b8158ec9f9021a3b271fcc91ea0752aa059b kernel: make injected init service name random
+d2888f714cf3d85925766a1b2034b50e4f1ffb58 kernel: use exec instead of init service
+b3f7d1f0701ae6092b3d322235dbdb65d4db390a kernel: use exec instead of init service
+681a50363bf19ca170779f9e53de74b9ff3b3c12 kernel: version -> 7
+d3d660100633ddcf43be190511498974eb7c228f kernel: version -> 7
+a66328ddaa80521f1d96184ad1e86ef6f79e095d kernel: Add boot_completed init event
+91ec16310cd93eeda9455d185aaa40882cdf3197 kernel: Add boot_completed init event
+a45fd72e5b87e6280ac2a0df742eb1aff4c45af7 kernel: version -> 8
+d7cfa6b66960f530957f26282463862ede1a8212 kernel: version -> 8
+0e847f1a81cdd74efa23e82da46a743bbf22b794 kernel: change vold.rc to atrace.rc temporarily
+35d6e27cd54c56e9d660dfd3ef72ce71ec7ca436 kernel: change vold.rc to atrace.rc temporarily
+07176fdecb0d197760590cf7e4fc5068b2148037 kernel: CI build for 5.15.y (#30)
+0c6de7a1ed7284e8de5a96b61eaf0c3846bd7a2b kernel: CI build for 5.15.y (#30)
+17268b5c008ad4fccc3c48eb6db90b9888600d61 kernel: syscall_work is introduced above 5.10
+94d0d5ac6b18c07ef25eb42c4dffd90bb816e715 kernel: syscall_work is introduced above 5.10
+2f0349ae707e43a732be5e0db01e4e0432985a67 kernel: fix syscall_work version
+43bea50605da135111ba97fb1aa74c21b9a25471 kernel: fix syscall_work version
+9d19d9b9f06c560c2ad452ac90dee862c5f8a4b0 kernel: improve include (#35)
+26f80b7107b1a16b968ad4e7c621ac87846cfef9 kernel: improve include (#35)
+0caaf53c523714cbd0cc31f305bac9fb94a59799 kernel: backport to 4.19 (#36)
+0e0a812a9c37078aab856d233bdef4fcc25bab7b kernel: backport to 4.19 (#36)
+2815801ecd36cedb72dbaa895d9602bbaee1d638 kernel: add prefix for functions in sepolicy (#49)
+177d6dba158abc6a873b4d1e5d9d4e41bebb8331 kernel: add prefix for functions in sepolicy (#49)
+c4cfd45f2c6d24ce7844b38064ad84cf911d9ff6 kernel: add CONFIG_KSU_DEBUG (#19)
+5e77d1cd5b7dea33c11c08cbebfeba8e9d6d45ce kernel: add CONFIG_KSU_DEBUG (#19)
+f590f95b99b1ec45215b30be39bd5b5d72732374 [skip ci] kernel: allow root processes to get version (#63)
+0b86cd69fc6a41395a963030eae5ca080d141c9d [skip ci] kernel: allow root processes to get version (#63)
+9150cfedd7f53e6b070f8139bf9616f2f97039c2 backport to 4.14 (#59)
+2359b1652602d78a7d0a153a628256ac86595829 backport to 4.14 (#59)
+6ad3f47dbdc0d2104d6528228ba2b7744be4bd92 [skip ci] minor fixup (#72)
+a30aab1da6073b9e23ffb4ac4b64cf55f79c58e0 [skip ci] minor fixup (#72)
+d91e4027b5d57bf8611ebe715d14e63746c706fc kernel: make kernel correctly response CMD_GRANT_ROOT (#73)
+4f99d865cb091e6e8be7b4c989eb0e70fb3bae99 kernel: make kernel correctly response CMD_GRANT_ROOT (#73)
+cbb1cb39ea41677961d9566da3aa672eb9cb2e1d kernel: fix stack frame size exceeds
+886c7d97a69fe12319996e41b96f0731f067f766 kernel: fix stack frame size exceeds
+d776da4df5e5091791deabbf0cd539796072a014 kernel: support ksud services
+00b1d7538dffd3a13c156249670d50275d62598c kernel: support ksud services
+c70917b04c88bc7775e0604e379ddd568f0dd8bf kernel: version 9
+2222a999b98019b6d9f5591d21148f2c7d3e1a10 kernel: version 9
+a1aa564406c7724172e1e5b96b78d52063f0eb8b kernel: fix typo
+fb73a7f83eb1a14e01e9d26fd2529a9c0e52817e kernel: fix typo
+610b6aba8b779db102bb3d59dfb8f819fb4943a3 kernel: setgroup to root for su
+ece66a3c38c45e389982bf8d06ed7172fc9e2737 kernel: setgroup to root for su
+8180106ccff827cafabbff80ecce6ac0bd2d6e61 kernel: fix am/pm error in app's su
+710b933b08d3210c2ecb6f8562685c1fd7e8a091 kernel: fix am/pm error in app's su
+a0852cd7d1bbcfc2484285c8bd0eeafbf82a3169 kernel: fix init_groups not exist int 5.15
+bf3edfd0ef940af6fb887ac1338dec5a7f1d0480 kernel: fix init_groups not exist int 5.15
+7da51893777cfbdcc55e088200c19d94ce3565d4 kernel: add uid observer, correctly prune uid allowlist when app is installed/uninstalled.
+ab36e1fa0cf6321b96db768ebca27ff79bf0691e kernel: add uid observer, correctly prune uid allowlist when app is installed/uninstalled.
+aa6ab8fcb9948d9356948f84685ab05b45f221e5 kernel: don't use 0(root uid) as manager init uid
+2a1e91cb3422406d5b21484be5a7e2946e4ef202 kernel: don't use 0(root uid) as manager init uid
+d2c6b9ae8e586db5cb8381af41aa0a55fca81816 kernel: fix panic in #79 (#80)
+3d5effb6781dd48083534c56ae3ec466acf238a8 kernel: fix panic in #79 (#80)
+5dee70a8febf10ba3e43a8b023f3ac955339d186 kernel: put original group_info (#82)
+2724c6211ab505b31c4f7fb414026f986725be22 kernel: put original group_info (#82)
+88161ba7af61bac09112b59f49aadde87a96301c kernel: add null check (#84)
+5b2efd65b1aecef7d88aae84e10875be4f438ec6 kernel: add null check (#84)
+a9dd171f0d0e7dcc3e396ed47520e20a401f87df kernel: unify workqueue
+830c27361e292edc3734657796ae6ce7971f83d5 kernel: unify workqueue
+0b14cac87ea4a6820fc983023e29cf7b3122d688 kernel: 1. use prctl lsm hook; 2. refine sucompat hook
+deac6163d610c940573b3558e3d4cf5626e50131 kernel: 1. use prctl lsm hook; 2. refine sucompat hook
+029241e3f7713c0cf2335e28095f3431337c8ad4 kernel: fix unused-variable
+da377a9fa99cf52efc113f3110a782972dad9c86 kernel: fix unused-variable
+58c1ebaad23998298b31d4c10faaff721ac1792d kernel: add __init for init funcs
+c252492a429b086112d3e2c98ae1ab338e246073 kernel: add __init for init funcs
+7be4d887524792b227c87c24c6896e3572403168 kernel: Migrate the reference of task_stack() (#102)
+fe11fcd6c6901ad98ad475e0c427dbfb55a27536 kernel: Migrate the reference of task_stack() (#102)
+3cd2e0d40c26c4718e7ee08f165c47b4e98ee5a1 kernel: run ksu_kprobe_init if build as module (#109)
+4c28932c4c535d34764ec6f592d08aa040c22e42 kernel: run ksu_kprobe_init if build as module (#109)
+b3fb256445caccd0c9b0e702adc51b54029fb4bd kernel: enable sucompat iff KPROBES enabled, close #100
+fbd7d0f90dd1b7bf987cbebcc9aebfe2b9838c9d kernel: enable sucompat iff KPROBES enabled, close #100
+a387fc601a059cfde591432e50baff11ee90d125 kernel: selinux support add new type and add builtin unconstrained file type
+e5044b4b6f99a51fff176d21769b4f9ee41cbeb3 kernel: selinux support add new type and add builtin unconstrained file type
+ecfe4e9ebd4a5114da465c87a3208e9cbddb9eb4 kernel: allow to change manager in debug mode (#111)
+47a736f56754b088ee9f4d7ebeab9c81de79d5b0 kernel: allow to change manager in debug mode (#111)
+3d07b7285b1c51430f4a579b7b89aa5643743bf2 kernel: refact (#113)
+2f970f7ab8f238be83c574e359a4f4acff02e918 kernel: refact (#113)
+9fe636cd478bd48be8443c0b091c6208924bca21 kernel: fix missing log tag (#117)
+06aaae13357bd5520f8160314646042ec06e6e94 kernel: fix missing log tag (#117)
+21ecb29d418f8cba93bd75e4690fd357b95a292c kernel: opt allowlist persist and log (#119)
+22b66b66722f1844c3b6f76c56265e6b7eddc190 kernel: opt allowlist persist and log (#119)
+443c5867cda65d3551f9fcbfbcdc575820b99788 kernel: precise trigger timing of post-fs-data (#118)
+db600d5ea0ab881f1ad908acbac278ad04471ab2 kernel: precise trigger timing of post-fs-data (#118)
+cdee2f87a14c332be03544844d13afb0fa58458a kernel: update debug warning (#121)
+8446f07a91617bb1a0c3956ba914facf951f3cde kernel: update debug warning (#121)
+fa1b6f6d5b7eb76043a48320bb29403d78e157cd kernel: minor fix (#122)
+ee7065bc12037209817f5adc746dbb33f1ebf97d kernel: minor fix (#122)
+5995445e61a040fa62ba2169e97ef53c6d9cb0f7 kernel: support selinux state transition
+413a8d0a2f262f9a4d197c6a78ef5d057b87dd46 kernel: support selinux state transition
+3603778a8c654d2efa2fab002f6ef19671e54596 kernel: support sepolicy
+b9e27621ee241663c8057bde9f3c38a583ac883f kernel: support sepolicy
+7c9d24adbb51f0834801554e3b55ee6da8304957 kernel: fix sepolicy rule which contains *
+ab6d483c32681a22431f4497013ef02be660fcba kernel: fix sepolicy rule which contains *
+d163200127d7e435171f0b9d0008babbc20e20be kernel, ksud: collect binaries into /data/adb/ksu (#161)
+46913671a83b2f9f4dae97a841d9e7aabc1bfef6 kernel, ksud: collect binaries into /data/adb/ksu (#161)
+b085db50dccdffdc775817a4a44e57a7f98c442b kernel: backport to 4.4 (#166)
+4f2b8b7077995243e68448b721665e919b976402 kernel: backport to 4.4 (#166)
+4a811576fc10b28b36b2cdbb9c711a25a71e09e2 fix some typos introduced in #166 (#181)
+199f5cc223d410a8024b03d33529cdab0d82425c fix some typos introduced in #166 (#181)
+9b8f8fac997a8548ee0b1d7a1f380c803df755e3 kernel: fix filp_open on older kernel's kworker (#205)
+0c322a33bc22e30a9fa44a5630b9f412d601376e kernel: fix filp_open on older kernel's kworker (#205)
+47f4f9ed08e574310a01c83c262d2004fc4f1ef8 kernel: selinux: fix more typos introduced in #166 (#212)
+d77ab8dbff590b04c7c113c6fcc0062c18b3a08f kernel: selinux: fix more typos introduced in #166 (#212)
+632cf747673eda2ca16e3c7a270d0234c4f1c2a9 kernel: selinux: Fix build error (#213)
+14be75629be139cd7847d3fbdc28b9237f129f44 kernel: selinux: Fix build error (#213)
+f0c4ecb872ffb4e1f318ce34404805b0d129c86f kernel: Correctly judge the version of selinux_state (#214)
+66284bfbe3076acf8a7248add0a713f7bac0104f kernel: Correctly judge the version of selinux_state (#214)
+850482d03b10e87f2a99ac0d11b8e656cbe606d4 kernel: disable inofity for fd opened for manager
+388d2b0b598c0f88eefb83b49e388476156cf133 kernel: disable inofity for fd opened for manager
+f422b16750515b3f769cada6d9502cd54063bc21 kernel: reset avc cache for sepolicy
+f6967d2cfba7557185f3d14444711c1a32ca37ff kernel: reset avc cache for sepolicy
+95eee955cd30f54b4306d142ebc2d03299e2fa94 kernel: Fix f422b167 lost parameters after ack-linux 4.14.y (>=163) (#234)
+6d15cb7e334b84d9fd4938d99349a5c12600a5c6 kernel: Fix f6967d2c lost parameters after ack-linux 4.14.y (>=163) (#234)
+6758951a41e8458692077ebe61515f8e1b752084 kernel: fix sepolicy apply may not work #227
+20ff53096285f706f22200fc7fd720d7285c7bca kernel: fix sepolicy apply may not work #227
+20fcc971e100f27696e4b9ebd0175b3aac8bf618 kernel: press KEY_VOLUMEDOWN over 2 seconds will enter safemode and disable all modules
+ca950d909b4e08a0cc9fb629cbcb128ef4a3aeda kernel: press KEY_VOLUMEDOWN over 2 seconds will enter safemode and disable all modules
+70829a428a704b5d85aa6ac2d20ec5ced3ad4d66 kernel: count time of volumedown to enter safemode
+051fc53a4fe2519202911b5d1478310554ab397c kernel: count time of volumedown to enter safemode
+e3d52df4e1fb2f80f17830f0670c656991194593 use selinux_state for 4.9.212+ (#245)
+8fbdd996de69abd107f147218881ae1aa72ef565 use selinux_state for 4.9.212+ (#245)
+f946ef774b5178f07be72fa73cdf58f5a32365d7 kernel: allow root processes to get allow/deny list (#256)
+a161c318a1475d079b8437263194833c20793486 kernel: allow root processes to get allow/deny list (#256)
+b5ac325ef074fb1362c00d9a4fd0566b085dffe4 kernel: apply rules should return success when selinux is disabled or permissive
+83b0aed52a441221bf202589f5a87354367c4bd0 kernel: apply rules should return success when selinux is disabled or permissive
+ae92de667d509412f593d63f4225360c7c40286b kernel: make some compiler happy
+e743722449147e3549fe282cf82994ec4518390b kernel: make some compiler happy
+4f5c35c364af114184be0b522b359830c992260b kernel: add prefix to avoid symbol confliction
+683ba112aa602915f633df06a631782944eb5642 kernel: add prefix to avoid symbol confliction
+c823f183164564b30039dec6a5418dd96bf3f7de kernel: fix compile err
+849164e4de7dec5b06e98c82f3c49f2bd61f1045 kernel: fix compile err
+6ae2a73ad7203b91514ac4d2767cba6ddc796565 kernel: return early for prctl command
+09fb118d22b708adc8f1fbd3db31b1281425ce4b kernel: return early for prctl command
+dbcdc29ba892efa71961057ebabd998feb03e649 kernel: optimize vfs_read probe.
+40d7d62af287e67192996e6039d54e664bb11c8c kernel: optimize vfs_read probe.
+1cf309584a9f435a90370d13f04f0415bf26b564 kernel: make some compiler happy again (#279)
+5c3df7e7a510ad88ded0f05d210504218b9e6172 kernel: make some compiler happy again (#279)
+8cd4ccf7284bcefb307c15729c53ec3e1f7911e7 kernel: remove unused poll wait becuase we always call this in post-fs-data, no need to wait for /data mounted
+77056a710073d7a5f7ee38f9e77c9fd0b3256576 kernel: remove unused poll wait becuase we always call this in post-fs-data, no need to wait for /data mounted
+d34f51528c6060b9283e4fb48afb57e2f0b4d97e selinux: Update 4.9 to the correct check (#324)
+7be405e4e4d3d4ae12dba3ede56c60514e51423d selinux: Update 4.9 to the correct check (#324)
+a8bd9f198ecd0b665636a5eda2a6b01288b7c3c3 kernel: Fix side channel attack
+814d65cc28331da6e3518b3df65952eff5ed4be7 kernel: Fix side channel attack
+44444b2a56b5e88c967e9d90ab921884b28879db kernel: basicly umount overlayfs in kernel
+ec4a233e04b7fdf49daac533ba8f29ff9e7c58c2 kernel: basicly umount overlayfs in kernel
+4933b045e4cd2d7bcd2a2f514fe384dd48640ac0 kernel: fix incorrect dput
+62bbee56dbcd58b73e3ce0cc13b2e1c8e19ab407 kernel: fix incorrect dput
+978839da6b2f01314d46dab7580a5b90df6f1654 kernel: use ksud as root shell instead of /system/bin/sh
+a3874dd089176c1ae8231de52e58d8121ae6d2f5 kernel: use ksud as root shell instead of /system/bin/sh
+54e5e8fc074b37a4f3804cf7f1b6345a8250ed82 kernel: check CONFIG_SECCOMP status (#351)
+fabaa6127967d181f7142af26a4b38a3e68cd6d0 kernel: check CONFIG_SECCOMP status (#351)
+8ba6ef20ead862127ec28a62ddfd2259091e3903  kernel: make /system/bin/init second_stage more precisely (#357)
+2d36e9824663442c37e28d9d0d8b58bb9fd307d8  kernel: make /system/bin/init second_stage more precisely (#357)
+3a3fcaad4c38ac9d53692913253bbb85b3fb4513 Try to solve 4.14 build don't pass problem  (#368)
+a343aa5eb0cb139c6bc13a1ab5f98fef781e718c Try to solve 4.14 build don't pass problem  (#368)
+8a5c94c368fe2915561eead1b7618a0b773e12e0 kernel: Make sure logd has started before post-fs-data.
+dc45eb6ed40f9815d33e04c2e6bbbda30fe3f98a kernel: Make sure logd has started before post-fs-data.
+54461bc4c92df19f698bf81bcfc7434f9dd66711 kernel: don't save allowlist in worker
+c569d803c528c787245c9dfe92f297ba1c390a1c kernel: don't save allowlist in worker
+79655229223d9a829abab9663cf7009b2af6c9a6 kernel: don't show log when get allowlist
+f0dcddd39180be91a5308664e2899d09035ea125 kernel: don't show log when get allowlist
+6b8b02c475d9fd9470b76d3457d7966bd038b97f Revert "kernel: don't save allowlist in worker"
+5504b0dd29d9d33b1b28affdf7358050a1702a9c Revert "kernel: don't save allowlist in worker"
+8167ab0d4c652959eb500d80a79b70e1db0d5954 kernel: always apply sepolicy rules even if selinux is permissive
+0c9ecf3abc0992a87b9b5eaa363430b457af2036 kernel: always apply sepolicy rules even if selinux is permissive
+fa25a4fe18fc990d25ac4c284f4ca844e08e8e49 kernel: allow manager to be installed in work profile
+f35e03d816951a3b3fab8c462690f2e1f7651b9e kernel: allow manager to be installed in work profile
+168f1f1ddde66843c138e856a34dbf56880b6c3f kernel: fix snprintf
+45c229dc9f0714e0341f8bd9f68b460aa64ca43a kernel: fix snprintf
+6b9cb3401f879f75c9acb41da0d24009fb5e323c selinux: use grep to check api supports (#402)
+3452841752a1d2fe8ad98fad1c35f423ef7226a7 selinux: use grep to check api supports (#402)
+052a3d3a4f46c5cc83a340b7db4db4ee49bb3d65 kernel: umount by lazy
+67667b6df2729b91924e7865a881a1ad619a6bf4 kernel: umount by lazy
+5b284d27ee0e8570b2a6985d49c4ab6fd63fa753 ksud.c : Include compat.h (#450)
+36ed99d1f6f304e7ac9f0fde741dff7343eda1c3 ksud.c : Include compat.h (#450)
+9d24e592407f3e38c07621419366654f859dba3f kernel: revert init stage for x86_64 temporarily
+72ee14e6bee59452e301be7c4954442b529178c6 kernel: revert init stage for x86_64 temporarily
+002969e9a7ebb5435a8309bee95d061915d9c764 kernel: don't umount for process in global namespace
+294d6fa05e6d62804c3bcc33d422e8ceb2fedb82 kernel: don't umount for process in global namespace
+5b4655f8272278c177a9fd80fa09a32982b27466 Revert 052a3d3 (#500)
+2716ec58a018f601c3d81d48aed356c4989ccdae Revert 67667b6 (#500)
+00a459a91bafc5da8e54e77b447cf3641e5397ab Add option to enable global namespace (#497)
+f81caf75a96b98684fafc701baa17484e5babd96 Add option to enable global namespace (#497)
+dc8e63421d001188b8649f7bd9e3642b87fa76c6 Revert "Add option to enable global namespace (#497)"
+b80e06256d55e153cd4a642432dff8aa191591cc Revert "Add option to enable global namespace (#497)"
+976f2610cb3e3b7d0c8c667148f0fceca5f248aa kernel: fix format warnning
+8f3e59803fbbea833d849a8d982e446860b06fd0 kernel: fix format warnning
+a3fdcdd90111ca8777cb866440e637ef2e22a7e1 kernel: remove no-macro-redefined
+8858cc899e204bb88ee1e720bde9a55d3f82fd91 kernel: remove no-macro-redefined
+7428ee02d790797bcef36b94cc86dc19a6ab63a9 change warning about disable kprobes (#549)
+d014947a542b069b2470c2a4fdeeaa9624c42305 change warning about disable kprobes (#549)
+e8d234ae666e8af712365a2d431b593369f7bfbe kernel: baby version of profile
+3abb7e4ca25030e03f506ff3497050757bd15889 kernel: baby version of profile
+cb5cd080980d74900a69bcbdbedf89273001e342 kernel: don't fill default value for app profile
+bd3a1291daa5f1ae6cf7b7100fa421e9e8545981 kernel: don't fill default value for app profile
+f8b18c06c87bfa43ddd28c8e9c8ae74d5ebd8264 kernel: minor fixes for profiles
+89f6cd044e642c2e965f9e084eaf847962446b4c kernel: minor fixes for profiles
+b4f63022621200923c45dad647475100fd6d0ebb kernel: don't copy profile when not found
+de72eedb4684ccabec18db73d7d2afc16db7f138 kernel: don't copy profile when not found
+e030ca48dbeef3e4efc9dc83e86bf3f714fd1878 kernel: fix CMD_GET_ALLOW_LIST error
+82d5ec3cc1db4c460885a23e36a4c7f37920d32c kernel: fix CMD_GET_ALLOW_LIST error
+14b138687974cb4245e88d86d0356153df98f340 kernel: support CMD_IS_UID_GRANTED_ROOT and CMD_IS_UID_SHOULD_UMOUNT
+b31fc47197fc7b967347a1fb65f2553ad5b47cd0 kernel: support CMD_IS_UID_GRANTED_ROOT and CMD_IS_UID_SHOULD_UMOUNT
+0e539ccee17cda2101d709d4f7390ebbfe85defd kernel: support load/restore default profiles
+005404f552341ba8432aa8a49efba985721e42ef kernel: support load/restore default profiles
+bc9e3da5ce92375dce26f0d34a612b6278055062 kernel: respect the app profile's umount modules field for kernel umounting
+5980c113fec9635a26ab8b19c9e682f7e28c89d8 kernel: respect the app profile's umount modules field for kernel umounting
+395711c9428d3af4d33ae6cf98eddf9ef5e12ce1 kernel: dont prune uid used for app profile
+63ec531814d435d10a19b4a33e2704c61b3eaa9a kernel: dont prune uid used for app profile
+da45d90605fe3dfe8bb58a930a5ee05bec45c052 Fixup: build under linux 4.14 (#581)
+2ce3976023aa6f7532b0e42a13a74460f4e5353c Fixup: build under linux 4.14 (#581)
+20a9c6ec0f85da562238d5d875d36d466af462ab kernel: use uid instead of package to compare allowlist, fix #580
+fc77ca989fcfcdd1e76837b733f8cb4a9ac8c51c kernel: use uid instead of package to compare allowlist, fix #580
+27cca2a264d030104cf9a85913a25c53e571b07a kernel: Fixing the issue of a delay in updating the default profile.
+990626cf7d9d93afba26319d7335234714491212 kernel: Fixing the issue of a delay in updating the default profile.
+9abe9687ab1aba8db60c6e614f7cee039b0746a1 kernel: fix set app profile may override other user's
+8af5a9038bfff4dc99506a897699e7f79add027b kernel: fix set app profile may override other user's
+fc961726555b69233c6bcd7c96bb5fcffd2ef740 kernel: make the profile uid, gid, capabilities really work
+076e5d3655c9eecd30493ea6561ec2371b937e9e kernel: make the profile uid, gid, capabilities really work
+1a6e99bcc854549fe132edfd17fef2929f8958c0 kernel: prevent root process to exec su, which makes app can escape root profile by exec it twice
+710edb72fabcdbd80a861f44195d3e51657db7ab kernel: prevent root process to exec su, which makes app can escape root profile by exec it twice
+893aebca4fb33fe3fc7bb912b15e509198a2f7b7 kernel: support settings supplementary groups for profile
+c7f6a7d11b44edfbd6673005cbd4e8f3b03a8095 kernel: support settings supplementary groups for profile
+bacd16a68c6465e608894b6bf4ad20dc52373100 kernel: support setting selinux context for profile
+53be8612c8990ef160af45d5db86e18f5fbc9567 kernel: support setting selinux context for profile
+19e00ac4ebaccf6fcea70c6cbf31d2e47e53e406 kernel: fix set groups for kernel 4.9-
+1408175a35e4fd372b6a7dbb72da0094a5198f7a kernel: fix set groups for kernel 4.9-
+6a11cb706d652729c813d346185089fa0b4318fc kernel: bump format version to force clear allowlist, prepare to release a new version
+5db70754323f12876b86d2116499e35b32e8aa55 kernel: bump format version to force clear allowlist, prepare to release a new version
+109472ae22ba48963ae0a1e0ef0ca8df98bb2279 kernel: Fix shell permission under KSU_DEBUG
+5b27f6c0100b1fada521d269e3a7d20ef4a96c0e kernel: Fix shell permission under KSU_DEBUG
+ba229c9e4dceb82e5fdfc75c1f3c65976f230637 kernel: use macro for default domain
+3ad27c5999c9c80be809d9e74d8a3fd811aa6fc8 kernel: use macro for default domain
+3fffcde59d667d25a389d1d048615cebd18984d6 Fix error build when using GCC 12.0.0 (#609)
+4218aa488f502a068869fe8defec51e96fc5bf03 Fix error build when using GCC 12.0.0 (#609)
+6b326ffbfff20fdb22e930f3ec03cc8705669593 kernel: fix warning on x86_64, close #637
+c697398893612a882df8f22ac1fb63bae2e79d79 kernel: fix warning on x86_64, close #637
+9fa6a0ce85d0e5e2c7b0551b0c655d00d105b53f Hook improvements (take 2) (#563)
+bd8434f4f4f3e631f66d36ad8afdf7a4201c4851 Hook improvements (take 2) (#563)
+0eb960826d1330f3ea68bd8d140837e63748fc44 kernel: allow uid 1000(system_uid) to grant root. close #645
+ff8c61473762ec0034210e68f5ace066c3e82330 kernel: allow uid 1000(system_uid) to grant root. close #645
+29169ddeb956aa264aa6fd84f28601238b5134eb kernel:Fix the issue of incompatible __maybe_unused in the GCC compiler kernel used in versions 4.4. x to 4.9. x. (#660)
+90299ad0bbd08ede502c5adbbc521e6da4e06f50 kernel:Fix the issue of incompatible __maybe_unused in the GCC compiler kernel used in versions 4.4. x to 4.9. x. (#660)
+3863d197455e7854086a8b40c1d08df55da7a36f kernel: fix typo in allowlist.c (#663)
+9b2f907a4848786b10cb37bf592c7905e3d87e02 kernel: fix typo in allowlist.c (#663)
+d2647b2f4d5e2a670791b8605c6f3002e4da140f kernel: use vfs_fstatat on kernel 5.10+, vfs_statx may have cfi.
+cd3e29248979fb41b6edc34395033726716c5cf5 kernel: use vfs_fstatat on kernel 5.10+, vfs_statx may have cfi.
+7fa7b5b87595d42589eab2ac7af4a9e26faa3053 kernel: getname might sleep in kprobe handler  (#670)
+79bb9813efbb8e56bdf9fc2a64088f40f2425faf kernel: getname might sleep in kprobe handler  (#670)
+22e3e1fc0e6d3f109156d36bace4be3e9d45ad57 Revert "kernel: getname might sleep in kprobe handler  (#670)"
+5f1d70dabbb921132c0385c2d40ae6c9b11037ea Revert "kernel: getname might sleep in kprobe handler  (#670)"
+fc4f0b285a3f1f4fba9bd0622d07248b1f1cff7d kernel: don't alloc groups for default groups
+08884da4237225a45443c6f56a3865680b0f2a3c kernel: don't alloc groups for default groups
+a0abe9db689045399d0965b6ef697331cf346edf Revert "kernel: use vfs_fstatat on kernel 5.10+, vfs_statx may have cfi."
+e17f3eab96678ee44a4f1eeb755c07ac9700533c Revert "kernel: use vfs_fstatat on kernel 5.10+, vfs_statx may have cfi."
+f87d6eb97d6f4fc9d5df681105a328eb57ee5812 kernel: fix incorrect umount for apps
+f5cfb3288221cb22d40167572a9cb91a1c6634db kernel: fix incorrect umount for apps
+8b7dcc674a52f3a79e80730c7b923a69d45d1cb6 kernel: copy filename ourself instead of getname
+b644c124e33115aa1233715b5af1ed4bca967523 kernel: copy filename ourself instead of getname
+aec6531576805321b001071b86cccdf0fcf201cc kernel: allow kernel to mount loop devices. close #514
+980f1d09bc4ae81daa04893bf94498360d6309f7 kernel: allow kernel to mount loop devices. close #514
+c7c5a07f0a5ec09b97768fdd51738eac3262e10a kernel: fix compile err on lower kernel
+da959b4e17ce7f6ec48cd3da4d4bca0250310dc4 kernel: fix compile err on lower kernel
+63075070f3136509893ef4fe2e8da046176bb397 kernel: add some log
+d6756628625b2b484e62fdd7e3b1d050999d0c92 kernel: add some log
+c62c5f1d781bb11c059d5ecb139cfcb05ee858f4 kernel: support the case that init_task.mnt_ns != zygote.mnt_ns(WSA) (#698)
+c0066b68f54ce1704bbbb15c58c747bd94aafd00 kernel: support the case that init_task.mnt_ns != zygote.mnt_ns(WSA) (#698)
+378c667b0cb8528656ec37850e8eefa2bfd81c8e kernel: fix compile err and format code. close #706
+dfc2a86e706f66ae5b11183e026a83542e840a1c kernel: fix compile err and format code. close #706
+6e5b23840a82e6885ac13b42eecb5f960ceea72e kernel: fix compile err in old kernel
+ee5d2f8c8423d38635557352afcb754f96363e4a kernel: fix compile err in old kernel
+cd19ce2e86d30ce9ddbe47d9547d35ec20fa43e6 Distinguish different PT_REGS_PARM4 under x86 (#711)
+f4d2b0feabce41ccdb84adfa5c59532e8939267e Distinguish different PT_REGS_PARM4 under x86 (#711)
+54214cdc9c537ab42e9394d07ff6d118669c447d kernel/ksu.c:Fix word mistakes when enabling CONFIG_KSU_DEBUG (#724)
+cd952f5e45c162e6a08491c1a53dfd2440dd82c0 kernel/ksu.c:Fix word mistakes when enabling CONFIG_KSU_DEBUG (#724)
+f7c1c078f5153baf6c221b9e0844fcb385dd4762 kernel: use ordered work queue to avoid timing issues
+907bcad1a7de66d6f67606605a383d4929d1fca1 kernel: use ordered work queue to avoid timing issues
+99d3e54fbb0b7b23f6ef43987bd00ce860c3b414 Kernel: fix filp_open in kernel below 4.9 (#822)
+a83390b0ec2862a58206e04c35629951d7ede3a4 Kernel: fix filp_open in kernel below 4.9 (#822)
+2f5b4d979c100a007c51b0ce45b957e7679b8315 kernel: don't trigger page fault when become manager. fix #836
+beaa048be33df322a6132d3af50504ac132720ec kernel: don't trigger page fault when become manager. fix #836
+a3b675c6f7a4c1d3f85718686c577d9a04db9355 kernel: Fix manager recognize err
+cde3e95180be4ee462abf6c7ebfc3ec74879ba3b kernel: Fix manager recognize err
+e666e8ed0d377ee15466ec77ee79c7900aec4780 kernel: fix probe_kernel_read failed to read user addr
+7bdb88581658b7550dc61ee1f574612f891fd886 kernel: fix probe_kernel_read failed to read user addr
+a568eb9ae1cc321eddef159ebcd294da85f3a2fa kernel: Fix compile err
+b52bf53d01b7179dd99ac03335bafdcbf68b7713 kernel: Fix compile err
+d4a9869b0384ed02b4fe318d91a0207afc47bb3f kernel: Fix commit `e666e8ed` in Linux 4.9.y and Linux 4.4.y builds (#841)
+0b1bab5b01d346ed4ad1b00d4ba974e27a20f5fb kernel: Fix commit `7bdb8858` in Linux 4.9.y and Linux 4.4.y builds (#841)
+a9d1e847626fdd180d229b1a9bcc3df2dfa3158f kernel: fix build for gcc (#873)
+6aeb76a3efda666d06e37d56a075e5a1bd9ccbaf kernel: fix build for gcc (#873)
+c8d0f01ce499d8139fc7621e8e70977e020ed6e7 Copy one extra byte from userspace filename (#958)
+cbb98a1de91a6d6013549767624bfe9864a6f8db Copy one extra byte from userspace filename (#958)
+b14ea03dc4ca8d35ef135adcb0ab7fc8cf07028b kernel: Adapt to low version Android init process (#973)
+54ee400dc5ccb521de761b4dfdff4613d36262e0 kernel: Adapt to low version Android init process (#973)
+aca3ecebd957b275e224aa04dc1f861c8cf70ef3 kernel: umount modules mnt when needed. fix #991
+7747c0e211341e50e722e4c5ec0f867ec6a4b22d kernel: umount modules mnt when needed. fix #991
+dfec5d50592bd1fe913058debe88a5f42b144063 kernel: Add selinux rules for module umount
+340595276f2cbc101e69bfe0c8f61e104e93bbeb kernel: Add selinux rules for module umount
+02def78124ea6f3a65d7f0fa6831488054618da9 kernel: harden the signature check (#1027)
+a22959beae1aad96b1f72710a5daadf529c41bda kernel: harden the signature check (#1027)
+582d4978ac61ea576d1e0fe534b9f059ee1130c8 kernel: reject v3 and v3.1 signature scheme for manager verification
+88289399947e84ce59beb85e5c933d309e65f5ff kernel: reject v3 and v3.1 signature scheme for manager verification
+aefcb9c98065d29c85a38de3556bb4b888753fb6 kernel: ignore path that's not mountpoint
+79951f06ed94baad11d2e6a85745311535e6df87 kernel: ignore path that's not mountpoint
+165e450f4e7a3af845aa37d4b2c09622cfd8df33 kernel: prune allowlist with package name and uid
+b1830049f12a5b8c35d5fc3a27cd4afc3d24663c kernel: prune allowlist with package name and uid
+6dd1b266e942650730202faa602ba5304207e2fa kernel: don't umount for non zygote child process. fixes #1054,#1049,#1045
+ce892bc439272a0ec41498a5b46df143ca11f68b kernel: don't umount for non zygote child process. fixes #1054,#1049,#1045
+5c495a7e837a944b988b5536dee41c582c9c4654 kernel: make su without any capabilities possible
+75b5fdfb9d94bcbbaee311c285984455a6f6a85e kernel: make su without any capabilities possible
+86dcb02f72152e355e12c0c797e627e65ef026a2 kernel: make compiler happy
+344c08bb79ba12b692016750cda363f9f3500182 kernel: make compiler happy
+a6a4dd025da911f46e8a6d803fa2aee7af8953f2 kernel: fix Modules install stuck on kernel 4.4 (#1059)
+7a1767b4c91df63924bbf75aedc44722d212f04f kernel: fix Modules install stuck on kernel 4.4 (#1059)
+4a5cdf25f1153b621ae6658fdeb628ea7e2845f9 Merge pull request from GHSA-86cp-3prf-pwqq
+d24813b2c3738f2f9bd762932141cadd948c354f Merge pull request from GHSA-86cp-3prf-pwqq
+d5985f7450a6b170e3bd3997a9f22d7f3ba0e562 kernel: fix null pointer dereference for some case (#1075)
+1b67c1b1534c00cbcd222e87fa807eaef6efa172 kernel: fix null pointer dereference for some case (#1075)
+62117c6017b92f94bca01de644c74eba4eb61a23 kernel: fix su not working in shell for 6.1 kernel
+b7f937b7f92648547ee416b3b3acc80e53f0e565 kernel: fix su not working in shell for 6.1 kernel
+108d618f53704899d4135c7483f31ac0808f7645 kernel: adapt to kernel above 6.4 (#1196)
+dcd9d65c929548b28be1c728c274b9d1e065ae4a kernel: adapt to kernel above 6.4 (#1196)
+c07b7d38a0d5238a079d6ab485d4c6f6536377c7 Mount temp dir at /debug_ramdisk (#1226)
+706cd1e73e1e022dbf42929acaaf27f7170487f9 Mount temp dir at /debug_ramdisk (#1226)
+8197ddb359ef330989fcc443f49496f3e677fb43 kernel: fix out of bound reading. close #1227
+d6cbda49aaa5a5288b37741fd6bf5ced87742647 kernel: fix out of bound reading. close #1227
+2f3862b1cc4de58f807515825ebef780b97c3ae3 kernel: truncate allowlist before save
+32b3ec9844f8c1642346e3fd8c215d5f152e5b4f kernel: truncate allowlist before save
+bf040afa64cca1933924c0786d60ed2d92a5cf1a Correctly handle is_ksu_domain, close #972 (#1246)
+f37cc161179b4dbbf04e4ae74b70cb2daa104df0 Correctly handle is_ksu_domain, close #972 (#1246)
+cbf8f0aa2a59baefd2945995a046db9b8c8bb16f Try umount `/sbin` in kernel (#1257)
+e3e4d2eed49fc1334fae5831b3cd49e084825cf5 Try umount `/sbin` in kernel (#1257)
+802549d8cdabdfb620f94f2025491bed7d0b9b43 kernel: avoding umount when there isn't any module. close #556
+e9997a07c164c937ed4ddfa1c6f65fb4c21f3bec kernel: avoding umount when there isn't any module. close #556
+85caf41e97aba83c7c23bf791eb60b5e66c07620 kernel: fix secctx mem leak (#1283)
+5b920f8230ecd56c8a380d83dbc4dd18f84cfa1c kernel: fix secctx mem leak (#1283)
+eb5d5034888070c24676a29ff09f3b5c96054747 kernel: Add init selinux rules.
+e934bfb64850ef1584d7920eab3dbf53507b3bd8 kernel: Add init selinux rules.
+8e06088f961a147785e12d2e488e3de30e0eab0d kernel: prevent become manager when failed. close #1328
+07e475c5dc80b888c059a28fae1c852830bf6bbd kernel: prevent become manager when failed. close #1328
+9e9ac672efa8f9444941da49095c265d607df566 kernel: Allow system_server to kill su process
+01b685ce585bda8242122e71f8ca0128848cf985 kernel: Allow system_server to kill su process
+9b254e8628f8cbe5ae60f376e42a29aa9ae5b7b9 Guard a few logprint in prctl path with KSU_DEBUG (#1402)
+3e2de84a8153342f316da0ad628a55a69e271ada Guard a few logprint in prctl path with KSU_DEBUG (#1402)
+3f5d6ca54a01ad114879aa0ca219993abc075c23 Build KernelSU as LKM (#1254)
+7568d55be18be96cf6642d484bdf3f4a2516a9f2 Build KernelSU as LKM (#1254)
+cbb215ea810d6b6c4e638ce102af9c1024854f95 Suggest non-gki kernel users to backport path_umount (#1464)
+b4cfc2f2980b5904d045b04931c67aa7d11a8c80 Suggest non-gki kernel users to backport path_umount (#1464)
+8a36c36e3e4fad22a8cfb1d50ffab877a7ba9e00 kernel: Make it compile on 3.18 (maybe older) kernels (#1460)
+d6770467fa4700341d1ba315d8fbce029708ba9b kernel: Make it compile on 3.18 (maybe older) kernels (#1460)
+85e2cd49c8f659686744861ef2b449c90d385a84 kernel: remove it from sysfs
+fefb02e578aad9ce8a748a001f3f21d550f97da5 kernel: remove it from sysfs
+68bee049a7c6e5bca894cafcf78c088126151962 kernel: don't remove from sysfs when debug is enabled
+4bad691ec85041bcdd4e69e77a44cfad4dd68c06 kernel: don't remove from sysfs when debug is enabled
+ae049019d6fe12a9b2e3c6442837d53cdcefb109 kernel: support query working mode
+ce0c397a65fc77790346549f4fee08606bbf3590 kernel: support query working mode
+65bda4b5a8b0f3bd53b1283591476e7f77d75c8b fixup! Suggest non-gki kernel users to backport path_umount (#1477)
+247aa877e45fba2b0c00b427d839bb96d997cb80 fixup! Suggest non-gki kernel users to backport path_umount (#1477)
+2fdcdb2b4ba3346d2bbd918ea709cbfa4f18f842 kernel: hook syscall instead of unstable symbol
+2a64784a3356418f839c54aaf1b36c6553caedd8 kernel: hook syscall instead of unstable symbol
+f69abf1e5147bbe213e7cefb4a1d4f96ac8e7416 kernel: hook newfstatat/faccessat syscall instead of unstable symbol
+815f4d0428fcaccd94fb12ff54bfad1fe19492ed kernel: hook newfstatat/faccessat syscall instead of unstable symbol
+fdb6b6a88a5cdca7c89e7471c846e878bb24fa7d kernel: fix panic cast
+71b56ba7001fb704b806610e8819adfb4eaeba7c kernel: fix panic cast
+895ad601d2b7d647775475a77711026414a06f6c kernel: remove unused headers
+bc1e03feb17724fdb2fba6c3e765fc2074279b22 kernel: remove unused headers
+4c9f201c21fd6e8134b2dbe6ac8766b68208aef2 kernel: minor fixes
+c408710b110ed69e1584c07cd39105114789a0b8 kernel: minor fixes
+7713b7ce412e7983e9c015b41a1131c8ef063c5f kernel: Fix compile warning
+64908583e93ade932dc21206e362d1a9c8a0ae82 kernel: Fix compile warning
+91204e713eab4b7f9f9c8df3e4d2de0a9184ef48 kernel: ignore all non application uid
+c5d423c4ebb6286a7d21e653467b2629e06c8c33 kernel: ignore all non application uid
+c0254fdb18d1e13fcb6c2251da7c0c4f56253827 kernel: Fix the incorrect judgment condition.
+b3a15e2b6bbc77f2edfa508e1a35086bfdc9e06f kernel: Fix the incorrect judgment condition.
+1ccb61c0fa8ca7eca66820d9cf46dcd45ca057ea kernel: we should take ownership over fd
+e38a5e52d2fb43ced7198e04f286886a8aa5c798 kernel: we should take ownership over fd
+a9b310876fcb5f20b3ec5ed40c8ac242cb0455ff kernel: Let the kernel choose who is qualified to be the manager.
+9a042110512ac026917f7bf3d9ee3b5b347ac00d kernel: Let the kernel choose who is qualified to be the manager.
+a91690eabed36453ae185be3accf9e8507fe3a5c kernel: simplify prctl
+e1f9900b2f89e4e150c1353f4878657b54639625 kernel: simplify prctl
+478fda6712fb5d34550e948e8f44b34ea19636e2 kernel: remove become_manager and minor refactors
+dc5f911e43b52f204462b27934d65d2cb97ea9c0 kernel: remove become_manager and minor refactors
+07100329286a7ec8cdbd95b1fca8d293e2ec4ba6 kernel: make for loop compatible  (#1517)
+96242df22866982421af1ab3260d815f5dd004ab kernel: make for loop compatible  (#1517)
+d8671b14d11329287f9fd931dd4df3c4ace119f4 kernel: clean memory when exit
+858ec910fda7c261bb0f7231be7244b6bfaf3670 kernel: clean memory when exit
+37410f85a42d03bd3f7dcbbce0b8694dbc622554 kernel: guard "umount for uid" logprint with CONFIG_KSU_DEBUG (#1519)
+cb7f414e39bba289a7e3e576bc4fe3a82fa034b4 kernel: guard "umount for uid" logprint with CONFIG_KSU_DEBUG (#1519)
+d87bbfa652bf47bfbb4ca270932dd35cdaa9dfb1 kernel: continue search when open some dir failed
+006a1b765754bde37938d50d3bf043d9f243013e kernel: continue search when open some dir failed
+4841c2123a0a7b9a9bee952a3b88397ea017ea75 kernel: alloc path on stack; don't follow symlink
+eb24884684afffde9c10e636e07b8612a0958b2f kernel: alloc path on stack; don't follow symlink
+1b71aa2c78d26bf77564ea5d0515babff66752bf kernel: Fix wrong kfree
+5f7d4b609ffd7b94968e51e5c46e0ec1df4fa91d kernel: Fix wrong kfree
+2cc2312409667126de12709d7c3e1ba2c6caf92d kernel: fix issue with dfd parameter retrieval (#1543)
+8fe19d3876d435e36f3ca75e8f9ebd78ed1f5e15 kernel: fix issue with dfd parameter retrieval (#1543)
+ea0ee0563a8647004122cc166fde0f3ac91b27b4 kernel: Fix misleading log
+4ac203a78d325e3ada3691b26aed092a9c90c21d kernel: Fix misleading log
+ba9580e4d0e5739f50c5f8bd07c3538b262dadf4 kernel: fix debug set manager
+9ffdd171f6543eb916807719b0666747d94f6ad4 kernel: fix debug set manager
+4584aa7f4e15edb22ebf55263a2c552e70997dc1 kernel:Add Huawei hisi check (#1545)
+4f05fe226e8ae8e9f7b11fb02b6cfc23ecc3474e kernel:Add Huawei hisi check (#1545)
+ae8ffe2c10a3f6f719def2c953c1e51afaa0d540 Fix missing semicolon (#1551)
+444574739c0ab06db131c3ac58d37d456f3f48ad Fix missing semicolon (#1551)
+a93a35668b0648d2cb556ec76c145639c238ac59 kernel: no need to umount and mark as root for manager uid (#1549)
+fd17e852d061505d205b5b2e3ae9bd671ce91f52 kernel: no need to umount and mark as root for manager uid (#1549)
+89eaf009c83f61129c5dc77fe67a76cd71a432bc kernel: deny all unexpected signature block
+869cd50b79ad7b0b8d5f6f06833fa2197777a686 kernel: deny all unexpected signature block
+d5cd579b60e8439c55f6e6faff2cef5cd1a13497 kernel: deny unexpected offset value for signing check
+97ee114aa507775276d1b4adb68c94d7a7ea8e39 kernel: deny unexpected offset value for signing check
+c0270b52c6479e5e17da71c3bac44d9871082740 Revert "kernel: deny unexpected offset value for signing check"
+d533c27e4f060e065e2edc02eea717912df80f88 Revert "kernel: deny unexpected offset value for signing check"
+e8f633c00325b418e6d939f92c535e5c5b35ad43 Revert "kernel: deny all unexpected signature block"
+942866d98645e425017fabac0a0108b05a848e41 Revert "kernel: deny all unexpected signature block"
+5dd356d8b05d5f68595e9a2bd0881bcf7a7cd433 kernel: fix potential dead loop
+4a7367219046f1767e6dc1795dc98942d3667f74 kernel: fix potential dead loop
+e0c684c5ab6b8cb1c9191f65396e169a37024a42 throne_tracker: Fix Manager sometimes not detecting KSU and optimize it (#1586)
+4f9bbf199b197e0501fe405abc4d6c26ef892129 throne_tracker: Fix Manager sometimes not detecting KSU and optimize it (#1586)
+e2b0721af539335a0d6978ce08330b2fce60cae8 Hook syscalls and stable symbols (#1657)
+2027ac325f3ef58d20b51ff03ee36b7fc0eb9ce2 Hook syscalls and stable symbols (#1657)
+2dc2dbfd45b9c721edbfd8b71d8ccc382a3eb63e kernel: use syscall hook for all version, remove code next version if works well
+dedd54d89000b685984584987e95d0d474e6b2c3 kernel: use syscall hook for all version, remove code next version if works well
+714990b7c6ad1d4bda44b10f2ab1e9de94f0b0b7 kernel: no need to hook
+fcc3d2d3d48a4ec0a65a50f294b038f000b5ddd4 kernel: no need to hook
+cd73307cd466ee11fc124f3c5d339253c5ab49d7 kernel: refactor PR_REAL_REGS
+f9826838259e2a5ed20237b35f55eb64cd223b47 kernel: refactor PR_REAL_REGS
+2efefcea72fca696fce581f647092df8de466685 kernel: use library import
+efbc07fde3466d70431d3cdb824f60032f8ce8a0 kernel: use library import
+7e1889c2ecc9e60662f9013f8e8c411f29f09554 kernel: close fd early
+646b6f71f49e205d04ebc1f4d96ccb14b7bda1b5 kernel: close fd early
+e4109455b99341e6c03af9f11c5f5f2a5337b37d su: allocate new pty (#1693)
+935dc18faace4dfdda79d3f00bf1ed2632a94628 su: allocate new pty (#1693)
+89818cf85fd8ff4ed19ff52006718f88b5a6bda0 kernel: transition devpts in kernel
+98757bcdb35ba20a1c11399173ceeab571d64b50 kernel: transition devpts in kernel
+1bec08eacf123ee7d1e428ea4faefdd12edbcd9d docs: Add devpts description for non gki
+109442f8c4c7692af6562bdad6fd9f39dc1f935b docs: Add devpts description for non gki
+7af4f338e56cce386ba0dccdc0871b687cd697b1 kernel: Fix compile error on 4.4. close #1720
+0e656dd3395ef7bcc7cd6bd922a93f7f24c9a68b kernel: Fix compile error on 4.4. close #1720
+123b66e84b0b8b09060d0b0fb80a1005024a6a79 kernel: fix devpts permission. close #1727
+81033bcc483405cc11aca853452bc9ca5fb0e193 kernel: fix devpts permission. close #1727
+0576495b4b719317f70e520213648efee3f90ab2 kernel: Allow to use in Private Space
+5d6ef355ae506e1459f4eb575f8924fc6edce7ba kernel: Allow to use in Private Space
+31653b11f13284ca4711b11cdbb2c1e754cd7778 kernel: replace devpts kprobe
+8e973bcbd5e21dfd2ab7df012e61473018ae4f3e kernel: replace devpts kprobe
+fb1965ea09eaba96a4e9131fe828fcbd084543a0 Deadlock fixes (#1758)
+038dae1d6f2940385fb5be0c47fb482847283d9a Deadlock fixes (#1758)
+9fc68e2de6d12a7105aaac5407c6d14901dcafda kernel: fix throne_tracker uncompile-able on 4.4 kernel (issue #1771) (#1773)
+bd5100d698b7f9f9dde29e52b9c186816053146e kernel: fix throne_tracker uncompile-able on 4.4 kernel (issue #1771) (#1773)
+97d70b40fc395de136442fc3645a1c4a5b54ab3a [1.0] Drop Non-GKI Support (#1483)
+898e9d4f8ca9b2f46b0c6b36b80a872b5b88d899 [1.0] Drop Non-GKI Support (#1483)
+f881eca862cc09498f7d9d7bd110eee7fef54daf Convert devpts domain to ksu_file (#1801)
+78bf2493bf2b92a12636a4ec64ded21e33644441 Convert devpts domain to ksu_file (#1801)
+77b252a4877c2b43f84bf3cba53b4b4a28433deb throne_tracker: skip iterate if failed to open dir (#1832)
+f52beb9f75a44f4753d839980b92864eef6735e4 throne_tracker: skip iterate if failed to open dir (#1832)
+894115e49deb5bca1469aea1687cfe882142f08a ksud: [Fix] grant root to the shell in debug mode (#1853)
+56c3954524ab34672fc63e369730546ce22779aa ksud: [Fix] grant root to the shell in debug mode (#1853)
+d9fda971cd243dd73f7008e0ee690d89dd7000b3 Revert "ksud: [Fix] grant root to the shell in debug mode" (#1860)
+bd24044ec3c8c14fd9efba209a9a1b73c328d4d5 Revert "ksud: [Fix] grant root to the shell in debug mode" (#1860)
+3acb13df653f9e2e889cc2e649e6deaa89292345 kernel: Relax dentry_path_raw compare in core_hook (#2041)
+27bb2491c25b6bc5e1ec473512816267b5a60679 kernel: Relax dentry_path_raw compare in core_hook (#2041)
+e1d30d55af5a77ad745322b60672d375b05a966c kernel: implement SuSFS v1.5.2
+f50ce0058c63a7819e9066fab83df802de899a31 kernel: implement SuSFS v1.5.2
+68c93178852e8d035021d7e130e89104a206ebfe kernel: additional custom v2_signature size/hash
+564249a9be5a40006c8dc0488e5abefa14b420a4 kernel: additional custom v2_signature size/hash
+b78c9adf491903cfeadf6bb79ed36874a7e39d7c kernel: susfs: CONFIG_KSU_SUSFS_INFO syscall to get susfs version & variant
+e1107e514dfdf74db76e581f27feb09c3dd6989a kernel: susfs: CONFIG_KSU_SUSFS_INFO syscall to get susfs version & variant
+2679f9176d6dcd7b9d1a582c4df39be112a2428a Revert "kernel: susfs: CONFIG_KSU_SUSFS_INFO syscall to get susfs version & variant"
+dc1bff449fc963878378e8748fe6b3f0b7337168 kernel: Removed SuSFS Patch
+e15516040dab005602b4bdc5893ed9ee2b5dac25 Revert "kernel: susfs: CONFIG_KSU_SUSFS_INFO syscall to get susfs version & variant"
+9e996d1d9d186e44fc9ee03cce4a3214cf485c48 Revert "kernel: susfs: CONFIG_KSU_SUSFS_INFO syscall to get susfs version & variant"
+98a692370f9e91eb18e4757e8a7b2852874906a4 kernel: Removed SuSFS Patch
+7848dd16f351fdf34fa31210fe6f5fa7ed2bb962 kernel: Removed SuSFS Patch
+f2fcb3687b729e53c507d222516c38899dc1e0f6 kernel: cleaned up remaining susfs code
+bfa4c9db62ab872311890fa9e5886222c5ad2995 kernel: cleaned up remaining susfs code
+a545a3e81c020b7203163ad77ac60e676d5941f1 kernel: slightly polish up code
+38ca03344671cdea2fda62c914c228adbfe116ed kernel: slightly polish up code
+68eb2fb6628ff89c170e64e85a5aa80667bd5dd8 kernel: expose allowlist workaround as Kconfig option Useful for situations where the SU allowlist is not kept after a reboot. As per upstream this is only used for < 4.10 and Huawei HiSilicon devices. but theres user reports having issues even on 4.14/4.19 samsung kernels. Expose this option so users affected can opt-in.
+5f2c1eef9c5ea9b5ae8d06aa3bc380309184c2bf kernel: expose allowlist workaround as Kconfig option Useful for situations where the SU allowlist is not kept after a reboot. As per upstream this is only used for < 4.10 and Huawei HiSilicon devices. but theres user reports having issues even on 4.14/4.19 samsung kernels. Expose this option so users affected can opt-in.
+1b70c44d89e4a3fc21803f7c4f30f687f151bd2f kernel: require path_umount backporting Most kernel builders have to touch their kernel source code anyway so we might as well tell them to backport path_umount to achieve some sort of feature parity.
+36fb6085ef8d738e1ffce01e039847ce0d6d1e12 kernel: require path_umount backporting Most kernel builders have to touch their kernel source code anyway so we might as well tell them to backport path_umount to achieve some sort of feature parity.
+8d2b017c96c71a1716c40931f30c9310c90186bf kernel: sync with upstream
+cf75aa4a11075f971a57291ac68b426207430359 kernel: sync with upstream
+1a84f69f5c834b2db83e31b403069dd0d0ab8cc9 Revert "[1.0] Drop Non-GKI Support (#1483)"
+f929e402956a836f80c211d9ea79bfbeb42a0fa8 Revert "[1.0] Drop Non-GKI Support (#1483)"
+1f58c7bf1229cb420112a5d8459ebf9ebf9ecc3b kernel: KSU_NEXT v2 signature size/hash added
+b3753838664d4bf95b68ff7b358e97cc22764e01 kernel: KSU_NEXT v2 signature size/hash added
+bdf81c08809fdcd1c813374eb6c50af9dc23fb2a kernel: added susfs v1.5.3
+091a35be7fd52580e5556e0ae2aef7f1d1639199 kernel: added susfs v1.5.3
+8fbddc959a43ac3403122e8b43929d7d07f2b3ec Revert "kernel: added susfs v1.5.3"
+a1553c52bd571c7f51e0d57375a82f881c72d61b Revert "kernel: added susfs v1.5.3"
+a5f12ffe961afa47a3ae7f75cce3dd3e2ca37102 fix: reset ambient capabilities to resolve D-Bus permission issues
+4332b5caa9890b3e34b0c26b6b900efe062c8079 fix: reset ambient capabilities to resolve D-Bus permission issues
+4a07ce7d0b633987fbd687b28e1ae35f296efac3 kernel: removed KSU (official) v2 signature size/hash
+fad379d255601a06c1fefae640ce164473d791d7 kernel: removed KSU (official) v2 signature size/hash
+7ea1579bce18e2641a4e182cfe70c5017e9dc825 kernel: try umount /system/etc/hosts & /system_ext
+9f30b48e559fb5ddfd088c933af147714841d673 kernel: try umount /system/etc/hosts & /system_ext
+72739facc82935798501365923218c214fdf16a7 kernel: expose allowlist workaround as Kconfig option Useful for situations where the SU allowlist is not kept after a reboot. As per upstream this is only used for < 4.10 and Huawei HiSilicon devices. but theres user reports having issues even on 4.14/4.19 samsung kernels. Expose this option so users affected can opt-in.
+b18c39e9117c2f3602d961467762aef673f48835 Improve seccomp disable && Add locking to protect cred modifications in escape_to_root (#2320)
+95584df023341f760c18f2314f9d0b60617c04e5 kernel: Add fallback if user didn't implement 'get_cred_rcu'
+0ada4ee5d49d2701a1d0f71a3d2df3998a102603 kernel: improve get_cred_rcu guard
+a05b790da6cec1076695136ce02b7d88bda54e8b Avoid unnecessarily overriding capabilities (#2381)
+87fc6b27844b06ef2da4fc362d6d8ff5fe1d4573 kernel: clear securebits
+ae36e2085ccffe2a13d2c9771cc0b44cc2e1f32a kernel: handle optional backports (#99)
+bbb05b292aaebf674105ee7239ac612cedbfb88a kernel: do not umount modules by default
+a2fcd157a2cc81cadc1d86a53d253c5d3f389ad7 Revert "kernel: do not umount modules by default"
+74171a29302ab59e8db6b259883ab9cf25577e1c kernel: unregister sysfs for module's ext4 image
+42896dfab169d6870ed501a4b02020fb89d66305 kernel: add umount calls for pixelify gphotos spoof configs and lsposed dex2oat bin
+a89985f33e2a2cf810f3d69e4cb30c0f1a82f30b Allow toggling unmount setting for all apps (#2450)
+bb6c20339c3520200fde5143a8cdd984a9521f38 kernel: add support for disable sucompat
+85866848ea12c5a80484371815ac7b05e1768cfb kernel: Allow to re-enable sucompat
+097451d578e6d5f0a0a2a4f4744f074c558bebd5 kernel: guard functionality that requires kprobes
+15371bb1d64cdff3507df109cc93d0e89a837abc kernel: add non-kprobe support for sucompat disable/enable
+cd0031e8a53d34b2f76917e9040203c4a758d05a kernel: expose variables used by manual hooks always
+785d8143fb6efbdc055bdd8049c7709e5c76dda2 kernel: remove KSU_WITH_KPROBES definition since it's already defined by Kconfig
+0038ba65664810ce1a6da15cfd504b0dfb3f04af Fix reference count leak in nuke_ext4_sysfs() (#2467)
+487e7d00123a4adfcd968529113b50003d20e55c kernel: simplify umount calls for configuration files
+7a08683c741f9d42bea8cb7f28823f07a57332bc kernel: remove unnecessary umount calls for configuration directories (evil modifications)
+7218a504c98ab6a6e1d489722a90c65b60d8ce30 kernel: ksud: add ksu_handle_execve_ksud (#217)
+f369297be955dd71d812b1c9f059475528f4ae50 kernel: fix sometimes sucompat can not toggle by manager (#2484)
+1c9705fdd037ad48945191209a14c78fe6e81d6b Set KSU_APP_PROFILE_VER for shell (#2481)
+dfea38e0f2f6e7fbae6518ca27ce4d87ab85404a Skip staging package when searching manager (#2511)
+35c98aee76a8c79d1fb8a50308dc084fc269ca4b Fix off-by-one when iterating dir (#2530)
+4a37422af52417386c5619e70a910fdd7c8f0acc kernel/sucompat: sync to KSU pr #2506
+5f871cd713fc62f43042500cd69ef4fb58202e56 kernel/selinux: fix pointer mismatch with 32-bit ksud on 64-bit kernels
+ba1b3c4fc745d4360a504c4ae2d19c07e13877e0 kernel/throne_tracker: we just uninstalled the manager, stop looking for it
+217d230b61b3297b93b511d766e5ff1896886f06 kernel: expose KSU_LSM_SECURITY_HOOKS on Kconfig
+9e150b2c44d6daf25c3b19f568373f64e5716e45 ksud/installer: /odm handling we move the folder out of system if it exists in real filesystem and it is not a symlink. this is already supported on init_event.rs so only handle_partition logic was needed to make it happen
+980f71c1bdd57e2e08f39fb011fa850c7612cf32 kernel: core_hook: fixup 217d230b (#402)
+27d8bc458fc86f352b148b78def88a16618306bb kernel: sucompat: increase reliability of execve_sucompat
+eed685507a77e267a0d16c190f584ef02b0257dc kernel: rename KSU_WITH_KPROBES to KSU_KPROBES_HOOK for better self explanitory
+ce37e17c87544cbd4f030199e6a36376cc9c93ed kernel: added CMD_HOOK_MODE prctl to get the enabled su hook mode value
+6a6fc07cd437334a99bda15f562a20ee0654fed0 kernel: throne_tracker: move throne_tracker to kthread
+c4deee1e4935f0390641b89e0472202a626af679 kernel: ksud, throne_tracker: small changes for UL
+84fdcf8bf5182fdab127c9d1d0c780b2b1a9d8eb throne_tracker: avoid cross fs access
+3921175e4c909737c5896f850c5de36ea4ea20e9 kernel: core_hook: intercept devpts via security_inode_permission LSM (#480)
+bf35f734300abb4c17cca99b85e977388bd275c7 Revert "kernel: throne_tracker: move throne_tracker to kthread"
+c91f9c18ec39f9559aaa70e833e0ae33bd1ccc03 Revert "kernel: ksud, throne_tracker: small changes for UL"
+85f4e6ac2716093ad62977033967876b4d2aebe8 Switch to prepare_creds/commit_creds (#2631)
+0d4efa649fde61f1af1aeeaf3339befc414abe8a kernel: throne_tracker: avoid cross-fs traversal using s_magic check (#2633)
+d6601e1e541a88bd5a2cc9c3f1f86a2ab4441a00 kernel: core_hook: fix refcount leaks on try_umount (#2635)
+adce65758374e50b1c25f169736c73e53c2b31f9 kernel: ksud: provide is_ksu_transition check v2
+c108a8ed326077b45ff18492bd15e2d3e38c4aec kernel: throne_tracker: harden track_throne_function file read
+9b5e60912d536ed4c38988c9b3a3ac48f1138d67 kernel: throne_tracker, apk_sign: functionify d_lock spinlock check
+fc58bdf0e2ee0c8864e979facf950afffadb213c kernel: throne_tracker: harden packages.list checker further
+06135cc827db6e5b01bd6f11679749dd8ddb5701 kernel: apk_sign: loop file open on is_manager_apk
+2b2320000c2623e1321144f7e111b1fa66a5b094 kernel: throne_tracker: remove unneeded check here
+aa19e8c60910e0158a475ce0904c97de83bd8ce0 kernel: throne_tracker: add strscpy/strlcpy compat
+f15d9b18e907efc066a86110cb32900cfdff2540 kernel: ksud: d_is_reg to IS_REG
+600d9ce5d2a990e0638d296a736ff691c34206af kernel: throne_tracker: resolve s_magic for < 3.9
+80bd797737440239c13a7e01698dd0c518eb0ad3 kernel: ksud: remove remove read_iter requirement
+4e3f06d405d3c0b63935459392d9c760f71d4cbd kernel: added new prctl CMD_GET_MANAGER_UID to get the uid of the crowned manager
+4d633a1e0e5934148b0de998b06c16e4ae2f0f74 kernel: selinux: rules: Fix illegal RCU lock usage in apply_kernelsu_rules() (#2646)
+b567e9b2755465d48e61935237f47000dff20fa8 kernel: add better error message if CMD_GET_MANAGWR_UID fails to fetch manager_uid
+c6b60a24e804939f814385d22d2857e23911b61c ksud: Add second_stage init variant (#653)
+bd03c296a1f2af9569dfbb49077068fef1864c9d kernel/Makefile: remove redundant get_cred_rcu backports
+81f4f09d0c6f43ae0e2e460d87e914138f1d4dd9 ksud: Address pagefault in ksu_handle_execveat_ksud (#662)
+2c9078e038bcb4b57a16b709e5cc809c690df13f kernel: use ksu_strncpy_from_user_retry when kprobes hook sucompat pagefaults
+d61de07c2189401a003f3fcf8ef45760b4d55f82 kernel: implement  v2_signature size/hash override from userspace through kernel module parameter
+45ad73e9dd86a0ff04a02e73a8fc2dbc3160ee6c kernel: guard syscall hook types
+948975ba35bebbd6e4b4ab41d33715ce7d79b572 kernel: core_hook: add support for KernelNoSU
+3f4c23a34f4f2d3011a0bb0b6a14a8f10bd18b7d kernel: allow only perms for /{system | vendor | product | system_ext}/bin/su path kernel: guard kernelnosu perms if not using KSU_KPROBES_HOOK
+e0c461322bca8ab698e3e9749a7d467f67f5daa4 kernel: nest ksun switch manager support under CONFIG_KSU_SWITCH_MANAGER config default as disabled
+ba16e0c83ffa23d0ce8905961d7553328159b8b8 kernel: selinux: rules: Micro-optimize get_policydb() and fix illegal RCU lock usage in handle_sepolicy() (https://github.com/tiann/KernelSU/pull/2695) (#721)
+a540992e9b6395a245a3448e78f19e87d4ea3437 Reset seccomp filter count when escaping to root (https://github.com/tiann/KernelSU/pull/2708) (#743)
+5bdb938e845f2dacd37db4a3761d2b38503a708b fix 'for' loop problem (https://github.com/tiann/KernelSU/pull/2745) (#772)
+cee92d6926eb7c915ef06ceb449fa388a1e246c2 Unmount isolated process which forks from zygote unconditionally (https://github.com/tiann/KernelSU/pull/2747) (#776)
+04c6bbf035cb4abbfdd3e45d74f9d7c2af1959fc kernel: Remove duplicate include in core_hook (#784)
+26ee31e01c6cb8d4f68f673009bf6287acd439f2 kernel: remove KSU_SWITCH_MANAGER logic
+2d60fdb944b41f25d85556c37d1940b153b818a6 kernel: core_hook: expose prctl interface for umount list (5ec1cff#16)
+1f95c35dc431f5e4961eec3f4f3db2c753079e00 kernel: core_hook: expose nuke_ext4_sysfs on prctl
+35a6c1d1c1cca0ff3fe4af9d215b154d9b1c7847 kernel: sucompat: increase reliability, commonize and micro-optimize (tiann#2656)
+8d8220b38b930a22116b5e602e51a3a2ce25e74d kernel: ksud: migrate ksud execution to security_bprm_check (tiann#2653)
+3cd88145cc89cbeadbc9f18432582b70a8d77717 kernel: selinux: fix pointer mismatch with 32-bit ksud on 64-bit kernels
+e7a090322545a707051f1fe136f28cc600676124 kernel: ksud: provide is_ksu_transition check v2
+4c66d8cb5847c7af6e5fe069761a3852658d6a1e kernel: throne_tracker: offload to kthread (tiann#2632)
+028237652296afa090f6f692cc70bde8e7a860b2 kernel: sucompat: ducplicate declaration, previous declaration is in kernel_compat
+8809224691fab8eaf355e74d1f829ab16e063311 kernel: sucompat: add missing import arch.h
+427f724c1ccab0d6bd31067e8ac9932fd0f570a1 Revert "kernel: core_hook: expose nuke_ext4_sysfs on prctl"
+b0e9976288da00dafbcd8d13f7862021fbc579fc Revert "kernel: core_hook: expose prctl interface for umount list (5ec1cff#16)"
+dd44d4212eb233d37fea624fdb286c8e86a56d87 kernel: ksud and core_hook: wrap execveat_hook checks with CONFIG_KSU_KPROBES_HOOK guard
+89a0d4c53e9d5d8c6d53922f342d858c4c7f300c kernel: sucompat: fix improper sizeof(su)
+363e80821a855a03c295b548462fd80419a53076 kernel: manager: get kernel driver version tag
+693ac0be557992201730c6a352b73f2db6791011 Revert "Unmount isolated process which forks from zygote unconditionally (https://github.com/tiann/KernelSU/pull/2747) (#776)"
+d4b7ffbbe19d6bffcafad9962439427727b74b05 kernel: scan /data/user_de/0 for actual UID (#155)
+300a13f657754339a294c08909e9851936f47ba9 kernel: handle throned UID change if manager is reinstall or changed
+f1c97b507efe439906f49d5f33b8c7ddebe5be71 kernel: harden prctl check
+478394a6e1ce916c7dab3370a3aeae69fa775d41 kernel: align prctl harden commit from backslashxx/KernelSU SQUASHED: * kernel: harden barriers for arm/arm64 * kernel: core_hook: harden prctl handler
+11643ee685cbac28f995319790a9adb86d29558f Revert "kernel: align prctl harden commit from backslashxx/KernelSU"
+69be375db10a98c89d480108b539cbeac1994e54 Revert "kernel: harden prctl check"
+ad8a8446ef37dbe1bad1c933a96ee2975485882d Fix kernel panics caused by thread info flag corruption (#909)
+cc10d0429e29a6128a40b86fb69edbc0b70ae643 kernel: replace renameat hook with fsnotify (#910)
+7398ef788b2d91d24aa30655b41822d1352c6893 new supercall impl (https://github.com/tiann/KernelSU/pull/2835)
+b133475ecfa57dd644096838cb665b1d1d192d52 fix: a lot (https://github.com/tiann/KernelSU/pull/2843)
+c2760bd51ac205dcb671a63fe2a598973d12370f fix: a lot again (https://github.com/tiann/KernelSU/pull/2845)
+711549bcde4a14bf05bace6bbbfeaa61d1fa0b7f kernel: remove unused
+09ef83b3cd631ca61ef253f7fe96fa4266e361b2 back to kprobe setuid hook
+454b92b6c41fd6d9f318ddb2610f6d62540c0555 Implement workqueue for unmounting
+a1129d7b1eec8cdfe86c49cea19a6422af0f55f3 switch ns umount
+08df3beae85249cb43a814a99b2c8c0e13b8b26e refact: use feature subsystem
+05cfaf57cef79ef302d5f9624967c632f1f2d9d0 fix
+13e343580b500adad3db8e2e5410a41abb13dd20 add fixme
+939acde9bc488e5d4efad3c9626f4d885b93ff5f fix security_task_fix_setuid_handler_pre
+e3684fe41bb9b7684d5fc088db6207b8335b9e35 add name and print command value
+67352ca76a61b22c0a4199e0813d8e93cacc5186 use cap_task_fix_setuid hook to avoid inline issue
+a301f131e762de57a47fed05715ec6ee9a6e79d4 kernel: disable setuid debug log
+1633e702a30dedcec32654faa6708d683a6e1481 Reapply: "kernel: Allow to use in Private Space" (https://github.com/tiann/KernelSU/pull/2857)
+d49bdd14cc096b8ddc32d64e44171e4d0cd75d30 Revert "Implement workqueue for unmounting"
+4615e2f5387d0a8ec41ef27136f6411aa9b8cb95 kernel: rework umount with task_work
+d11d2d7e616cdaa2ecda473376168bdab68a1c81 kernel: init/exit umount feature
+1202148166a6732eb8ba1646840eaeffd37efcf7 Support building for kernel 6.14+  (https://github.com/tiann/KernelSU/pull/2662)
+564158afe3be1ebcaf5b5d69983cfee9a08fe619 support mainline kernel (https://github.com/tiann/KernelSU/pull/2869)
+bb0241fde251b6e570c27b2f5df59044d8dba5db kernel: use sys_enter tracepoint for sucompat (https://github.com/tiann/KernelSU/pull/2866)
+3d6516ab5bc73362475616b4158072b6ce6f43f2 fix: mark tif (https://github.com/tiann/KernelSU/pull/2871)
+9ee13f3d8352cbf97ff798ba4f92fa543b470b86 fix sepolicy patch hint (https://github.com/tiann/KernelSU/pull/2872)
+b8a6973ec28500ca8024710bb83dd77eabe4fe07 kernel: remove unused workqueue
+e10edd24f51b2fce708aa3d46816acef6eac3c23 feature: add enhanced security (https://github.com/tiann/KernelSU/pull/2873)
+53fef355dab59ac797bb88fe609205b60cb395b5 kernel: Set the tracepoint flag in a tracepoint manner
+c8576c00315c6ca15cb7684e62cc5618d051117f kernel: clean headers
+44888a7e61ac1ff71daa766ede022afeeea10965 fix: sucompat (https://github.com/tiann/KernelSU/pull/2874)
+bdab674ab41194a45a5408640a0b882c897a000f add mutex for sucompat mark
+a254da0aeda2d855e3d3360f9eb7732a165e9fee kill pgrp in enhanced security
+ea5ae778dd8efd03ad0b70e20f08703a79eb7ac5 fix: enhanced security register
+d8ef2cb02749f5212a82472e5fbc2dee756b14e5 revert: still using workqueue for allowlist
+d81f90986e90735480bb5b502cdabecb4caf2466 Revert "kernel: remove unused workqueue"
+c07c5e97dfaaa5476e3fd806b3ad2695cc73dc93 build: remove -Wno-implicit-function-declaration
+5e9ca705dcbf7bad9bd4efebb00d9812914597ea Replace mutex with spinlock for tracepoint registration (https://github.com/tiann/KernelSU/pull/2882)
+1d2fbb83775aa5479e3c309e5322b927d097836d Switch kretprobe to heap (https://github.com/tiann/KernelSU/pull/2880)
+12adc7a215b34160f58f8bf6b1a9e57367c8dded kernel: Refactor selinux/selinux.c (https://github.com/tiann/KernelSU/pull/2881)
+1f6bda460dcf4dae30812125d9f99dd49a6d2399 Use force_sig(SIGKILL) to kill process
+275a6e2708f4baaa1382cc5cd82800e4b4d1e177 kernel: remove workqueue for allowlist
+83bee9b8f2902ed5158fae4fda98df2427a8204a kernel: remove ksu_compat_{open,read,write} because we're in the right context now
+c4e12481dcb5df07fa746980b4d6f43c88e1a622 kernel: remove unused wrapper for
+5092ba77b91078668e7574ee4e3a453989c34d45 kernel: Use real_parent to avoid interference from ptrace.
+190a54d50410a81bc687ef70ad358d54a48a12ac kernel: remove unused kernel_compat
+f52469ac5c08b4efe6281336d13181d702d49ee1 kernel: fix save allowlist
+8693927a272622d289d62b091c9a64bddc71f261 Fix missing unlock on error path
+ddf9bf837eacdda3207cc8fdd36bcc3fe39474bd use proxy file for pts (https://github.com/tiann/KernelSU/pull/2886)
+adcc1c2e1e9189b5f0c6e9b39b7e44a710bd362f kernel: fix put_task if alloc failed.
+25770bd45e051169bf8f09b07cb8943012c0412b on_module_mounted in ksud.c
+5b599128034c2802241538650eeaa3723b36bcb6 refact: use app_profile
+f75095d79a3b947e410d15c3ada560b9b3d5e290 unified hook manager
+5b1befeb2245eb2aed209b124c8f48db3e97782a add zygote to hook target
+46aa63a52682f8da5d9198a75c29ffa45a57b9e5 use kprobe for reboot hook
+cbcaf0f56fd6080e1052c669af7276005a88e3d6 move reboot hook to supercall.c
+00ea2b07a29bc8ff9e7ce017c9da6275457e5298 refactor: kernel_umount setuid_hook
+a6741b730f17f583366e35949d7bb716cc46fb01 update mark rules, add init mark tracker
+a0a294b127fb0836b20781d53d04cd0bb76d0093 Clean up kernel code (https://github.com/tiann/KernelSU/pull/2898)
+8f2994b6eab95969c46fa22668666cd8578639df kernel: Don't save allowlist on module exit
+c94ea0c0aa7bec4d532fd70c49c4fcb9e71c3818 kernel: fix zygote mark on first boot (https://github.com/tiann/KernelSU/pull/2924)
+62ba9358b895d760dcb4cdbad171ee56e1d3f34b kernel: refine syscall_hook_manager
+a9a6b8b8165baf8f051373f29523a548685c4b7f kernel: Prune allowlist only after boot completed
+4813ad8f14f8f083fdac63974bc81b6737224550 kernel: no need to remark process on post-fs-data and boot-completed
+02e7dbce5becb61601d29a03289b39e27c549131 kernel: Replace kmalloc() usages with kzalloc() (#2939)
+039b6a2bf44be8634fef12c221518d7e41730e7d kernel: Add nuke_ext4_sysfs interface
+81923789c465a8ddd7f9ee08621693cd34b717c3 kernel: Remove unreachable vfs_statx handling
+b4ecfe5ace4f78979832e529027bf16fb130755d sucompat: Fix execve filename access on ARM64
+eddcb0cc27880d9905392e0166208daade2866eb kernel: Add preempt_{disable|enable}_notrace for MODULE
+5626c09a4a41c62a152865af86905c3ddc3357e0 kernel: Fix execve filename access on ARM64
+7b6916f92c2f55df56852b5efba05c055bf375ed kernel: remove redundant KSU_KPROBES_HOOK guard
+3e296ae85216c43b3eca14ce0a0697b12c219592 kernel: fix selinux
+b659ba76c9d8c10d58d2b62d77ff521380c2e636 kernel: try fix manager crowning
+36075e36aeff203f76fd39a5f9cd88ac4ceed444 kernel: Remove second stage init handling for old system
+84a0506da7b073f2d55665c59ce008cac19ccbae kernel: Remove sepolicy of kernel domain
+37e48432e732e5f1e37f8ef42f5f82ef9cb4fed5 kernel: escape to ksu domain in execve hook, remove sepolicy between
+<E2><80><A6> (#3031)
+084152e9365aba654e789dde6d53b7eb7cdc6c07 support kernel 6.18 (#2999)
+f8df04342f73afafdd3dcfd6e841da7ebf43d66a kernel: use our cred to unmount, remove sepolicy of zygote (#3032)
+919953e98d4fd2f9e34160f81342a85ef948ed09 kernel: Identify manager without PER_USER_RANGE (#3038)
+da81be97c5a4bb5f1a4e1b4569f7f06cdbc0ef52 kernel: reformat codes, add workflow to check format (#3062)
+e27687f359ebc4936c36e7f2bd7cf23fdb766668 ci: Correct the file paths checked by clang-format; change trigger path in clang-format workflow (#3063)
+c5d2b28c9f87ffa2e30aad27f4fed24fd7e24e7c kernel: sulog: basic ringbuffer su log
+8490b4655ae995b111b549bd5732830833f03fe8 Add mount namespace support <E6><B7><BB><E5><8A><A0><E6><8C><82><E8>
+<BD><BD><E5><91><BD><E5><90><8D><E7><A9><BA><E9><97><B4><E6><94><AF><E6><8C><81> (#2909)
+899f900cbeaffe14615de9ca0d2efbe27c3b3883 kernel: fix check format again (#3071)
+a93da680ebada5f56c31c14c1bef76f71f0729cf add support for legacy/non-gki kernels (#976)
+bc3763763bb19cc7cf624004142a111e84aa2c24 kernel: extras: add avc spoof impl
+4f8090cdc27363c39f35d0b6a2bfc6ca052aef59 fix some issues in legacy branch (#995)
+cfd00daefb846a525fee64dc884b64759c3d0424 kernel: fix compilation errors in non-gki kernels (#996)
+c0944eb47235a3e157f3185ee781a20b03be5423 kernel: Refactor file_wrapper (#3070)
+5abd0cbdcfff0ddbaf0e005ad8304e46175dcf7e sync legacy branch with dev branch (#998)
+391eb9129e8609063f8dcaa4c1c73ff8d738930c kernel: legacy, add missing early return in ksu_handle_execveat_sucompat (#1009)
+81c604ada8b499ed47701cbd56b157b904eb3076 kernel: append to init.rc instead of prepending to atrace.rc (https://github.com/tiann/KernelSU/pull/3107) (#1017)
+a7a85040f13fc33619cbe5d9644afc24a48267b0 fix issues in legacy branch (#1007)
+800a7a203071158f882f4a3ed8582788b8f0034c sync legacy with dev branch and other things (#1021)
+022030192926beb2aedc042e770f30f8f1a5291a kernel: use selinux_cred() method instead of directly use cred->security (#3111)
+b68370790476dd275ce482aa28626310fbf7496d kernel: use selinux_cred() method instead of directly use cred->security (#3111)
+90ce7c45f3db010322270060702e110cdbedd4ad kernel: Explicitly check zygote start in execve hook
+d20831e4ebd1279e6f9951fecbf13a7d8caabb5b kernel: remove unused cflags
+5712ea72e663cc25fd2a0d6e9dfa9caeaa13dbf6 kernel: Add some backports and remove some compatibility code
+919b79a608351e655be8417bec19037be800090e kernel: apk_sign: fix return check for ksu_sha256
+a30c086e6c88ee038dedae61a0a728e9cbde2adc kernel: Explicitly check zygote start in execve hook (https://github.com/tiann/KernelSU/pull/3113) (#1038)
+d7de833a9c67532efc08dcf41f4870e709776729 Sync legacy with dev branch and update scope minimized manual hooks 1.7 (#1047)
+56879181aea063a2831652b0dc4a6c01ad3a46c6 selinux: Cache SID lookups for domain checks (https://github.com/tiann/KernelSU/pull/3128) (#1051)
+ad22de91571b89a0da999f6c01944b3f8f34b906 kernel: check package name before check manager signature (https://github.com/tiann/KernelSU/pull/3134) (#1052)
+00127f2dee0d0484fbe9371f103aab1193dcc4c2 Revert "kernel: ksud: migrate init.rc handling to security_file_permission LSM" (#1056)
+8de61e2305d02b927f32c41b91c05437c8a92425 kernel: Clean up selinux.c (https://github.com/tiann/KernelSU/pull/3132)
+e822400c6beb4629fc0146db96acd62eb0272a4d kernel: ksud: Refine rc injection, fix issue of Android Canary 2601
+81cd9e8bf118e34a6642da8814fba23ff9bb8c18 kernel: Fixing symbol names causing x64 kernel compilation failure (#3147)
+9b6c22b49de3997687d63cab2853e15e97fdf422 kernel: Use more reasonable symbol name for newfstatat
+5da83f740643328d5e0ecec69778b479960f7526 kernel: Prune legacy (4.x) support (#1072)
+a32cb83c622797593a9572fccc41acce75e361d9 kernel: Fix potential memory leaks (https://github.com/tiann/KernelSU/pull/3170) (#1082)
+ec215a2fc1f5561243212c11a40c89da9b38bbd6 kernel: Fix `setup_selinux` using `__task_cred` directly (https://github.com/tiann/KernelSU/pull/3189)
+ed226983e1ad6019e1171fe3a03318e287dede55 kernel: Fix potential memory leaks (https://github.com/tiann/KernelSU/pull/3170) (#1082)
+46644093b2ce71c994fb7cec327404249897ecbf selinux: Cache SID lookups for domain checks (https://github.com/tiann/KernelSU/pull/3128) (#1051)
+107de9c16a3c66375878510a440f9366f94a0af9 kernel: check package name before check manager signature (https://github.com/tiann/KernelSU/pull/3134) (#1052)
+863c18044bc8dda74325fa45823e9d640d69b3e1 kernel: remove innecesary code in ksud.c
+21058f79bd5c0e57c96115dfa839a0c6fa839d69 kernel: Explicitly check zygote start in execve hook (https://github.com/tiann/KernelSU/pull/3113) (#1038)
+b966ce86d9379fb410db06816f1f5c86fdca0e44 kernel: Clean up selinux.c (https://github.com/tiann/KernelSU/pull/3132)
+f9df4c57f359841cbc0377f773d6a69ec32ca4ec kernel: ksud: Refine rc injection, fix issue of Android Canary 2601
+8d7f119ce4ee5425314c2315dc5b4c0db05175e2 kernel: Fixing symbol names causing x64 kernel compilation failure (#3147)
+93c1961049e39a06219b4f95e7c38df63cd8cce9 kernel: Use more reasonable symbol name for newfstatat
+c24b3a1ea6642b707ec8c3e998afcdb6c007f199 kernel: ksud: read: add fallback to /init.rc
+d772243558efc4c9d0e5a4e813a8fd351eba6d41 kernel: Fix `setup_selinux` using `__task_cred` directly (https://github.com/tiann/KernelSU/pull/3189)
+85dde0cdee9340ae3256faf413c100e989a2d922 kernel: ksud: Restore init.rc injection for manual hooks
+56074f8f425d4caf393c253d0cecd615b68e7b40 kernel: use rcu to access allowlist, refactor get allowlist api
+6fb44f009cf5583d582bde78caead98846866407 kernel: Avoid malloc in remove_uid_from_arr() (#3099)
+1a608613beed5581a50d9dcbe74de45bc753f8a6 kernel: use rcu to access allowlist, refactor get allowlist api
+ff629805ce25931be97ae9bbdf6149325ad7947f kernel: Avoid malloc in remove_uid_from_arr()
+8f39f4a163e0b7e5e73a178172f2c3e0492eed04 Revert "kernel: Explicitly check zygote start in execve hook (https://github.com/tiann/KernelSU/pull/3113) (#1038)"
+b3920c81e0c091ad4d3925b772ead2d6366d1d53 kernel: Use ksu cred to save allowlist (https://github.com/tiann/KernelSU/pull/3243)
+d8fa0fc817b332260a95d79a7a87d478f239e86f kernel: Use ksu cred to save allowlist (https://github.com/tiann/KernelSU/pull/3243)
+6a04abc6f04c9d52a0c1b861e5b691cfe0eafd1e kernel: Provide own stackprotector symbol if necessary
+271b2be159b4710cc02eba1241382e97631e2713 kernel: add missing attribute
+6e112b77cea584c4bf0768e150324ac3251a48cd kernel: Only check CONFIG_STACKPROTECTOR_PER_TASK on arm64 (https://github.com/tiann/KernelSU/pull/3263)
+fa060a8ae98ae4d427697c7d3a10dde7847dadf8 kernel: make clang-format happy
+71363abb087bb750569aef602489974134893fd2 kernel: refine stackprotector workaround (https://github.com/tiann/KernelSU/pull/3264)
+948f47715d46232735ebb174c26544c87eeff64a feat: add late-load mode support (https://github.com/tiann/KernelSU/pull/3258)
+4693f14b7ef25a8bd99362721a02c706dc3da1b8 kernel: enforcing selinux at late-load mode
+dd808f86c50f7ea7ee9694f3f31378b13eae0da2 [PARTIAL] feat: jailbreak by Magica (https://github.com/tiann/KernelSU/pull/3268)
+1d79ce51ead588b153523739cce881936cd41ce9 kernel: Provide own stackprotector symbol if necessary
+3f4eb7ddea0b355bc258c3678845f0ab0515b8b4 kernel: add missing attribute
+92e845f37c68d051491bd690717b734ed18af006 kernel: Only check CONFIG_STACKPROTECTOR_PER_TASK on arm64 (https://github.com/tiann/KernelSU/pull/3263)
+1cd7fd81564e4ffccb29c1c412dfd6875e12e73b kernel: make clang-format happy
+71e0585c349835eaf48f1e27a1d705c4b9b10ff4 kernel: refine stackprotector workaround (https://github.com/tiann/KernelSU/pull/3264)
+3bfc56a35b102cf5a9f58b564f019b75cd630fa6 feat: add late-load mode support (https://github.com/tiann/KernelSU/pull/3258)
+9515aa4b681219ee68c93f9cfd607770bfd68371 kernel: enforcing selinux at late-load mode
+942853eedc920035956db227dd86bda5cb037e24 feat: jailbreak by Magica (https://github.com/tiann/KernelSU/pull/3268)
+80bfcb7fd673921334a6773dcfc61bfbe4fbb07b kernel: legacy support for new sepolicy on legacy kernels
+e05540f4f3c8b4b24139ce47094a46ccb3611d3a kernel: use syscall table hook to avoid running in atomic context
+9707560bda0b2af1d17b43b0ee8958596dc5acdc [PARTIAL] Bring back x86_64 support with a catch (https://github.com/tiann/KernelSU/pull/3328)
+93d56b3562a432ed6d8e9bbb6e8dd996868fcb9f feat: safe exit (https://github.com/tiann/KernelSU/pull/3317)
+ac5bb5d6cef756ec77256a439351a91b7daf2b77 kernel: allow exit
+6e4be1931ddd143ce2b310403adfcb067133839f kernel: handle ksud execve by syscall_hook_manager, use static_key
+b44b482b14ac47b0869ac19a1b4328caa56285d8 kernel: selinux/rules: backport handle_sepolicy to legacy policydb
+785e0bb6edb1ff67df952616eeb5c69b92dcc9df fix: restore missing LSM init for built-in/manual hooks
+462182fa7e0e61e6756fe84e6ce77197a8e2dcae kernel: selinux: minify rules
+6d4aa8bfcd6795d1a612d8a305855d7bbd977587 kernel: reorganize source layout
+91e4c00908a3d44d1bf7b68950eaf3e333a642b8 kernel / userspace / manager: fix uapi
+ab5d93d9ba5f37cf0738b6da82fe8ff1921700c9 kernel: move selinux context to ksu
+a587f23be7ff9da0f5aa21ff24bdd65ac460c52a selinux: add compatibility for pre-4.12 kernels
+85421904fec64308d79a0c15c517a6b1bcacd94d kernel: allowlist: use workqueue instead of init task_work for saving
+050611872a8c079ba400df5c0a42fc8ec94d2741 kernel: throne_tracker: offload runtime tracking to delayed_work
+a9d7764f16e1ce107c52110d92e18e1730e3ccb7 kernel: throne_tracker: fixup deadlocks on iterate_dir
+db9eae9465f1e52e9a8c6ed1e9036e5d7bd429e3 kernel: allowlist: optimize `ksu_get_root_profile` linear scan
+037e9c006315913d32f4598e13501968b432e1bc kernel: apk_sign: Optimize EOCD signature search loop
+83dde735eb3d876f5ad306829d33fcb7a1f314a5 kernel: apk_sign:  Optimize I/O reads in ZIP parsing loop for APK signature check
+916fc4460cd7134aec54948de55cf86152eca812 kernel: sucompat: safely read execve paths without preempt/access-flag hacks
+1ff11c11150181d490d4baa3d4b153de4cf39ec2 kernel: sucompat: align userspace stack buffer to 16 bytes
+bcb08758b4921c041ec182379976214cc7b4d9db fix(ksud): remove unsafe memory access hacks in execve kprobe
+917775f2ebd808bf8950b331ae0780beac5c5cac kernel: ksud: prevent atomic panics and fix 32-bit compat in fstat kretprobe
+7a26364cb347c74024665c493001abf15b0df3b1 kernel: remove util.c and try_set_access_flag dead code
+5ab39a28bcb7699bc842eeb8279e537006131fd6 kernel: throne_tracker: resolve race condition in async kworker state
+a1c38dc5a937ad860999a7829573a97721f34d9b kernel: compat: resolve mount math bugs, dead code, and memory allocation abuse
+1e65e8655158367e66302243e38d83fed1d5593a kernel: selinux: fix slow path string comparison and remove dead code
+0306a23ab98dacfd7808cddf95818cae194cf9bb feat: safe exit (https://github.com/tiann/KernelSU/pull/3317)
+f029653f7bf1c28453b96287ff8c1f93d00931d5 kernel: selinux: minify rules
+46bb0f0582fe0b4e1d922c66802fed51491ccebb Deleting this block for kernel 4.9, as it causes a BUG when override_creds  (#1197)
+813bc8a7e0e0ce5e83b759b674d4503ef77c3c5a kernel: reorganize source layout
+d0dd36c8ee8b6f7ccc72a67f4a268f7664e1f3b3 kernel: fix uapi
+54d514bdaff09818194ab9c36a7f99d9147eca70 kernel: move selinux context to ksu
+798945d0ecf8388baa6fadb8017cb25fd3443858 Revert "kernel: selinux: fix slow path string comparison and remove dead code"
+c49a6316c556f84b8e21ef3af3e1b49032b47ea0 fix: backport scheduler header for legacy kernel compatibility
+ff7b3b451f6ddf7a8613d3d9812cf50fc2322651 kernel: selinux/rules: Pin task to current CPU to avoid cross-CPU rwlock release
+4c9737aed458843e920de95b0bcad56cf790663b kernel: simpler implementation of copying policydb (https://github.com/tiann/KernelSU/pull/3350)
+65a24e11b1c8b170ce05cc4b6941cd41cde8ba66 feature: selinux hide (https://github.com/tiann/KernelSU/pull/3457)
+1d919700e46568436b993b57d3a8e3a3fd7f27b6 source: sync with upstream
+f0e03aa9673d78130fe0743ef803340ead2577d2 feature: adb root (https://github.com/tiann/KernelSU/pull/3382)
+c2013a15ae1eaca69032fa6016ffefb70adf6146 selinux_hide: hide status (https://github.com/tiann/KernelSU/pull/3495)
+77b30272a9495146d848a4b1080e287d299ef329 [Port] port selinux_hide from dev branch (#1297)
+a97004c79a75fb34093d0a1a4ae00f7af7433b48 kernel, ksud: refactor sucompat (https://github.com/tiann/KernelSU/pull/3521)
+065a36ae6fe2497bcbdbdeb8fb9b8fdf3b9ccf7c kernel: Allow domain to use memfd created by ksu domain (https://github.com/tiann/KernelSU/pull/3528)
+430a739216f11769ebc72e0142e64922536b6181 sync legacy: sulog, SELinux hide, adb root (#1364)
+07692d96a56547e2f4419a8687372de6c55a1d04 kernel: purge SuSFS remnants
+8b9d7a7a9cd4a45a6b297817a0925031bc9454a9 kernel: Support out-of-tree builds against generic Linux
+1b2316be3bb9b0ed4838da44967de55f4f118afa kernel: selinux: Bypass dynamic wrappers conditionally
+2dbeb5f2422f779caf692a5466b42a326efb58b2 src: clean irrelavent stuff
+root@localhost:~/oscar/KernelSU-Next#cd /root/susfs4ksu
 
 git branch --show-current
 git rev-parse HEAD
 git log --oneline --decorate -20
-kernel-5.4
-76affd70abf61d77feb0a132f61365d6848505df
-76affd7 (grafted, HEAD -> kernel-5.4, origin/kernel-5.4) kernel: Remove support for Shamiko
-root@localhost:~/susfs4ksu#
