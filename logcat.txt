@@ -1,0 +1,806 @@
+--------- beginning of system
+09-16 18:29:09.597 10197  5676  5689 I DisplayManager: Choreographer implicitly registered for the refresh rate.
+--------- beginning of events
+09-16 18:29:09.621 10197  5695  5695 I auditd  : type=1400 audit(0.0:333): avc:  denied  { search } for  comm="libksud.so" name="tests" dev="dm-48" ino=112 scontext=u:r:untrusted_app:s0:c197,c256,c512,c768 tcontext=u:object_r:shell_test_data_file:s0 tclass=dir permissive=0 app=vctsrt.cntgtj.uqfwgg
+09-16 18:29:09.621 10197  5695  5695 I auditd  : type=1400 audit(0.0:334): avc:  denied  { search } for  comm="libksud.so" name="tests" dev="dm-48" ino=112 scontext=u:r:untrusted_app:s0:c197,c256,c512,c768 tcontext=u:object_r:shell_test_data_file:s0 tclass=dir permissive=0 app=vctsrt.cntgtj.uqfwgg
+09-16 18:29:09.621 10197  5695  5695 I auditd  : type=1400 audit(0.0:335): avc:  denied  { search } for  comm="libksud.so" name="tests" dev="dm-48" ino=112 scontext=u:r:untrusted_app:s0:c197,c256,c512,c768 tcontext=u:object_r:shell_test_data_file:s0 tclass=dir permissive=0 app=vctsrt.cntgtj.uqfwgg
+09-16 18:29:09.621 10197  5695  5695 I auditd  : type=1400 audit(0.0:336): avc:  denied  { search } for  comm="libksud.so" name="tests" dev="dm-48" ino=112 scontext=u:r:untrusted_app:s0:c197,c256,c512,c768 tcontext=u:object_r:shell_test_data_file:s0 tclass=dir permissive=0 app=vctsrt.cntgtj.uqfwgg
+--------- beginning of crash
+09-16 18:29:09.654 10197  5695  5695 F libc    : Fatal signal 31 (SIGSYS), code 1 (SYS_SECCOMP), syscall 142 in tid 5695 (libksud.so), pid 5695 (libksud.so)
+09-16 18:29:09.681 10197  5698  5698 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+09-16 18:29:09.682 10197  5698  5698 F DEBUG   : LineageOS Version: '23.2-20260914-NIGHTLY-oscar'
+09-16 18:29:09.682 10197  5698  5698 F DEBUG   : Build fingerprint: 'realme/RMX3471/RE54CBL1:14/UKQ1.230924.001/S.1ca575d_5b9-11cfbb:user/release-keys'
+09-16 18:29:09.682 10197  5698  5698 F DEBUG   : Kernel Release: '5.4.302-qgki-g9aa2f2b381d7'
+09-16 18:29:09.682 10197  5698  5698 F DEBUG   : Revision: '0'
+09-16 18:29:09.682 10197  5698  5698 F DEBUG   : ABI: 'arm64'
+09-16 18:29:09.682 10197  5698  5698 F DEBUG   : Timestamp: 2026-09-16 18:29:09.672767138+0800
+09-16 18:29:09.682 10197  5698  5698 F DEBUG   : Process uptime: 1s
+09-16 18:29:09.682 10197  5698  5698 F DEBUG   : Executable: /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:29:09.682 10197  5698  5698 F DEBUG   : Cmdline: /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so debug su -g
+09-16 18:29:09.682 10197  5698  5698 F DEBUG   : pid: 5695, tid: 5695, name: libksud.so  >>> /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so <<<
+09-16 18:29:09.682 10197  5698  5698 F DEBUG   : uid: 10197
+09-16 18:29:09.682 10197  5698  5698 F DEBUG   : esr: 0000000092000006 (Data Abort Exception 0x24)
+09-16 18:29:09.682 10197  5698  5698 F DEBUG   : signal 31 (SIGSYS), code 1 (SYS_SECCOMP), fault addr --------
+09-16 18:29:09.682 10197  5698  5698 F DEBUG   : Cause: seccomp prevented call to disallowed arm64 system call 142
+09-16 18:29:09.682 10197  5698  5698 F DEBUG   :     x0  00000000deadbeef  x1  00000000cafebabe  x2  0000000000000000  x3  0000007ff679c468
+09-16 18:29:09.682 10197  5698  5698 F DEBUG   :     x4  0000000000000030  x5  5d7265766972645f  x6  5d7265766972645f  x7  b40000734227fadd
+09-16 18:29:09.682 10197  5698  5698 F DEBUG   :     x8  000000000000008e  x9  000000000007cd10  x10 00000073c23658dc  x11 0000000000030003
+09-16 18:29:09.682 10197  5698  5698 F DEBUG   :     x12 000000000000000b  x13 00000063ef00ae6a  x14 0000000000000064  x15 00cbd19c9ad19a94
+09-16 18:29:09.682 10197  5698  5698 F DEBUG   :     x16 00000063ef232730  x17 00000073c230c300  x18 00000073c8248000  x19 00000063eeda99a4
+09-16 18:29:09.682 10197  5698  5698 F DEBUG   :     x20 00000063eefd4c9a  x21 0000000000000005  x22 0000000000000000  x23 0000007ff679c500
+09-16 18:29:09.682 10197  5698  5698 F DEBUG   :     x24 0000007ff679c55c  x25 00000063ef11fdb8  x26 8000000000000000  x27 0000000000000001
+09-16 18:29:09.682 10197  5698  5698 F DEBUG   :     x28 00000063ef0f8bd8  x29 0000007ff679c5b0
+09-16 18:29:09.682 10197  5698  5698 F DEBUG   :     lr  00000063ef0c6f20  sp  0000007ff679c460  pc  00000073c230c320  pst 0000000060001000
+09-16 18:29:09.682 10197  5698  5698 F DEBUG   :     esr 0000000092000006
+09-16 18:29:09.682 10197  5698  5698 F DEBUG   : 9 total frames
+09-16 18:29:09.682 10197  5698  5698 F DEBUG   : backtrace:
+09-16 18:29:09.682 10197  5698  5698 F DEBUG   :       #00 pc 0000000000098320  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+32) (BuildId: 9d3c9a4206374b556654d838f3ec4b25)
+09-16 18:29:09.682 10197  5698  5698 F DEBUG   :       #01 pc 0000000000342f1c  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:29:09.682 10197  5698  5698 F DEBUG   :       #02 pc 00000000003151e8  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:29:09.682 10197  5698  5698 F DEBUG   :       #03 pc 0000000000412170  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:29:09.682 10197  5698  5698 F DEBUG   :       #04 pc 00000000003430c4  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:29:09.682 10197  5698  5698 F DEBUG   :       #05 pc 000000000032e59c  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:29:09.682 10197  5698  5698 F DEBUG   :       #06 pc 0000000000315138  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:29:09.682 10197  5698  5698 F DEBUG   :       #07 pc 0000000000365710  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:29:09.682 10197  5698  5698 F DEBUG   :       #08 pc 00000000000664cc  /apex/com.android.runtime/lib64/bionic/libc.so (__libc_init+120) (BuildId: 9d3c9a4206374b556654d838f3ec4b25)
+09-16 18:29:09.716 10197  5676  5676 I wm_on_create_called: [26509752,vctsrt.cntgtj.uqfwgg.ui.MainActivity,performCreate,110]
+09-16 18:29:09.716 10197  5676  5676 I wm_on_start_called: [26509752,vctsrt.cntgtj.uqfwgg.ui.MainActivity,handleStartActivity,0]
+09-16 18:29:09.720 10197  5676  5676 I wm_on_resume_called: [26509752,vctsrt.cntgtj.uqfwgg.ui.MainActivity,RESUME_ACTIVITY,3]
+09-16 18:29:09.744 10197  5676  5676 I wm_on_top_resumed_gained_called: [26509752,vctsrt.cntgtj.uqfwgg.ui.MainActivity,topStateChangedWhenResumed]
+09-16 18:29:09.756 10197  5676  5676 E VibratorInfo: Invalid frequency profile received from HAL. resonantFrequencyHz=NaN, frequenciesHz=null, outputAccelerationsGs=null
+09-16 18:29:09.797 10197  5705  5705 I auditd  : type=1400 audit(0.0:337): avc:  denied  { read } for  comm="j.uqfwgg:root:0" name="u:object_r:odsign_prop:s0" dev="tmpfs" ino=1934 scontext=u:r:untrusted_app:s0:c197,c256,c512,c768 tcontext=u:object_r:odsign_prop:s0 tclass=file permissive=0 app=vctsrt.cntgtj.uqfwgg
+09-16 18:29:09.930 10197  5676  5676 I viewroot_draw_event: [VRI[MainActivity],reportDrawFinished seqId=0]
+09-16 18:29:09.964 10197  5676  5676 D InsetsController: hide(ime())
+09-16 18:29:09.980 10197  5705  5705 F libc    : Fatal signal 6 (SIGABRT), code -1 (SI_QUEUE) in tid 5705 (main), pid 5705 (main)
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   : LineageOS Version: '23.2-20260914-NIGHTLY-oscar'
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   : Build fingerprint: 'realme/RMX3471/RE54CBL1:14/UKQ1.230924.001/S.1ca575d_5b9-11cfbb:user/release-keys'
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   : Kernel Release: '5.4.302-qgki-g9aa2f2b381d7'
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   : Revision: '0'
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   : ABI: 'arm64'
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   : Timestamp: 2026-09-16 18:29:10.048431408+0800
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   : Process uptime: 2s
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   : Executable: /system/bin/app_process64
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   : Cmdline: vctsrt.cntgtj.uqfwgg:root:0
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   : pid: 5705, tid: 5705, name: main  >>> vctsrt.cntgtj.uqfwgg:root:0 <<<
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   : uid: 10197
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   : esr: 0000000092000006 (Data Abort Exception 0x24)
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   : signal 6 (SIGABRT), code -1 (SI_QUEUE), fault addr --------
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   : Abort message: 'Check failed: system_class_loader != nullptr java.lang.ExceptionInInitializerError: 
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :   at java.lang.ClassLoader java.lang.ClassLoader.getSystemClassLoader() (ClassLoader.java:1912)
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   : Caused by: java.lang.SecurityException: Writable dex file '/data/user_de/0/vctsrt.cntgtj.uqfwgg/cache/main.jar' is not allowed.
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :   at java.lang.Object dalvik.system.DexFile.openDexFileNative(java.lang.String, java.lang.String, int, java.lang.ClassLoader, dalvik.system.DexPathList$Element[]) (DexFile.java:-2)
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :   at java.lang.Object dalvik.system.DexFile.openDexFile(java.lang.String, java.lang.String, int, java.lang.ClassLoader, dalvik.system.DexPathList$Element[]) (DexFile.java:406)
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :   at void dalvik.system.DexFile.<init>(java.lang.String, java.lang.ClassLoader, dalvik.system.DexPathList$Element[]) (DexFile.java:128)
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :   at void dalvik.system.DexFile.<init>(java.io.File, java.lang.ClassLoader, dalvik.system.DexPathList$Element[]) (DexFile.java:101)
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :   at dalvik.system.DexFile dalvik.system.DexPathList.loadDexFile(java.io.File, java.io.File, java.lang.ClassLoader, dalvik.system.DexPathList$Element[]) (DexPathList.java:438)
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :   at dalvik.system.DexPathList$Element[] dalvik.system.DexPathList.makeDexElements(java.util.List, java.io.File, java.util.List, java.lang.ClassLoader, boolean) (DexPathList.java:397)
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :   at void dalvik.system.DexPathList.<init>(java.lang.ClassLoader, java.lang.String, java.lang.String, java.io.File, boolean) (DexPathList.java:166)
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :   at void dalvik.system.BaseDexClassLoader.<init>(java.lang.String, java.lang.String, java.lang.ClassLoader, java.lang.ClassLoader[], java.lang.ClassLoader[], boolean) (BaseDexClassLoader.java:160)
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :   at void dalvik.system.BaseDexClassLoader.<init>(java.lang.String, java.io.File, java.lang.String, java.lang.ClassLoader) (BaseDexClassLoader.java:105)
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :   at void dalvik.system.PathClassLoader.<init>(java.lang.String, java.lang.String, java.lang.ClassLoader) (PathClassLoader.java:71)
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :   at java.lang.ClassLoader java.lang.ClassLoader.createSystemClassLoader() (ClassLoader.java:267)
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :   at java.lang.ClassLoader java.lang.ClassLoader.-$$Nest$smcreateSystemClassLoader() (ClassLoader.java:-1)
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :   at void java.lang.ClassLoader$SystemClassLoader.<clinit>() (ClassLoader.java:217)
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :   at java.lang.ClassLoader java.lang.ClassLoader.getSystemClassLoader() (ClassLoader.java:1912)'
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :     x0  0000000000000000  x1  0000000000001649  x2  0000000000000006  x3  0000007fc8b618e0
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :     x4  78721f3963646b68  x5  78721f3963646b68  x6  78721f3963646b68  x7  7f7f7f7f7f7f7f7f
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :     x8  00000000000000f0  x9  0b4f210fbb9c71a7  x10 000000ff00000020  x11 000000000012800c
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :     x12 000000000000eee8  x13 00000000cf6a8b67  x14 003a4b184e6d6000  x15 0000000034155555
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :     x16 0000007c9bd02120  x17 0000007c9bceb000  x18 0000007ca5c64000  x19 0000000000001649
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :     x20 0000000000001649  x21 00000000ffffffff  x22 0000000000000000  x23 b400007ba315ebe0
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :     x24 00000079df880000  x25 0000000000fffff9  x26 000000005a000000  x27 b400007ba315ebe0
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :     x28 000000005c000000  x29 0000007fc8b61960
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :     lr  0000007c9bc8c44c  sp  0000007fc8b618e0  pc  0000007c9bc8c470  pst 0000000000001000
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :     esr 0000000092000006
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   : 12 total frames
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   : backtrace:
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :       #00 pc 0000000000072470  /apex/com.android.runtime/lib64/bionic/libc.so (abort+156) (BuildId: 9d3c9a4206374b556654d838f3ec4b25)
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :       #01 pc 00000000008fe3e0  /apex/com.android.art/lib64/libart.so (art::Runtime::Abort(char const*)+1004) (BuildId: a4f7a957dc490b1cfd30a690b9a11bcc)
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :       #02 pc 000000000001454c  /apex/com.android.art/lib64/libbase.so (android::base::SetAborter(std::__1::function<void (char const*)>&&)::$_0::__invoke(char const*)+80) (BuildId: 46bc013aa374f7f1951477f848c2574e)
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :       #03 pc 0000000000013a4c  /apex/com.android.art/lib64/libbase.so (android::base::LogMessage::~LogMessage()+548) (BuildId: 46bc013aa374f7f1951477f848c2574e)
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :       #04 pc 000000000046da94  /apex/com.android.art/lib64/libart.so (art::CreateSystemClassLoader(art::Runtime*) (.__uniq.123643984379049060189133697593660836796)+1652) (BuildId: a4f7a957dc490b1cfd30a690b9a11bcc)
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :       #05 pc 000000000046f694  /apex/com.android.art/lib64/libart.so (art::Runtime::Start()+456) (BuildId: a4f7a957dc490b1cfd30a690b9a11bcc)
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :       #06 pc 000000000081dc60  /apex/com.android.art/lib64/libart.so (JNI_CreateJavaVM+272) (BuildId: a4f7a957dc490b1cfd30a690b9a11bcc)
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :       #07 pc 000000000028cd8c  /system/lib64/libandroid_runtime.so (JNI_CreateJavaVM+68) (BuildId: 099c4fc163bd02e4083383587c0b3a41)
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :       #08 pc 0000000000134070  /system/lib64/libandroid_runtime.so (android::AndroidRuntime::startVm(_JavaVM**, _JNIEnv**, bool, bool)+12344) (BuildId: 099c4fc163bd02e4083383587c0b3a41)
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :       #09 pc 00000000001346b0  /system/lib64/libandroid_runtime.so (android::AndroidRuntime::start(char const*, android::Vector<android::String8> const&, bool)+532) (BuildId: 099c4fc163bd02e4083383587c0b3a41)
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :       #10 pc 0000000000002590  /system/bin/app_process64 (main+1244) (BuildId: 0b693e3370209e884ec515c9549bed3d)
+09-16 18:29:10.121 10197  5743  5743 F DEBUG   :       #11 pc 00000000000664cc  /apex/com.android.runtime/lib64/bionic/libc.so (__libc_init+120) (BuildId: 9d3c9a4206374b556654d838f3ec4b25)
+09-16 18:29:11.368 10197  5676  5676 I wm_on_top_resumed_lost_called: [26509752,vctsrt.cntgtj.uqfwgg.ui.MainActivity,topStateChangedWhenResumed]
+09-16 18:29:11.758 10197  5676  5676 I view_enqueue_input_event: [Motion - Cancel,vctsrt.cntgtj.uqfwgg/vctsrt.cntgtj.uqfwgg.ui.MainActivity]
+09-16 18:29:11.804 10197  5676  5676 I wm_on_top_resumed_gained_called: [26509752,vctsrt.cntgtj.uqfwgg.ui.MainActivity,topStateChangedWhenResumed]
+09-16 18:29:11.914 10197  5676  5676 I wm_on_top_resumed_lost_called: [26509752,vctsrt.cntgtj.uqfwgg.ui.MainActivity,topStateChangedWhenResumed]
+09-16 18:29:11.917 10197  5676  5676 I wm_on_paused_called: [26509752,vctsrt.cntgtj.uqfwgg.ui.MainActivity,performPause,0]
+09-16 18:29:18.695 10197  5676  5676 I wm_on_resume_called: [26509752,vctsrt.cntgtj.uqfwgg.ui.MainActivity,RESUME_ACTIVITY,0]
+09-16 18:29:18.696 10197  5676  5676 I wm_on_top_resumed_gained_called: [26509752,vctsrt.cntgtj.uqfwgg.ui.MainActivity,topStateChangedWhenResumed]
+09-16 18:29:18.728 10197  5676  5676 D InsetsController: hide(ime())
+09-16 18:29:18.999 10197  5676  5676 I wm_on_top_resumed_lost_called: [26509752,vctsrt.cntgtj.uqfwgg.ui.MainActivity,topStateChangedWhenResumed]
+09-16 18:29:19.030 10197  5676  5676 I view_enqueue_input_event: [Motion - Cancel,vctsrt.cntgtj.uqfwgg/vctsrt.cntgtj.uqfwgg.ui.MainActivity]
+09-16 18:29:19.757 10197  5676  5676 I wm_on_paused_called: [26509752,vctsrt.cntgtj.uqfwgg.ui.MainActivity,performPause,0]
+09-16 18:29:20.172 10197  5676  5676 I viewroot_draw_event: [VRI[MainActivity],Not drawing due to not visible. Reason=!mAppVisible && !mForceDecorViewVisibility]
+09-16 18:29:20.175 10197  5676  5676 I wm_on_stop_called: [26509752,vctsrt.cntgtj.uqfwgg.ui.MainActivity,STOP_ACTIVITY_ITEM,1]
+--------- beginning of main
+09-16 18:32:34.410 10197  5676  5676 D ViewRootImpl: Skipping stats log for color mode
+09-16 18:32:34.410 10197  5676  5676 I wm_on_restart_called: [26509752,vctsrt.cntgtj.uqfwgg.ui.MainActivity,performRestart,0]
+09-16 18:32:34.410 10197  5676  5676 I wm_on_start_called: [26509752,vctsrt.cntgtj.uqfwgg.ui.MainActivity,handleStartActivity,0]
+09-16 18:32:34.411 10197  5676  5676 I wm_on_resume_called: [26509752,vctsrt.cntgtj.uqfwgg.ui.MainActivity,RESUME_ACTIVITY,0]
+09-16 18:32:34.412 10197  5676  5676 I wm_on_top_resumed_gained_called: [26509752,vctsrt.cntgtj.uqfwgg.ui.MainActivity,topWhenResuming]
+09-16 18:32:34.424 10197  5676  5689 I AdrenoGLES-0: QUALCOMM build                   : 923a446bf8, I23d7d7df15
+09-16 18:32:34.424 10197  5676  5689 I AdrenoGLES-0: Build Date                       : 09/05/24
+09-16 18:32:34.424 10197  5676  5689 I AdrenoGLES-0: OpenGL ES Shader Compiler Version: EV031.35.01.12
+09-16 18:32:34.424 10197  5676  5689 I AdrenoGLES-0: Local Branch                     : 
+09-16 18:32:34.424 10197  5676  5689 I AdrenoGLES-0: Remote Branch                    : refs/tags/AU_LINUX_ANDROID_LA.UM.9.14.11.00.00.571.148
+09-16 18:32:34.424 10197  5676  5689 I AdrenoGLES-0: Remote Branch                    : NONE
+09-16 18:32:34.424 10197  5676  5689 I AdrenoGLES-0: Reconstruct Branch               : NOTHING
+09-16 18:32:34.425 10197  5676  5689 I AdrenoGLES-0: Build Config                     : S P 10.0.7 AArch64
+09-16 18:32:34.425 10197  5676  5689 I AdrenoGLES-0: Driver Path                      : /vendor/lib64/egl/libGLESv2_adreno.so
+09-16 18:32:34.425 10197  5676  5676 I viewroot_draw_event: [VRI[MainActivity],Start draw after previous draw not visible]
+09-16 18:32:34.432 10197  5676  5689 I AdrenoGLES-0: PFP: 0x016ee201, ME: 0x00000000
+09-16 18:32:34.464 10197  5676  5676 I viewroot_draw_event: [VRI[MainActivity],reportDrawFinished seqId=0]
+09-16 18:32:34.499 10197  5676  5676 D InsetsController: hide(ime())
+09-16 18:32:34.499 10197  5676  5676 I ImeTracker: vctsrt.cntgtj.uqfwgg:e6bd880b: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+09-16 18:32:35.041 10197  5676  5676 D WindowOnBackDispatcher: setTopOnBackInvokedCallback (unwrapped): b.f0@f3a8152
+09-16 18:32:35.089 10197  6314  6314 I auditd  : type=1400 audit(0.0:530): avc:  denied  { search } for  comm="libksud.so" name="tests" dev="dm-48" ino=112 scontext=u:r:untrusted_app:s0:c197,c256,c512,c768 tcontext=u:object_r:shell_test_data_file:s0 tclass=dir permissive=0 app=vctsrt.cntgtj.uqfwgg
+09-16 18:32:35.089 10197  6314  6314 W libksud.so: type=1400 audit(0.0:530): avc:  denied  { search } for  name="tests" dev="dm-48" ino=112 scontext=u:r:untrusted_app:s0:c197,c256,c512,c768 tcontext=u:object_r:shell_test_data_file:s0 tclass=dir permissive=0 app=vctsrt.cntgtj.uqfwgg
+09-16 18:32:35.089 10197  6314  6314 I auditd  : type=1400 audit(0.0:531): avc:  denied  { search } for  comm="libksud.so" name="tests" dev="dm-48" ino=112 scontext=u:r:untrusted_app:s0:c197,c256,c512,c768 tcontext=u:object_r:shell_test_data_file:s0 tclass=dir permissive=0 app=vctsrt.cntgtj.uqfwgg
+09-16 18:32:35.089 10197  6314  6314 W libksud.so: type=1400 audit(0.0:531): avc:  denied  { search } for  name="tests" dev="dm-48" ino=112 scontext=u:r:untrusted_app:s0:c197,c256,c512,c768 tcontext=u:object_r:shell_test_data_file:s0 tclass=dir permissive=0 app=vctsrt.cntgtj.uqfwgg
+09-16 18:32:35.089 10197  6314  6314 I auditd  : type=1400 audit(0.0:532): avc:  denied  { search } for  comm="libksud.so" name="tests" dev="dm-48" ino=112 scontext=u:r:untrusted_app:s0:c197,c256,c512,c768 tcontext=u:object_r:shell_test_data_file:s0 tclass=dir permissive=0 app=vctsrt.cntgtj.uqfwgg
+09-16 18:32:35.089 10197  6314  6314 W libksud.so: type=1400 audit(0.0:532): avc:  denied  { search } for  name="tests" dev="dm-48" ino=112 scontext=u:r:untrusted_app:s0:c197,c256,c512,c768 tcontext=u:object_r:shell_test_data_file:s0 tclass=dir permissive=0 app=vctsrt.cntgtj.uqfwgg
+09-16 18:32:35.089 10197  6314  6314 I auditd  : type=1400 audit(0.0:533): avc:  denied  { search } for  comm="libksud.so" name="tests" dev="dm-48" ino=112 scontext=u:r:untrusted_app:s0:c197,c256,c512,c768 tcontext=u:object_r:shell_test_data_file:s0 tclass=dir permissive=0 app=vctsrt.cntgtj.uqfwgg
+09-16 18:32:35.089 10197  6314  6314 W libksud.so: type=1400 audit(0.0:533): avc:  denied  { search } for  name="tests" dev="dm-48" ino=112 scontext=u:r:untrusted_app:s0:c197,c256,c512,c768 tcontext=u:object_r:shell_test_data_file:s0 tclass=dir permissive=0 app=vctsrt.cntgtj.uqfwgg
+09-16 18:32:35.099 10197  6314  6314 I KernelSU Next: ksud::cli: command: Debug { command: Su { global_mnt: true } }
+09-16 18:32:35.100 10197  6314  6314 F libc    : Fatal signal 31 (SIGSYS), code 1 (SYS_SECCOMP), syscall 142 in tid 6314 (libksud.so), pid 6314 (libksud.so)
+09-16 18:32:35.113 10197  6319  6319 I crash_dump64: obtaining output fd from tombstoned, type: kDebuggerdTombstoneProto
+09-16 18:32:35.114 10197  6319  6319 I crash_dump64: performing dump of process 6314 (target tid = 6314)
+09-16 18:32:35.120 10197  6319  6319 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+09-16 18:32:35.120 10197  6319  6319 F DEBUG   : LineageOS Version: '23.2-20260914-NIGHTLY-oscar'
+09-16 18:32:35.120 10197  6319  6319 F DEBUG   : Build fingerprint: 'realme/RMX3471/RE54CBL1:14/UKQ1.230924.001/S.1ca575d_5b9-11cfbb:user/release-keys'
+09-16 18:32:35.120 10197  6319  6319 F DEBUG   : Kernel Release: '5.4.302-qgki-g9aa2f2b381d7'
+09-16 18:32:35.120 10197  6319  6319 F DEBUG   : Revision: '0'
+09-16 18:32:35.120 10197  6319  6319 F DEBUG   : ABI: 'arm64'
+09-16 18:32:35.120 10197  6319  6319 F DEBUG   : Timestamp: 2026-09-16 18:32:35.115382320+0800
+09-16 18:32:35.120 10197  6319  6319 F DEBUG   : Process uptime: 1s
+09-16 18:32:35.120 10197  6319  6319 F DEBUG   : Executable: /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.120 10197  6319  6319 F DEBUG   : Cmdline: /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so debug su -g
+09-16 18:32:35.120 10197  6319  6319 F DEBUG   : pid: 6314, tid: 6314, name: libksud.so  >>> /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so <<<
+09-16 18:32:35.120 10197  6319  6319 F DEBUG   : uid: 10197
+09-16 18:32:35.120 10197  6319  6319 F DEBUG   : esr: 0000000092000006 (Data Abort Exception 0x24)
+09-16 18:32:35.120 10197  6319  6319 F DEBUG   : signal 31 (SIGSYS), code 1 (SYS_SECCOMP), fault addr --------
+09-16 18:32:35.120 10197  6319  6319 F DEBUG   : Cause: seccomp prevented call to disallowed arm64 system call 142
+09-16 18:32:35.120 10197  6319  6319 F DEBUG   :     x0  00000000deadbeef  x1  00000000cafebabe  x2  0000000000000000  x3  0000007ffd7fc838
+09-16 18:32:35.120 10197  6319  6319 F DEBUG   :     x4  0000000000000030  x5  5d7265766972645f  x6  5d7265766972645f  x7  b400007319b0207d
+09-16 18:32:35.120 10197  6319  6319 F DEBUG   :     x8  000000000000008e  x9  000000000007cd10  x10 0000007519be68dc  x11 0000000000030003
+09-16 18:32:35.120 10197  6319  6319 F DEBUG   :     x12 000000000000000b  x13 00000056a37f3e6a  x14 0000000000000064  x15 00cbd19c9ad19a94
+09-16 18:32:35.120 10197  6319  6319 F DEBUG   :     x16 00000056a3a1b730  x17 0000007519b8d300  x18 000000751e588000  x19 00000056a35929a4
+09-16 18:32:35.120 10197  6319  6319 F DEBUG   :     x20 00000056a37bdc9a  x21 0000000000000005  x22 0000000000000000  x23 0000007ffd7fc8d0
+09-16 18:32:35.120 10197  6319  6319 F DEBUG   :     x24 0000007ffd7fc92c  x25 00000056a3908db8  x26 8000000000000000  x27 0000000000000001
+09-16 18:32:35.120 10197  6319  6319 F DEBUG   :     x28 00000056a38e1bd8  x29 0000007ffd7fc980
+09-16 18:32:35.120 10197  6319  6319 F DEBUG   :     lr  00000056a38aff20  sp  0000007ffd7fc830  pc  0000007519b8d320  pst 0000000060001000
+09-16 18:32:35.120 10197  6319  6319 F DEBUG   :     esr 0000000092000006
+09-16 18:32:35.120 10197  6319  6319 F DEBUG   : 9 total frames
+09-16 18:32:35.120 10197  6319  6319 F DEBUG   : backtrace:
+09-16 18:32:35.120 10197  6319  6319 F DEBUG   :       #00 pc 0000000000098320  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+32) (BuildId: 9d3c9a4206374b556654d838f3ec4b25)
+09-16 18:32:35.120 10197  6319  6319 F DEBUG   :       #01 pc 0000000000342f1c  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.120 10197  6319  6319 F DEBUG   :       #02 pc 00000000003151e8  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.120 10197  6319  6319 F DEBUG   :       #03 pc 0000000000412170  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.121 10197  6319  6319 F DEBUG   :       #04 pc 00000000003430c4  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.121 10197  6319  6319 F DEBUG   :       #05 pc 000000000032e59c  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.121 10197  6319  6319 F DEBUG   :       #06 pc 0000000000315138  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.121 10197  6319  6319 F DEBUG   :       #07 pc 0000000000365710  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.121 10197  6319  6319 F DEBUG   :       #08 pc 00000000000664cc  /apex/com.android.runtime/lib64/bionic/libc.so (__libc_init+120) (BuildId: 9d3c9a4206374b556654d838f3ec4b25)
+09-16 18:32:35.123 10197  6319  6319 E crash_dump64: AM data write failed: Broken pipe
+09-16 18:32:35.149 10197  6327  6327 I auditd  : type=1400 audit(0.0:534): avc:  denied  { search } for  comm="libksud.so" name="tests" dev="dm-48" ino=112 scontext=u:r:untrusted_app:s0:c197,c256,c512,c768 tcontext=u:object_r:shell_test_data_file:s0 tclass=dir permissive=0 app=vctsrt.cntgtj.uqfwgg
+09-16 18:32:35.149 10197  6327  6327 W libksud.so: type=1400 audit(0.0:534): avc:  denied  { search } for  name="tests" dev="dm-48" ino=112 scontext=u:r:untrusted_app:s0:c197,c256,c512,c768 tcontext=u:object_r:shell_test_data_file:s0 tclass=dir permissive=0 app=vctsrt.cntgtj.uqfwgg
+09-16 18:32:35.157 10197  6327  6327 I KernelSU Next: ksud::cli: command: Feature { command: Check { id: "su_compat" } }
+09-16 18:32:35.158 10197  6327  6327 F libc    : Fatal signal 31 (SIGSYS), code 1 (SYS_SECCOMP), syscall 142 in tid 6327 (libksud.so), pid 6327 (libksud.so)
+09-16 18:32:35.168 10197  6331  6331 I crash_dump64: obtaining output fd from tombstoned, type: kDebuggerdTombstoneProto
+09-16 18:32:35.169 10197  6331  6331 I crash_dump64: performing dump of process 6327 (target tid = 6327)
+09-16 18:32:35.173 10197  6331  6331 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+09-16 18:32:35.173 10197  6331  6331 F DEBUG   : LineageOS Version: '23.2-20260914-NIGHTLY-oscar'
+09-16 18:32:35.173 10197  6331  6331 F DEBUG   : Build fingerprint: 'realme/RMX3471/RE54CBL1:14/UKQ1.230924.001/S.1ca575d_5b9-11cfbb:user/release-keys'
+09-16 18:32:35.173 10197  6331  6331 F DEBUG   : Kernel Release: '5.4.302-qgki-g9aa2f2b381d7'
+09-16 18:32:35.173 10197  6331  6331 F DEBUG   : Revision: '0'
+09-16 18:32:35.173 10197  6331  6331 F DEBUG   : ABI: 'arm64'
+09-16 18:32:35.173 10197  6331  6331 F DEBUG   : Timestamp: 2026-09-16 18:32:35.170154611+0800
+09-16 18:32:35.173 10197  6331  6331 F DEBUG   : Process uptime: 1s
+09-16 18:32:35.173 10197  6331  6331 F DEBUG   : Executable: /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.173 10197  6331  6331 F DEBUG   : Cmdline: /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so feature check su_compat
+09-16 18:32:35.173 10197  6331  6331 F DEBUG   : pid: 6327, tid: 6327, name: libksud.so  >>> /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so <<<
+09-16 18:32:35.173 10197  6331  6331 F DEBUG   : uid: 10197
+09-16 18:32:35.173 10197  6331  6331 F DEBUG   : esr: 0000000092000006 (Data Abort Exception 0x24)
+09-16 18:32:35.173 10197  6331  6331 F DEBUG   : signal 31 (SIGSYS), code 1 (SYS_SECCOMP), fault addr --------
+09-16 18:32:35.173 10197  6331  6331 F DEBUG   : Cause: seccomp prevented call to disallowed arm64 system call 142
+09-16 18:32:35.173 10197  6331  6331 F DEBUG   :     x0  00000000deadbeef  x1  00000000cafebabe  x2  0000000000000000  x3  0000007fc95f1f68
+09-16 18:32:35.173 10197  6331  6331 F DEBUG   :     x4  0000000000000030  x5  5d7265766972645f  x6  5d7265766972645f  x7  b40000738dff019d
+09-16 18:32:35.173 10197  6331  6331 F DEBUG   :     x8  000000000000008e  x9  0000000000078540  x10 000000742e35d8dc  x11 0000000000030003
+09-16 18:32:35.173 10197  6331  6331 F DEBUG   :     x12 000000000000000b  x13 00000056f57f1e6a  x14 0000000000000064  x15 00cbd19c9ad19a94
+09-16 18:32:35.173 10197  6331  6331 F DEBUG   :     x16 00000056f5a19730  x17 000000742e304300  x18 000000742f108000  x19 00000056f55909a4
+09-16 18:32:35.173 10197  6331  6331 F DEBUG   :     x20 00000056f57bbc9a  x21 0000000000000005  x22 0000000000000000  x23 0000007fc95f2000
+09-16 18:32:35.173 10197  6331  6331 F DEBUG   :     x24 0000007fc95f205c  x25 00000056f5906db8  x26 8000000000000000  x27 00000056f57b5792
+09-16 18:32:35.173 10197  6331  6331 F DEBUG   :     x28 00000056f55891d0  x29 0000007fc95f20b0
+09-16 18:32:35.173 10197  6331  6331 F DEBUG   :     lr  00000056f58adf20  sp  0000007fc95f1f60  pc  000000742e304320  pst 0000000060001000
+09-16 18:32:35.173 10197  6331  6331 F DEBUG   :     esr 0000000092000006
+09-16 18:32:35.173 10197  6331  6331 F DEBUG   : 9 total frames
+09-16 18:32:35.173 10197  6331  6331 F DEBUG   : backtrace:
+09-16 18:32:35.173 10197  6331  6331 F DEBUG   :       #00 pc 0000000000098320  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+32) (BuildId: 9d3c9a4206374b556654d838f3ec4b25)
+09-16 18:32:35.173 10197  6331  6331 F DEBUG   :       #01 pc 0000000000342f1c  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.173 10197  6331  6331 F DEBUG   :       #02 pc 00000000003151e8  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.174 10197  6331  6331 F DEBUG   :       #03 pc 0000000000412170  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.174 10197  6331  6331 F DEBUG   :       #04 pc 0000000000342c1c  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.174 10197  6331  6331 F DEBUG   :       #05 pc 0000000000332130  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.174 10197  6331  6331 F DEBUG   :       #06 pc 0000000000315138  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.174 10197  6331  6331 F DEBUG   :       #07 pc 0000000000365710  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.174 10197  6331  6331 F DEBUG   :       #08 pc 00000000000664cc  /apex/com.android.runtime/lib64/bionic/libc.so (__libc_init+120) (BuildId: 9d3c9a4206374b556654d838f3ec4b25)
+09-16 18:32:35.175 10197  6331  6331 E crash_dump64: AM data write failed: Broken pipe
+09-16 18:32:35.191 10197  6336  6336 I KernelSU Next: ksud::cli: command: Debug { command: Su { global_mnt: true } }
+09-16 18:32:35.191 10197  6336  6336 F libc    : Fatal signal 31 (SIGSYS), code 1 (SYS_SECCOMP), syscall 142 in tid 6336 (libksud.so), pid 6336 (libksud.so)
+09-16 18:32:35.201 10197  6339  6339 I crash_dump64: obtaining output fd from tombstoned, type: kDebuggerdTombstoneProto
+09-16 18:32:35.202 10197  6339  6339 I crash_dump64: performing dump of process 6336 (target tid = 6336)
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   : LineageOS Version: '23.2-20260914-NIGHTLY-oscar'
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   : Build fingerprint: 'realme/RMX3471/RE54CBL1:14/UKQ1.230924.001/S.1ca575d_5b9-11cfbb:user/release-keys'
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   : Kernel Release: '5.4.302-qgki-g9aa2f2b381d7'
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   : Revision: '0'
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   : ABI: 'arm64'
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   : Timestamp: 2026-09-16 18:32:35.202985288+0800
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   : Process uptime: 1s
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   : Executable: /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   : Cmdline: /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so debug su -g
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   : pid: 6336, tid: 6336, name: libksud.so  >>> /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so <<<
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   : uid: 10197
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   : esr: 0000000092000006 (Data Abort Exception 0x24)
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   : signal 31 (SIGSYS), code 1 (SYS_SECCOMP), fault addr --------
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   : Cause: seccomp prevented call to disallowed arm64 system call 142
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   :     x0  00000000deadbeef  x1  00000000cafebabe  x2  0000000000000000  x3  0000007ffe12a6d8
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   :     x4  0000000000000030  x5  5d7265766972645f  x6  5d7265766972645f  x7  b4000078e362e53d
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   :     x8  000000000000008e  x9  000000000007cd10  x10 00000078f553b8dc  x11 0000000000030003
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   :     x12 000000000000000b  x13 000000635bc3ce6a  x14 0000000000000064  x15 00cbd19c9ad19a94
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   :     x16 000000635be64730  x17 00000078f54e2300  x18 00000078f5d88000  x19 000000635b9db9a4
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   :     x20 000000635bc06c9a  x21 0000000000000005  x22 0000000000000000  x23 0000007ffe12a770
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   :     x24 0000007ffe12a7cc  x25 000000635bd51db8  x26 8000000000000000  x27 0000000000000001
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   :     x28 000000635bd2abd8  x29 0000007ffe12a820
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   :     lr  000000635bcf8f20  sp  0000007ffe12a6d0  pc  00000078f54e2320  pst 0000000060001000
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   :     esr 0000000092000006
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   : 9 total frames
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   : backtrace:
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   :       #00 pc 0000000000098320  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+32) (BuildId: 9d3c9a4206374b556654d838f3ec4b25)
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   :       #01 pc 0000000000342f1c  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   :       #02 pc 00000000003151e8  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   :       #03 pc 0000000000412170  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   :       #04 pc 00000000003430c4  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   :       #05 pc 000000000032e59c  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   :       #06 pc 0000000000315138  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   :       #07 pc 0000000000365710  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.207 10197  6339  6339 F DEBUG   :       #08 pc 00000000000664cc  /apex/com.android.runtime/lib64/bionic/libc.so (__libc_init+120) (BuildId: 9d3c9a4206374b556654d838f3ec4b25)
+09-16 18:32:35.209 10197  6339  6339 E crash_dump64: AM data write failed: Broken pipe
+09-16 18:32:35.232 10197  6344  6344 I KernelSU Next: ksud::cli: command: Feature { command: Check { id: "kernel_umount" } }
+09-16 18:32:35.232 10197  6344  6344 F libc    : Fatal signal 31 (SIGSYS), code 1 (SYS_SECCOMP), syscall 142 in tid 6344 (libksud.so), pid 6344 (libksud.so)
+09-16 18:32:35.248 10197  6347  6347 I crash_dump64: obtaining output fd from tombstoned, type: kDebuggerdTombstoneProto
+09-16 18:32:35.249 10197  6347  6347 I crash_dump64: performing dump of process 6344 (target tid = 6344)
+09-16 18:32:35.253 10197  6347  6347 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+09-16 18:32:35.253 10197  6347  6347 F DEBUG   : LineageOS Version: '23.2-20260914-NIGHTLY-oscar'
+09-16 18:32:35.253 10197  6347  6347 F DEBUG   : Build fingerprint: 'realme/RMX3471/RE54CBL1:14/UKQ1.230924.001/S.1ca575d_5b9-11cfbb:user/release-keys'
+09-16 18:32:35.254 10197  6347  6347 F DEBUG   : Kernel Release: '5.4.302-qgki-g9aa2f2b381d7'
+09-16 18:32:35.254 10197  6347  6347 F DEBUG   : Revision: '0'
+09-16 18:32:35.254 10197  6347  6347 F DEBUG   : ABI: 'arm64'
+09-16 18:32:35.254 10197  6347  6347 F DEBUG   : Timestamp: 2026-09-16 18:32:35.249974299+0800
+09-16 18:32:35.254 10197  6347  6347 F DEBUG   : Process uptime: 1s
+09-16 18:32:35.254 10197  6347  6347 F DEBUG   : Executable: /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.254 10197  6347  6347 F DEBUG   : Cmdline: /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so feature check kernel_umount
+09-16 18:32:35.254 10197  6347  6347 F DEBUG   : pid: 6344, tid: 6344, name: libksud.so  >>> /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so <<<
+09-16 18:32:35.254 10197  6347  6347 F DEBUG   : uid: 10197
+09-16 18:32:35.254 10197  6347  6347 F DEBUG   : esr: 0000000092000006 (Data Abort Exception 0x24)
+09-16 18:32:35.254 10197  6347  6347 F DEBUG   : signal 31 (SIGSYS), code 1 (SYS_SECCOMP), fault addr --------
+09-16 18:32:35.254 10197  6347  6347 F DEBUG   : Cause: seccomp prevented call to disallowed arm64 system call 142
+09-16 18:32:35.254 10197  6347  6347 F DEBUG   :     x0  00000000deadbeef  x1  00000000cafebabe  x2  0000000000000000  x3  0000007fc7e12258
+09-16 18:32:35.254 10197  6347  6347 F DEBUG   :     x4  0000000000000030  x5  5d7265766972645f  x6  5d7265766972645f  x7  b400007d9ee6f2fd
+09-16 18:32:35.254 10197  6347  6347 F DEBUG   :     x8  000000000000008e  x9  0000000000078540  x10 0000007faefb48dc  x11 0000000000030003
+09-16 18:32:35.254 10197  6347  6347 F DEBUG   :     x12 000000000000000b  x13 00000058b78c3e6a  x14 0000000000000064  x15 00cbd19c9ad19a94
+09-16 18:32:35.254 10197  6347  6347 F DEBUG   :     x16 00000058b7aeb730  x17 0000007faef5b300  x18 0000007fb0600000  x19 00000058b76629a4
+09-16 18:32:35.254 10197  6347  6347 F DEBUG   :     x20 00000058b788dc9a  x21 0000000000000005  x22 0000000000000000  x23 0000007fc7e122f0
+09-16 18:32:35.254 10197  6347  6347 F DEBUG   :     x24 0000007fc7e1234c  x25 00000058b79d8db8  x26 8000000000000000  x27 00000058b7887792
+09-16 18:32:35.254 10197  6347  6347 F DEBUG   :     x28 00000058b765b1d0  x29 0000007fc7e123a0
+09-16 18:32:35.254 10197  6347  6347 F DEBUG   :     lr  00000058b797ff20  sp  0000007fc7e12250  pc  0000007faef5b320  pst 0000000060001000
+09-16 18:32:35.254 10197  6347  6347 F DEBUG   :     esr 0000000092000006
+09-16 18:32:35.254 10197  6347  6347 F DEBUG   : 9 total frames
+09-16 18:32:35.254 10197  6347  6347 F DEBUG   : backtrace:
+09-16 18:32:35.254 10197  6347  6347 F DEBUG   :       #00 pc 0000000000098320  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+32) (BuildId: 9d3c9a4206374b556654d838f3ec4b25)
+09-16 18:32:35.254 10197  6347  6347 F DEBUG   :       #01 pc 0000000000342f1c  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.254 10197  6347  6347 F DEBUG   :       #02 pc 00000000003151e8  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.254 10197  6347  6347 F DEBUG   :       #03 pc 0000000000412170  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.254 10197  6347  6347 F DEBUG   :       #04 pc 0000000000342c1c  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.254 10197  6347  6347 F DEBUG   :       #05 pc 0000000000332130  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.254 10197  6347  6347 F DEBUG   :       #06 pc 0000000000315138  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.254 10197  6347  6347 F DEBUG   :       #07 pc 0000000000365710  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.254 10197  6347  6347 F DEBUG   :       #08 pc 00000000000664cc  /apex/com.android.runtime/lib64/bionic/libc.so (__libc_init+120) (BuildId: 9d3c9a4206374b556654d838f3ec4b25)
+09-16 18:32:35.256 10197  6347  6347 E crash_dump64: AM data write failed: Broken pipe
+09-16 18:32:35.275 10197  6354  6354 I KernelSU Next: ksud::cli: command: Debug { command: Su { global_mnt: true } }
+09-16 18:32:35.276 10197  6354  6354 F libc    : Fatal signal 31 (SIGSYS), code 1 (SYS_SECCOMP), syscall 142 in tid 6354 (libksud.so), pid 6354 (libksud.so)
+09-16 18:32:35.285 10197  6357  6357 I crash_dump64: obtaining output fd from tombstoned, type: kDebuggerdTombstoneProto
+09-16 18:32:35.285 10197  6357  6357 I crash_dump64: performing dump of process 6354 (target tid = 6354)
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   : LineageOS Version: '23.2-20260914-NIGHTLY-oscar'
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   : Build fingerprint: 'realme/RMX3471/RE54CBL1:14/UKQ1.230924.001/S.1ca575d_5b9-11cfbb:user/release-keys'
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   : Kernel Release: '5.4.302-qgki-g9aa2f2b381d7'
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   : Revision: '0'
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   : ABI: 'arm64'
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   : Timestamp: 2026-09-16 18:32:35.286463049+0800
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   : Process uptime: 1s
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   : Executable: /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   : Cmdline: /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so debug su -g
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   : pid: 6354, tid: 6354, name: libksud.so  >>> /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so <<<
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   : uid: 10197
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   : esr: 0000000092000006 (Data Abort Exception 0x24)
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   : signal 31 (SIGSYS), code 1 (SYS_SECCOMP), fault addr --------
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   : Cause: seccomp prevented call to disallowed arm64 system call 142
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   :     x0  00000000deadbeef  x1  00000000cafebabe  x2  0000000000000000  x3  0000007ff2531808
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   :     x4  0000000000000030  x5  5d7265766972645f  x6  5d7265766972645f  x7  b400007890e47a3d
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   :     x8  000000000000008e  x9  000000000007cd10  x10 00000079a0f8e8dc  x11 0000000000030003
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   :     x12 000000000000000b  x13 00000062fcd59e6a  x14 0000000000000064  x15 00cbd19c9ad19a94
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   :     x16 00000062fcf81730  x17 00000079a0f35300  x18 00000079a1c7c000  x19 00000062fcaf89a4
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   :     x20 00000062fcd23c9a  x21 0000000000000005  x22 0000000000000000  x23 0000007ff25318a0
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   :     x24 0000007ff25318fc  x25 00000062fce6edb8  x26 8000000000000000  x27 0000000000000001
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   :     x28 00000062fce47bd8  x29 0000007ff2531950
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   :     lr  00000062fce15f20  sp  0000007ff2531800  pc  00000079a0f35320  pst 0000000060001000
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   :     esr 0000000092000006
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   : 9 total frames
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   : backtrace:
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   :       #00 pc 0000000000098320  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+32) (BuildId: 9d3c9a4206374b556654d838f3ec4b25)
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   :       #01 pc 0000000000342f1c  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   :       #02 pc 00000000003151e8  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   :       #03 pc 0000000000412170  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   :       #04 pc 00000000003430c4  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   :       #05 pc 000000000032e59c  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   :       #06 pc 0000000000315138  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   :       #07 pc 0000000000365710  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.290 10197  6357  6357 F DEBUG   :       #08 pc 00000000000664cc  /apex/com.android.runtime/lib64/bionic/libc.so (__libc_init+120) (BuildId: 9d3c9a4206374b556654d838f3ec4b25)
+09-16 18:32:35.292 10197  6357  6357 E crash_dump64: AM data write failed: Broken pipe
+09-16 18:32:35.315 10197  6362  6362 I KernelSU Next: ksud::cli: command: Feature { command: Check { id: "sulog" } }
+09-16 18:32:35.316 10197  6362  6362 F libc    : Fatal signal 31 (SIGSYS), code 1 (SYS_SECCOMP), syscall 142 in tid 6362 (libksud.so), pid 6362 (libksud.so)
+09-16 18:32:35.325 10197  6365  6365 I crash_dump64: obtaining output fd from tombstoned, type: kDebuggerdTombstoneProto
+09-16 18:32:35.327 10197  6365  6365 I crash_dump64: performing dump of process 6362 (target tid = 6362)
+09-16 18:32:35.331 10197  6365  6365 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+09-16 18:32:35.331 10197  6365  6365 F DEBUG   : LineageOS Version: '23.2-20260914-NIGHTLY-oscar'
+09-16 18:32:35.331 10197  6365  6365 F DEBUG   : Build fingerprint: 'realme/RMX3471/RE54CBL1:14/UKQ1.230924.001/S.1ca575d_5b9-11cfbb:user/release-keys'
+09-16 18:32:35.331 10197  6365  6365 F DEBUG   : Kernel Release: '5.4.302-qgki-g9aa2f2b381d7'
+09-16 18:32:35.331 10197  6365  6365 F DEBUG   : Revision: '0'
+09-16 18:32:35.331 10197  6365  6365 F DEBUG   : ABI: 'arm64'
+09-16 18:32:35.331 10197  6365  6365 F DEBUG   : Timestamp: 2026-09-16 18:32:35.328147163+0800
+09-16 18:32:35.331 10197  6365  6365 F DEBUG   : Process uptime: 1s
+09-16 18:32:35.331 10197  6365  6365 F DEBUG   : Executable: /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.331 10197  6365  6365 F DEBUG   : Cmdline: /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so feature check sulog
+09-16 18:32:35.331 10197  6365  6365 F DEBUG   : pid: 6362, tid: 6362, name: libksud.so  >>> /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so <<<
+09-16 18:32:35.331 10197  6365  6365 F DEBUG   : uid: 10197
+09-16 18:32:35.331 10197  6365  6365 F DEBUG   : esr: 0000000092000006 (Data Abort Exception 0x24)
+09-16 18:32:35.331 10197  6365  6365 F DEBUG   : signal 31 (SIGSYS), code 1 (SYS_SECCOMP), fault addr --------
+09-16 18:32:35.331 10197  6365  6365 F DEBUG   : Cause: seccomp prevented call to disallowed arm64 system call 142
+09-16 18:32:35.331 10197  6365  6365 F DEBUG   :     x0  00000000deadbeef  x1  00000000cafebabe  x2  0000000000000000  x3  0000007fd95864c8
+09-16 18:32:35.331 10197  6365  6365 F DEBUG   :     x4  0000000000000030  x5  5d7265766972645f  x6  5d7265766972645f  x7  b4000077397cc3dd
+09-16 18:32:35.331 10197  6365  6365 F DEBUG   :     x8  000000000000008e  x9  0000000000078540  x10 00000077f996a8dc  x11 0000000000030003
+09-16 18:32:35.331 10197  6365  6365 F DEBUG   :     x12 000000000000000b  x13 000000555dc87e6a  x14 0000000000000064  x15 00cbd19c9ad19a94
+09-16 18:32:35.331 10197  6365  6365 F DEBUG   :     x16 000000555deaf730  x17 00000077f9911300  x18 00000077fa968000  x19 000000555da269a4
+09-16 18:32:35.331 10197  6365  6365 F DEBUG   :     x20 000000555dc51c9a  x21 0000000000000005  x22 0000000000000000  x23 0000007fd9586560
+09-16 18:32:35.331 10197  6365  6365 F DEBUG   :     x24 0000007fd95865bc  x25 000000555dd9cdb8  x26 8000000000000000  x27 000000555dc4b792
+09-16 18:32:35.331 10197  6365  6365 F DEBUG   :     x28 000000555da1f1d0  x29 0000007fd9586610
+09-16 18:32:35.331 10197  6365  6365 F DEBUG   :     lr  000000555dd43f20  sp  0000007fd95864c0  pc  00000077f9911320  pst 0000000060001000
+09-16 18:32:35.331 10197  6365  6365 F DEBUG   :     esr 0000000092000006
+09-16 18:32:35.331 10197  6365  6365 F DEBUG   : 9 total frames
+09-16 18:32:35.331 10197  6365  6365 F DEBUG   : backtrace:
+09-16 18:32:35.331 10197  6365  6365 F DEBUG   :       #00 pc 0000000000098320  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+32) (BuildId: 9d3c9a4206374b556654d838f3ec4b25)
+09-16 18:32:35.331 10197  6365  6365 F DEBUG   :       #01 pc 0000000000342f1c  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.331 10197  6365  6365 F DEBUG   :       #02 pc 00000000003151e8  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.331 10197  6365  6365 F DEBUG   :       #03 pc 0000000000412170  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.331 10197  6365  6365 F DEBUG   :       #04 pc 0000000000342c1c  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.332 10197  6365  6365 F DEBUG   :       #05 pc 0000000000332130  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.332 10197  6365  6365 F DEBUG   :       #06 pc 0000000000315138  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.332 10197  6365  6365 F DEBUG   :       #07 pc 0000000000365710  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.332 10197  6365  6365 F DEBUG   :       #08 pc 00000000000664cc  /apex/com.android.runtime/lib64/bionic/libc.so (__libc_init+120) (BuildId: 9d3c9a4206374b556654d838f3ec4b25)
+09-16 18:32:35.333 10197  6365  6365 E crash_dump64: AM data write failed: Broken pipe
+09-16 18:32:35.348 10197  6370  6370 I KernelSU Next: ksud::cli: command: Debug { command: Su { global_mnt: true } }
+09-16 18:32:35.348 10197  6370  6370 F libc    : Fatal signal 31 (SIGSYS), code 1 (SYS_SECCOMP), syscall 142 in tid 6370 (libksud.so), pid 6370 (libksud.so)
+09-16 18:32:35.358 10197  6373  6373 I crash_dump64: obtaining output fd from tombstoned, type: kDebuggerdTombstoneProto
+09-16 18:32:35.359 10197  6373  6373 I crash_dump64: performing dump of process 6370 (target tid = 6370)
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   : LineageOS Version: '23.2-20260914-NIGHTLY-oscar'
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   : Build fingerprint: 'realme/RMX3471/RE54CBL1:14/UKQ1.230924.001/S.1ca575d_5b9-11cfbb:user/release-keys'
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   : Kernel Release: '5.4.302-qgki-g9aa2f2b381d7'
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   : Revision: '0'
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   : ABI: 'arm64'
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   : Timestamp: 2026-09-16 18:32:35.360142528+0800
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   : Process uptime: 1s
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   : Executable: /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   : Cmdline: /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so debug su -g
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   : pid: 6370, tid: 6370, name: libksud.so  >>> /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so <<<
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   : uid: 10197
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   : esr: 0000000092000006 (Data Abort Exception 0x24)
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   : signal 31 (SIGSYS), code 1 (SYS_SECCOMP), fault addr --------
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   : Cause: seccomp prevented call to disallowed arm64 system call 142
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   :     x0  00000000deadbeef  x1  00000000cafebabe  x2  0000000000000000  x3  0000007fc8cf2d18
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   :     x4  0000000000000030  x5  5d7265766972645f  x6  5d7265766972645f  x7  b40000779da4fe7d
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   :     x8  000000000000008e  x9  000000000007cd10  x10 00000078cdbe88dc  x11 0000000000030003
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   :     x12 000000000000000b  x13 00000058f11fee6a  x14 0000000000000064  x15 00cbd19c9ad19a94
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   :     x16 00000058f1426730  x17 00000078cdb8f300  x18 00000078d19f4000  x19 00000058f0f9d9a4
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   :     x20 00000058f11c8c9a  x21 0000000000000005  x22 0000000000000000  x23 0000007fc8cf2db0
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   :     x24 0000007fc8cf2e0c  x25 00000058f1313db8  x26 8000000000000000  x27 0000000000000001
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   :     x28 00000058f12ecbd8  x29 0000007fc8cf2e60
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   :     lr  00000058f12baf20  sp  0000007fc8cf2d10  pc  00000078cdb8f320  pst 0000000060001000
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   :     esr 0000000092000006
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   : 9 total frames
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   : backtrace:
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   :       #00 pc 0000000000098320  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+32) (BuildId: 9d3c9a4206374b556654d838f3ec4b25)
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   :       #01 pc 0000000000342f1c  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   :       #02 pc 00000000003151e8  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   :       #03 pc 0000000000412170  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   :       #04 pc 00000000003430c4  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   :       #05 pc 000000000032e59c  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   :       #06 pc 0000000000315138  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   :       #07 pc 0000000000365710  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.365 10197  6373  6373 F DEBUG   :       #08 pc 00000000000664cc  /apex/com.android.runtime/lib64/bionic/libc.so (__libc_init+120) (BuildId: 9d3c9a4206374b556654d838f3ec4b25)
+09-16 18:32:35.368 10197  6373  6373 E crash_dump64: AM data write failed: Broken pipe
+09-16 18:32:35.394 10197  6378  6378 I KernelSU Next: ksud::cli: command: Feature { command: Get { id: "sulog", config: true } }
+09-16 18:32:35.394 10197  6378  6378 I KernelSU Next: ksud::feature: Feature config not found, using defaults
+09-16 18:32:35.407 10197  6381  6381 I KernelSU Next: ksud::cli: command: Debug { command: Su { global_mnt: true } }
+09-16 18:32:35.407 10197  6381  6381 F libc    : Fatal signal 31 (SIGSYS), code 1 (SYS_SECCOMP), syscall 142 in tid 6381 (libksud.so), pid 6381 (libksud.so)
+09-16 18:32:35.416 10197  6384  6384 I crash_dump64: obtaining output fd from tombstoned, type: kDebuggerdTombstoneProto
+09-16 18:32:35.417 10197  6384  6384 I crash_dump64: performing dump of process 6381 (target tid = 6381)
+09-16 18:32:35.422 10197  6384  6384 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+09-16 18:32:35.422 10197  6384  6384 F DEBUG   : LineageOS Version: '23.2-20260914-NIGHTLY-oscar'
+09-16 18:32:35.422 10197  6384  6384 F DEBUG   : Build fingerprint: 'realme/RMX3471/RE54CBL1:14/UKQ1.230924.001/S.1ca575d_5b9-11cfbb:user/release-keys'
+09-16 18:32:35.422 10197  6384  6384 F DEBUG   : Kernel Release: '5.4.302-qgki-g9aa2f2b381d7'
+09-16 18:32:35.422 10197  6384  6384 F DEBUG   : Revision: '0'
+09-16 18:32:35.422 10197  6384  6384 F DEBUG   : ABI: 'arm64'
+09-16 18:32:35.422 10197  6384  6384 F DEBUG   : Timestamp: 2026-09-16 18:32:35.418449819+0800
+09-16 18:32:35.422 10197  6384  6384 F DEBUG   : Process uptime: 1s
+09-16 18:32:35.422 10197  6384  6384 F DEBUG   : Executable: /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.422 10197  6384  6384 F DEBUG   : Cmdline: /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so debug su -g
+09-16 18:32:35.422 10197  6384  6384 F DEBUG   : pid: 6381, tid: 6381, name: libksud.so  >>> /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so <<<
+09-16 18:32:35.422 10197  6384  6384 F DEBUG   : uid: 10197
+09-16 18:32:35.422 10197  6384  6384 F DEBUG   : esr: 0000000092000006 (Data Abort Exception 0x24)
+09-16 18:32:35.422 10197  6384  6384 F DEBUG   : signal 31 (SIGSYS), code 1 (SYS_SECCOMP), fault addr --------
+09-16 18:32:35.422 10197  6384  6384 F DEBUG   : Cause: seccomp prevented call to disallowed arm64 system call 142
+09-16 18:32:35.422 10197  6384  6384 F DEBUG   :     x0  00000000deadbeef  x1  00000000cafebabe  x2  0000000000000000  x3  0000007ff5674d38
+09-16 18:32:35.422 10197  6384  6384 F DEBUG   :     x4  0000000000000030  x5  5d7265766972645f  x6  5d7265766972645f  x7  b4000071ec1b5bfd
+09-16 18:32:35.422 10197  6384  6384 F DEBUG   :     x8  000000000000008e  x9  000000000007cd10  x10 000000726c52a8dc  x11 0000000000030003
+09-16 18:32:35.422 10197  6384  6384 F DEBUG   :     x12 000000000000000b  x13 00000062115f2e6a  x14 0000000000000064  x15 00cbd19c9ad19a94
+09-16 18:32:35.422 10197  6384  6384 F DEBUG   :     x16 000000621181a730  x17 000000726c4d1300  x18 000000726d724000  x19 00000062113919a4
+09-16 18:32:35.422 10197  6384  6384 F DEBUG   :     x20 00000062115bcc9a  x21 0000000000000005  x22 0000000000000000  x23 0000007ff5674dd0
+09-16 18:32:35.422 10197  6384  6384 F DEBUG   :     x24 0000007ff5674e2c  x25 0000006211707db8  x26 8000000000000000  x27 0000000000000001
+09-16 18:32:35.422 10197  6384  6384 F DEBUG   :     x28 00000062116e0bd8  x29 0000007ff5674e80
+09-16 18:32:35.422 10197  6384  6384 F DEBUG   :     lr  00000062116aef20  sp  0000007ff5674d30  pc  000000726c4d1320  pst 0000000060001000
+09-16 18:32:35.422 10197  6384  6384 F DEBUG   :     esr 0000000092000006
+09-16 18:32:35.422 10197  6384  6384 F DEBUG   : 9 total frames
+09-16 18:32:35.422 10197  6384  6384 F DEBUG   : backtrace:
+09-16 18:32:35.422 10197  6384  6384 F DEBUG   :       #00 pc 0000000000098320  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+32) (BuildId: 9d3c9a4206374b556654d838f3ec4b25)
+09-16 18:32:35.422 10197  6384  6384 F DEBUG   :       #01 pc 0000000000342f1c  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.422 10197  6384  6384 F DEBUG   :       #02 pc 00000000003151e8  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.423 10197  6384  6384 F DEBUG   :       #03 pc 0000000000412170  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.423 10197  6384  6384 F DEBUG   :       #04 pc 00000000003430c4  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.423 10197  6384  6384 F DEBUG   :       #05 pc 000000000032e59c  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.423 10197  6384  6384 F DEBUG   :       #06 pc 0000000000315138  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.423 10197  6384  6384 F DEBUG   :       #07 pc 0000000000365710  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.423 10197  6384  6384 F DEBUG   :       #08 pc 00000000000664cc  /apex/com.android.runtime/lib64/bionic/libc.so (__libc_init+120) (BuildId: 9d3c9a4206374b556654d838f3ec4b25)
+09-16 18:32:35.424 10197  6384  6384 E crash_dump64: AM data write failed: Broken pipe
+09-16 18:32:35.448 10197  6389  6389 I KernelSU Next: ksud::cli: command: Feature { command: Check { id: "adb_root" } }
+09-16 18:32:35.448 10197  6389  6389 F libc    : Fatal signal 31 (SIGSYS), code 1 (SYS_SECCOMP), syscall 142 in tid 6389 (libksud.so), pid 6389 (libksud.so)
+09-16 18:32:35.456 10197  6392  6392 I crash_dump64: obtaining output fd from tombstoned, type: kDebuggerdTombstoneProto
+09-16 18:32:35.457 10197  6392  6392 I crash_dump64: performing dump of process 6389 (target tid = 6389)
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   : LineageOS Version: '23.2-20260914-NIGHTLY-oscar'
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   : Build fingerprint: 'realme/RMX3471/RE54CBL1:14/UKQ1.230924.001/S.1ca575d_5b9-11cfbb:user/release-keys'
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   : Kernel Release: '5.4.302-qgki-g9aa2f2b381d7'
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   : Revision: '0'
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   : ABI: 'arm64'
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   : Timestamp: 2026-09-16 18:32:35.457982632+0800
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   : Process uptime: 1s
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   : Executable: /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   : Cmdline: /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so feature check adb_root
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   : pid: 6389, tid: 6389, name: libksud.so  >>> /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so <<<
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   : uid: 10197
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   : esr: 0000000092000006 (Data Abort Exception 0x24)
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   : signal 31 (SIGSYS), code 1 (SYS_SECCOMP), fault addr --------
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   : Cause: seccomp prevented call to disallowed arm64 system call 142
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   :     x0  00000000deadbeef  x1  00000000cafebabe  x2  0000000000000000  x3  0000007fc5af00a8
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   :     x4  0000000000000030  x5  5d7265766972645f  x6  5d7265766972645f  x7  b4000073324d719d
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   :     x8  000000000000008e  x9  0000000000078540  x10 00000074c25bf8dc  x11 0000000000030003
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   :     x12 000000000000000b  x13 0000005f58f61e6a  x14 0000000000000064  x15 00cbd19c9ad19a94
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   :     x16 0000005f59189730  x17 00000074c2566300  x18 00000074c4f2c000  x19 0000005f58d009a4
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   :     x20 0000005f58f2bc9a  x21 0000000000000005  x22 0000000000000000  x23 0000007fc5af0140
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   :     x24 0000007fc5af019c  x25 0000005f59076db8  x26 8000000000000000  x27 0000005f58f25792
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   :     x28 0000005f58cf91d0  x29 0000007fc5af01f0
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   :     lr  0000005f5901df20  sp  0000007fc5af00a0  pc  00000074c2566320  pst 0000000060001000
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   :     esr 0000000092000006
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   : 9 total frames
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   : backtrace:
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   :       #00 pc 0000000000098320  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+32) (BuildId: 9d3c9a4206374b556654d838f3ec4b25)
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   :       #01 pc 0000000000342f1c  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   :       #02 pc 00000000003151e8  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   :       #03 pc 0000000000412170  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   :       #04 pc 0000000000342c1c  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   :       #05 pc 0000000000332130  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   :       #06 pc 0000000000315138  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   :       #07 pc 0000000000365710  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.462 10197  6392  6392 F DEBUG   :       #08 pc 00000000000664cc  /apex/com.android.runtime/lib64/bionic/libc.so (__libc_init+120) (BuildId: 9d3c9a4206374b556654d838f3ec4b25)
+09-16 18:32:35.464 10197  6392  6392 E crash_dump64: AM data write failed: Broken pipe
+09-16 18:32:35.481 10197  6397  6397 I KernelSU Next: ksud::cli: command: Debug { command: Su { global_mnt: true } }
+09-16 18:32:35.481 10197  6397  6397 F libc    : Fatal signal 31 (SIGSYS), code 1 (SYS_SECCOMP), syscall 142 in tid 6397 (libksud.so), pid 6397 (libksud.so)
+09-16 18:32:35.491 10197  6400  6400 I crash_dump64: obtaining output fd from tombstoned, type: kDebuggerdTombstoneProto
+09-16 18:32:35.492 10197  6400  6400 I crash_dump64: performing dump of process 6397 (target tid = 6397)
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   : LineageOS Version: '23.2-20260914-NIGHTLY-oscar'
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   : Build fingerprint: 'realme/RMX3471/RE54CBL1:14/UKQ1.230924.001/S.1ca575d_5b9-11cfbb:user/release-keys'
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   : Kernel Release: '5.4.302-qgki-g9aa2f2b381d7'
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   : Revision: '0'
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   : ABI: 'arm64'
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   : Timestamp: 2026-09-16 18:32:35.493634872+0800
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   : Process uptime: 1s
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   : Executable: /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   : Cmdline: /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so debug su -g
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   : pid: 6397, tid: 6397, name: libksud.so  >>> /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so <<<
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   : uid: 10197
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   : esr: 0000000092000006 (Data Abort Exception 0x24)
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   : signal 31 (SIGSYS), code 1 (SYS_SECCOMP), fault addr --------
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   : Cause: seccomp prevented call to disallowed arm64 system call 142
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   :     x0  00000000deadbeef  x1  00000000cafebabe  x2  0000000000000000  x3  0000007fd28994f8
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   :     x4  0000000000000030  x5  5d7265766972645f  x6  5d7265766972645f  x7  b400007832e1f53d
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   :     x8  000000000000008e  x9  000000000007cd10  x10 0000007a149dc8dc  x11 0000000000030003
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   :     x12 000000000000000b  x13 00000063c97e3e6a  x14 0000000000000064  x15 00cbd19c9ad19a94
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   :     x16 00000063c9a0b730  x17 0000007a14983300  x18 0000007a14d5c000  x19 00000063c95829a4
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   :     x20 00000063c97adc9a  x21 0000000000000005  x22 0000000000000000  x23 0000007fd2899590
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   :     x24 0000007fd28995ec  x25 00000063c98f8db8  x26 8000000000000000  x27 0000000000000001
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   :     x28 00000063c98d1bd8  x29 0000007fd2899640
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   :     lr  00000063c989ff20  sp  0000007fd28994f0  pc  0000007a14983320  pst 0000000060001000
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   :     esr 0000000092000006
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   : 9 total frames
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   : backtrace:
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   :       #00 pc 0000000000098320  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+32) (BuildId: 9d3c9a4206374b556654d838f3ec4b25)
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   :       #01 pc 0000000000342f1c  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   :       #02 pc 00000000003151e8  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   :       #03 pc 0000000000412170  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   :       #04 pc 00000000003430c4  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   :       #05 pc 000000000032e59c  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   :       #06 pc 0000000000315138  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   :       #07 pc 0000000000365710  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.497 10197  6400  6400 F DEBUG   :       #08 pc 00000000000664cc  /apex/com.android.runtime/lib64/bionic/libc.so (__libc_init+120) (BuildId: 9d3c9a4206374b556654d838f3ec4b25)
+09-16 18:32:35.499 10197  6400  6400 E crash_dump64: AM data write failed: Broken pipe
+09-16 18:32:35.522 10197  6405  6405 I KernelSU Next: ksud::cli: command: Feature { command: Check { id: "selinux_hide" } }
+09-16 18:32:35.523 10197  6405  6405 F libc    : Fatal signal 31 (SIGSYS), code 1 (SYS_SECCOMP), syscall 142 in tid 6405 (libksud.so), pid 6405 (libksud.so)
+09-16 18:32:35.532 10197  6408  6408 I crash_dump64: obtaining output fd from tombstoned, type: kDebuggerdTombstoneProto
+09-16 18:32:35.533 10197  6408  6408 I crash_dump64: performing dump of process 6405 (target tid = 6405)
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   : LineageOS Version: '23.2-20260914-NIGHTLY-oscar'
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   : Build fingerprint: 'realme/RMX3471/RE54CBL1:14/UKQ1.230924.001/S.1ca575d_5b9-11cfbb:user/release-keys'
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   : Kernel Release: '5.4.302-qgki-g9aa2f2b381d7'
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   : Revision: '0'
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   : ABI: 'arm64'
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   : Timestamp: 2026-09-16 18:32:35.534091434+0800
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   : Process uptime: 1s
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   : Executable: /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   : Cmdline: /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so feature check selinux_hide
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   : pid: 6405, tid: 6405, name: libksud.so  >>> /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so <<<
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   : uid: 10197
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   : esr: 0000000092000006 (Data Abort Exception 0x24)
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   : signal 31 (SIGSYS), code 1 (SYS_SECCOMP), fault addr --------
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   : Cause: seccomp prevented call to disallowed arm64 system call 142
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   :     x0  00000000deadbeef  x1  00000000cafebabe  x2  0000000000000000  x3  0000007fc77edc98
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   :     x4  0000000000000030  x5  5d7265766972645f  x6  5d7265766972645f  x7  b400006f505c997d
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   :     x8  000000000000008e  x9  0000000000078540  x10 00000070a07348dc  x11 0000000000030003
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   :     x12 000000000000000b  x13 000000603b55de6a  x14 0000000000000064  x15 00cbd19c9ad19a94
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   :     x16 000000603b785730  x17 00000070a06db300  x18 00000070a18b8000  x19 000000603b2fc9a4
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   :     x20 000000603b527c9a  x21 0000000000000005  x22 0000000000000000  x23 0000007fc77edd30
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   :     x24 0000007fc77edd8c  x25 000000603b672db8  x26 8000000000000000  x27 000000603b521792
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   :     x28 000000603b2f51d0  x29 0000007fc77edde0
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   :     lr  000000603b619f20  sp  0000007fc77edc90  pc  00000070a06db320  pst 0000000060001000
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   :     esr 0000000092000006
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   : 9 total frames
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   : backtrace:
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   :       #00 pc 0000000000098320  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+32) (BuildId: 9d3c9a4206374b556654d838f3ec4b25)
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   :       #01 pc 0000000000342f1c  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   :       #02 pc 00000000003151e8  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   :       #03 pc 0000000000412170  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   :       #04 pc 0000000000342c1c  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   :       #05 pc 0000000000332130  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   :       #06 pc 0000000000315138  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   :       #07 pc 0000000000365710  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.539 10197  6408  6408 F DEBUG   :       #08 pc 00000000000664cc  /apex/com.android.runtime/lib64/bionic/libc.so (__libc_init+120) (BuildId: 9d3c9a4206374b556654d838f3ec4b25)
+09-16 18:32:35.541 10197  6408  6408 E crash_dump64: AM data write failed: Broken pipe
+09-16 18:32:35.557 10197  6413  6413 I KernelSU Next: ksud::cli: command: Debug { command: Su { global_mnt: true } }
+09-16 18:32:35.557 10197  6413  6413 F libc    : Fatal signal 31 (SIGSYS), code 1 (SYS_SECCOMP), syscall 142 in tid 6413 (libksud.so), pid 6413 (libksud.so)
+09-16 18:32:35.567 10197  6416  6416 I crash_dump64: obtaining output fd from tombstoned, type: kDebuggerdTombstoneProto
+09-16 18:32:35.568 10197  6416  6416 I crash_dump64: performing dump of process 6413 (target tid = 6413)
+09-16 18:32:35.572 10197  6416  6416 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+09-16 18:32:35.572 10197  6416  6416 F DEBUG   : LineageOS Version: '23.2-20260914-NIGHTLY-oscar'
+09-16 18:32:35.572 10197  6416  6416 F DEBUG   : Build fingerprint: 'realme/RMX3471/RE54CBL1:14/UKQ1.230924.001/S.1ca575d_5b9-11cfbb:user/release-keys'
+09-16 18:32:35.572 10197  6416  6416 F DEBUG   : Kernel Release: '5.4.302-qgki-g9aa2f2b381d7'
+09-16 18:32:35.572 10197  6416  6416 F DEBUG   : Revision: '0'
+09-16 18:32:35.573 10197  6416  6416 F DEBUG   : ABI: 'arm64'
+09-16 18:32:35.573 10197  6416  6416 F DEBUG   : Timestamp: 2026-09-16 18:32:35.569127840+0800
+09-16 18:32:35.573 10197  6416  6416 F DEBUG   : Process uptime: 1s
+09-16 18:32:35.573 10197  6416  6416 F DEBUG   : Executable: /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.573 10197  6416  6416 F DEBUG   : Cmdline: /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so debug su -g
+09-16 18:32:35.573 10197  6416  6416 F DEBUG   : pid: 6413, tid: 6413, name: libksud.so  >>> /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so <<<
+09-16 18:32:35.573 10197  6416  6416 F DEBUG   : uid: 10197
+09-16 18:32:35.573 10197  6416  6416 F DEBUG   : esr: 0000000092000006 (Data Abort Exception 0x24)
+09-16 18:32:35.573 10197  6416  6416 F DEBUG   : signal 31 (SIGSYS), code 1 (SYS_SECCOMP), fault addr --------
+09-16 18:32:35.573 10197  6416  6416 F DEBUG   : Cause: seccomp prevented call to disallowed arm64 system call 142
+09-16 18:32:35.573 10197  6416  6416 F DEBUG   :     x0  00000000deadbeef  x1  00000000cafebabe  x2  0000000000000000  x3  0000007fe98f05a8
+09-16 18:32:35.573 10197  6416  6416 F DEBUG   :     x4  0000000000000030  x5  5d7265766972645f  x6  5d7265766972645f  x7  b400007e4863efdd
+09-16 18:32:35.573 10197  6416  6416 F DEBUG   :     x8  000000000000008e  x9  000000000007cd10  x10 0000007eb897a8dc  x11 0000000000030003
+09-16 18:32:35.573 10197  6416  6416 F DEBUG   :     x12 000000000000000b  x13 0000005dc1ccce6a  x14 0000000000000064  x15 00cbd19c9ad19a94
+09-16 18:32:35.573 10197  6416  6416 F DEBUG   :     x16 0000005dc1ef4730  x17 0000007eb8921300  x18 0000007eb8ee8000  x19 0000005dc1a6b9a4
+09-16 18:32:35.573 10197  6416  6416 F DEBUG   :     x20 0000005dc1c96c9a  x21 0000000000000005  x22 0000000000000000  x23 0000007fe98f0640
+09-16 18:32:35.573 10197  6416  6416 F DEBUG   :     x24 0000007fe98f069c  x25 0000005dc1de1db8  x26 8000000000000000  x27 0000000000000001
+09-16 18:32:35.573 10197  6416  6416 F DEBUG   :     x28 0000005dc1dbabd8  x29 0000007fe98f06f0
+09-16 18:32:35.573 10197  6416  6416 F DEBUG   :     lr  0000005dc1d88f20  sp  0000007fe98f05a0  pc  0000007eb8921320  pst 0000000060001000
+09-16 18:32:35.573 10197  6416  6416 F DEBUG   :     esr 0000000092000006
+09-16 18:32:35.573 10197  6416  6416 F DEBUG   : 9 total frames
+09-16 18:32:35.573 10197  6416  6416 F DEBUG   : backtrace:
+09-16 18:32:35.573 10197  6416  6416 F DEBUG   :       #00 pc 0000000000098320  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+32) (BuildId: 9d3c9a4206374b556654d838f3ec4b25)
+09-16 18:32:35.573 10197  6416  6416 F DEBUG   :       #01 pc 0000000000342f1c  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.573 10197  6416  6416 F DEBUG   :       #02 pc 00000000003151e8  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.573 10197  6416  6416 F DEBUG   :       #03 pc 0000000000412170  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.573 10197  6416  6416 F DEBUG   :       #04 pc 00000000003430c4  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.573 10197  6416  6416 F DEBUG   :       #05 pc 000000000032e59c  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.573 10197  6416  6416 F DEBUG   :       #06 pc 0000000000315138  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.573 10197  6416  6416 F DEBUG   :       #07 pc 0000000000365710  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.573 10197  6416  6416 F DEBUG   :       #08 pc 00000000000664cc  /apex/com.android.runtime/lib64/bionic/libc.so (__libc_init+120) (BuildId: 9d3c9a4206374b556654d838f3ec4b25)
+09-16 18:32:35.574 10197  6416  6416 E crash_dump64: AM data write failed: Broken pipe
+09-16 18:32:35.597 10197  6421  6421 I KernelSU Next: ksud::cli: command: Feature { command: Check { id: "avc_spoof" } }
+09-16 18:32:35.597 10197  6421  6421 F libc    : Fatal signal 31 (SIGSYS), code 1 (SYS_SECCOMP), syscall 142 in tid 6421 (libksud.so), pid 6421 (libksud.so)
+09-16 18:32:35.607 10197  6424  6424 I crash_dump64: obtaining output fd from tombstoned, type: kDebuggerdTombstoneProto
+09-16 18:32:35.608 10197  6424  6424 I crash_dump64: performing dump of process 6421 (target tid = 6421)
+09-16 18:32:35.613 10197  6424  6424 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+09-16 18:32:35.613 10197  6424  6424 F DEBUG   : LineageOS Version: '23.2-20260914-NIGHTLY-oscar'
+09-16 18:32:35.613 10197  6424  6424 F DEBUG   : Build fingerprint: 'realme/RMX3471/RE54CBL1:14/UKQ1.230924.001/S.1ca575d_5b9-11cfbb:user/release-keys'
+09-16 18:32:35.613 10197  6424  6424 F DEBUG   : Kernel Release: '5.4.302-qgki-g9aa2f2b381d7'
+09-16 18:32:35.613 10197  6424  6424 F DEBUG   : Revision: '0'
+09-16 18:32:35.613 10197  6424  6424 F DEBUG   : ABI: 'arm64'
+09-16 18:32:35.613 10197  6424  6424 F DEBUG   : Timestamp: 2026-09-16 18:32:35.609105757+0800
+09-16 18:32:35.613 10197  6424  6424 F DEBUG   : Process uptime: 1s
+09-16 18:32:35.613 10197  6424  6424 F DEBUG   : Executable: /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.613 10197  6424  6424 F DEBUG   : Cmdline: /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so feature check avc_spoof
+09-16 18:32:35.613 10197  6424  6424 F DEBUG   : pid: 6421, tid: 6421, name: libksud.so  >>> /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so <<<
+09-16 18:32:35.613 10197  6424  6424 F DEBUG   : uid: 10197
+09-16 18:32:35.613 10197  6424  6424 F DEBUG   : esr: 0000000092000006 (Data Abort Exception 0x24)
+09-16 18:32:35.613 10197  6424  6424 F DEBUG   : signal 31 (SIGSYS), code 1 (SYS_SECCOMP), fault addr --------
+09-16 18:32:35.613 10197  6424  6424 F DEBUG   : Cause: seccomp prevented call to disallowed arm64 system call 142
+09-16 18:32:35.613 10197  6424  6424 F DEBUG   :     x0  00000000deadbeef  x1  00000000cafebabe  x2  0000000000000000  x3  0000007fd402daa8
+09-16 18:32:35.613 10197  6424  6424 F DEBUG   :     x4  0000000000000030  x5  5d7265766972645f  x6  5d7265766972645f  x7  b400007b638ea65d
+09-16 18:32:35.613 10197  6424  6424 F DEBUG   :     x8  000000000000008e  x9  0000000000078540  x10 0000007c739cd8dc  x11 0000000000030003
+09-16 18:32:35.613 10197  6424  6424 F DEBUG   :     x12 000000000000000b  x13 00000061cb42be6a  x14 0000000000000064  x15 00cbd19c9ad19a94
+09-16 18:32:35.613 10197  6424  6424 F DEBUG   :     x16 00000061cb653730  x17 0000007c73974300  x18 0000007c76c54000  x19 00000061cb1ca9a4
+09-16 18:32:35.613 10197  6424  6424 F DEBUG   :     x20 00000061cb3f5c9a  x21 0000000000000005  x22 0000000000000000  x23 0000007fd402db40
+09-16 18:32:35.613 10197  6424  6424 F DEBUG   :     x24 0000007fd402db9c  x25 00000061cb540db8  x26 8000000000000000  x27 00000061cb3ef792
+09-16 18:32:35.613 10197  6424  6424 F DEBUG   :     x28 00000061cb1c31d0  x29 0000007fd402dbf0
+09-16 18:32:35.614 10197  6424  6424 F DEBUG   :     lr  00000061cb4e7f20  sp  0000007fd402daa0  pc  0000007c73974320  pst 0000000060001000
+09-16 18:32:35.614 10197  6424  6424 F DEBUG   :     esr 0000000092000006
+09-16 18:32:35.614 10197  6424  6424 F DEBUG   : 9 total frames
+09-16 18:32:35.614 10197  6424  6424 F DEBUG   : backtrace:
+09-16 18:32:35.614 10197  6424  6424 F DEBUG   :       #00 pc 0000000000098320  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+32) (BuildId: 9d3c9a4206374b556654d838f3ec4b25)
+09-16 18:32:35.614 10197  6424  6424 F DEBUG   :       #01 pc 0000000000342f1c  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.614 10197  6424  6424 F DEBUG   :       #02 pc 00000000003151e8  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.614 10197  6424  6424 F DEBUG   :       #03 pc 0000000000412170  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.614 10197  6424  6424 F DEBUG   :       #04 pc 0000000000342c1c  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.614 10197  6424  6424 F DEBUG   :       #05 pc 0000000000332130  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.614 10197  6424  6424 F DEBUG   :       #06 pc 0000000000315138  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.614 10197  6424  6424 F DEBUG   :       #07 pc 0000000000365710  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:35.614 10197  6424  6424 F DEBUG   :       #08 pc 00000000000664cc  /apex/com.android.runtime/lib64/bionic/libc.so (__libc_init+120) (BuildId: 9d3c9a4206374b556654d838f3ec4b25)
+09-16 18:32:35.615 10197  6424  6424 E crash_dump64: AM data write failed: Broken pipe
+09-16 18:32:37.476 10197  5676  5710 E perf_hint: createSessionUsingConfig: PerformanceHint cannot create session. PowerHintSessions are not supported!
+09-16 18:32:37.483 10197  5676  5676 D WindowOnBackDispatcher: setTopOnBackInvokedCallback (unwrapped): android.app.Dialog$$ExternalSyntheticLambda2@eaa206e
+09-16 18:32:37.483 10197  5676  5676 D WindowOnBackDispatcher: setTopOnBackInvokedCallback (unwrapped): b.f0@765830f
+09-16 18:32:37.484 10197  5676  5676 D WindowOnBackDispatcher: setTopOnBackInvokedCallback (unwrapped): q0.v3@c18f9c
+09-16 18:32:37.505 10197  5676  5676 I viewroot_draw_event: [VRI[MainActivity],reportDrawFinished seqId=0]
+09-16 18:32:37.539 10197  5676  5676 D InsetsController: hide(ime())
+09-16 18:32:37.539 10197  5676  5676 I ImeTracker: vctsrt.cntgtj.uqfwgg:6bd8146e: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+09-16 18:32:38.912 10197  5676  5676 D WindowOnBackDispatcher: setTopOnBackInvokedCallback (unwrapped): null
+09-16 18:32:38.918 10197  5676  5689 D HWUI    : endAllActiveAnimators on 0xb400007e0f6ea880 (o) with handle 0xb400007d4f6e29c0
+09-16 18:32:38.924 10197  5676  5676 I wm_on_top_resumed_lost_called: [26509752,vctsrt.cntgtj.uqfwgg.ui.MainActivity,topStateChangedWhenResumed]
+09-16 18:32:38.926 10197  5676  5676 I wm_on_paused_called: [26509752,vctsrt.cntgtj.uqfwgg.ui.MainActivity,performPause,1]
+09-16 18:32:39.507 10197  5676  5676 D VRI[MainActivity]: visibilityChanged oldVisibility=true newVisibility=false
+09-16 18:32:39.521 10197  5676  5676 I viewroot_draw_event: [VRI[MainActivity],Not drawing due to not visible. Reason=!mAppVisible && !mForceDecorViewVisibility]
+09-16 18:32:39.522 10197  5676  5676 D WindowOnBackDispatcher: setTopOnBackInvokedCallback (unwrapped): android.app.Activity$$ExternalSyntheticLambda0@34e9913
+09-16 18:32:39.524 10197  5676  5676 I wm_on_stop_called: [26509752,vctsrt.cntgtj.uqfwgg.ui.MainActivity,STOP_ACTIVITY_ITEM,0]
+09-16 18:32:48.799 10197  5676  5676 D ViewRootImpl: Skipping stats log for color mode
+09-16 18:32:48.799 10197  5676  5676 I wm_on_restart_called: [26509752,vctsrt.cntgtj.uqfwgg.ui.MainActivity,performRestart,0]
+09-16 18:32:48.799 10197  5676  5676 I wm_on_start_called: [26509752,vctsrt.cntgtj.uqfwgg.ui.MainActivity,handleStartActivity,0]
+09-16 18:32:48.799 10197  5676  5676 D WindowOnBackDispatcher: setTopOnBackInvokedCallback (unwrapped): b.f0@f3a8152
+09-16 18:32:48.801 10197  5676  5676 I wm_on_activity_result_called: [26509752,vctsrt.cntgtj.uqfwgg.ui.MainActivity,ACTIVITY_RESULT]
+09-16 18:32:48.801 10197  5676  5676 I wm_on_resume_called: [26509752,vctsrt.cntgtj.uqfwgg.ui.MainActivity,RESUME_ACTIVITY,0]
+09-16 18:32:48.801 10197  5676  5676 I wm_on_top_resumed_gained_called: [26509752,vctsrt.cntgtj.uqfwgg.ui.MainActivity,topStateChangedWhenResumed]
+09-16 18:32:48.822 10197  5676  5709 E perf_hint: createSessionUsingConfig: PerformanceHint cannot create session. PowerHintSessions are not supported!
+09-16 18:32:48.834 10197  5676  5676 I viewroot_draw_event: [VRI[MainActivity],Start draw after previous draw not visible]
+09-16 18:32:48.843 10197  5676  5676 I viewroot_draw_event: [VRI[MainActivity],reportDrawFinished seqId=0]
+09-16 18:32:48.844 10197  5676  5676 D WindowOnBackDispatcher: setTopOnBackInvokedCallback (unwrapped): android.app.Dialog$$ExternalSyntheticLambda2@b1effc5
+09-16 18:32:48.844 10197  5676  5676 D WindowOnBackDispatcher: setTopOnBackInvokedCallback (unwrapped): b.f0@57f1d1a
+09-16 18:32:48.837 10197  6482  6482 I auditd  : type=1400 audit(0.0:586): avc:  denied  { search } for  comm="libksud.so" name="tests" dev="dm-48" ino=112 scontext=u:r:untrusted_app:s0:c197,c256,c512,c768 tcontext=u:object_r:shell_test_data_file:s0 tclass=dir permissive=0 app=vctsrt.cntgtj.uqfwgg
+09-16 18:32:48.837 10197  6482  6482 W libksud.so: type=1400 audit(0.0:586): avc:  denied  { search } for  name="tests" dev="dm-48" ino=112 scontext=u:r:untrusted_app:s0:c197,c256,c512,c768 tcontext=u:object_r:shell_test_data_file:s0 tclass=dir permissive=0 app=vctsrt.cntgtj.uqfwgg
+09-16 18:32:48.837 10197  6482  6482 I auditd  : type=1400 audit(0.0:587): avc:  denied  { search } for  comm="libksud.so" name="tests" dev="dm-48" ino=112 scontext=u:r:untrusted_app:s0:c197,c256,c512,c768 tcontext=u:object_r:shell_test_data_file:s0 tclass=dir permissive=0 app=vctsrt.cntgtj.uqfwgg
+09-16 18:32:48.837 10197  6482  6482 W libksud.so: type=1400 audit(0.0:587): avc:  denied  { search } for  name="tests" dev="dm-48" ino=112 scontext=u:r:untrusted_app:s0:c197,c256,c512,c768 tcontext=u:object_r:shell_test_data_file:s0 tclass=dir permissive=0 app=vctsrt.cntgtj.uqfwgg
+09-16 18:32:48.837 10197  6482  6482 I auditd  : type=1400 audit(0.0:588): avc:  denied  { search } for  comm="libksud.so" name="tests" dev="dm-48" ino=112 scontext=u:r:untrusted_app:s0:c197,c256,c512,c768 tcontext=u:object_r:shell_test_data_file:s0 tclass=dir permissive=0 app=vctsrt.cntgtj.uqfwgg
+09-16 18:32:48.837 10197  6482  6482 W libksud.so: type=1400 audit(0.0:588): avc:  denied  { search } for  name="tests" dev="dm-48" ino=112 scontext=u:r:untrusted_app:s0:c197,c256,c512,c768 tcontext=u:object_r:shell_test_data_file:s0 tclass=dir permissive=0 app=vctsrt.cntgtj.uqfwgg
+09-16 18:32:48.837 10197  6482  6482 I auditd  : type=1400 audit(0.0:589): avc:  denied  { search } for  comm="libksud.so" name="tests" dev="dm-48" ino=112 scontext=u:r:untrusted_app:s0:c197,c256,c512,c768 tcontext=u:object_r:shell_test_data_file:s0 tclass=dir permissive=0 app=vctsrt.cntgtj.uqfwgg
+09-16 18:32:48.837 10197  6482  6482 W libksud.so: type=1400 audit(0.0:589): avc:  denied  { search } for  name="tests" dev="dm-48" ino=112 scontext=u:r:untrusted_app:s0:c197,c256,c512,c768 tcontext=u:object_r:shell_test_data_file:s0 tclass=dir permissive=0 app=vctsrt.cntgtj.uqfwgg
+09-16 18:32:48.858 10197  6482  6482 I KernelSU Next: ksud::cli: command: Debug { command: Su { global_mnt: true } }
+09-16 18:32:48.859 10197  6482  6482 F libc    : Fatal signal 31 (SIGSYS), code 1 (SYS_SECCOMP), syscall 142 in tid 6482 (libksud.so), pid 6482 (libksud.so)
+09-16 18:32:48.873 10197  5676  5676 I viewroot_draw_event: [VRI[MainActivity],reportDrawFinished seqId=0]
+09-16 18:32:48.885 10197  5676  5676 I viewroot_draw_event: [VRI[MainActivity],reportDrawFinished seqId=0]
+09-16 18:32:48.890 10197  6488  6488 I crash_dump64: obtaining output fd from tombstoned, type: kDebuggerdTombstoneProto
+09-16 18:32:48.893 10197  6488  6488 I crash_dump64: performing dump of process 6482 (target tid = 6482)
+09-16 18:32:48.909 10197  6488  6488 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+09-16 18:32:48.909 10197  6488  6488 F DEBUG   : LineageOS Version: '23.2-20260914-NIGHTLY-oscar'
+09-16 18:32:48.909 10197  6488  6488 F DEBUG   : Build fingerprint: 'realme/RMX3471/RE54CBL1:14/UKQ1.230924.001/S.1ca575d_5b9-11cfbb:user/release-keys'
+09-16 18:32:48.909 10197  6488  6488 F DEBUG   : Kernel Release: '5.4.302-qgki-g9aa2f2b381d7'
+09-16 18:32:48.909 10197  6488  6488 F DEBUG   : Revision: '0'
+09-16 18:32:48.909 10197  6488  6488 F DEBUG   : ABI: 'arm64'
+09-16 18:32:48.909 10197  6488  6488 F DEBUG   : Timestamp: 2026-09-16 18:32:48.894662627+0800
+09-16 18:32:48.909 10197  6488  6488 F DEBUG   : Process uptime: 2s
+09-16 18:32:48.909 10197  6488  6488 F DEBUG   : Executable: /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:48.909 10197  6488  6488 F DEBUG   : Cmdline: /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so debug su -g
+09-16 18:32:48.909 10197  6488  6488 F DEBUG   : pid: 6482, tid: 6482, name: libksud.so  >>> /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so <<<
+09-16 18:32:48.909 10197  6488  6488 F DEBUG   : uid: 10197
+09-16 18:32:48.909 10197  6488  6488 F DEBUG   : esr: 0000000092000006 (Data Abort Exception 0x24)
+09-16 18:32:48.909 10197  6488  6488 F DEBUG   : signal 31 (SIGSYS), code 1 (SYS_SECCOMP), fault addr --------
+09-16 18:32:48.909 10197  6488  6488 F DEBUG   : Cause: seccomp prevented call to disallowed arm64 system call 142
+09-16 18:32:48.909 10197  6488  6488 F DEBUG   :     x0  00000000deadbeef  x1  00000000cafebabe  x2  0000000000000000  x3  0000007fe8dbbc08
+09-16 18:32:48.909 10197  6488  6488 F DEBUG   :     x4  0000000000000030  x5  5d7265766972645f  x6  5d7265766972645f  x7  b400007ec8a66d9d
+09-16 18:32:48.909 10197  6488  6488 F DEBUG   :     x8  000000000000008e  x9  000000000007cd10  x10 0000007f58d508dc  x11 0000000000030003
+09-16 18:32:48.910 10197  6488  6488 F DEBUG   :     x12 000000000000000b  x13 000000610c890e6a  x14 0000000000000064  x15 00cbd19c9ad19a94
+09-16 18:32:48.910 10197  6488  6488 F DEBUG   :     x16 000000610cab8730  x17 0000007f58cf7300  x18 0000007f59720000  x19 000000610c62f9a4
+09-16 18:32:48.910 10197  6488  6488 F DEBUG   :     x20 000000610c85ac9a  x21 0000000000000005  x22 0000000000000000  x23 0000007fe8dbbca0
+09-16 18:32:48.910 10197  6488  6488 F DEBUG   :     x24 0000007fe8dbbcfc  x25 000000610c9a5db8  x26 8000000000000000  x27 0000000000000001
+09-16 18:32:48.910 10197  6488  6488 F DEBUG   :     x28 000000610c97ebd8  x29 0000007fe8dbbd50
+09-16 18:32:48.910 10197  6488  6488 F DEBUG   :     lr  000000610c94cf20  sp  0000007fe8dbbc00  pc  0000007f58cf7320  pst 0000000060001000
+09-16 18:32:48.910 10197  6488  6488 F DEBUG   :     esr 0000000092000006
+09-16 18:32:48.910 10197  6488  6488 F DEBUG   : 9 total frames
+09-16 18:32:48.910 10197  6488  6488 F DEBUG   : backtrace:
+09-16 18:32:48.910 10197  6488  6488 F DEBUG   :       #00 pc 0000000000098320  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+32) (BuildId: 9d3c9a4206374b556654d838f3ec4b25)
+09-16 18:32:48.910 10197  6488  6488 F DEBUG   :       #01 pc 0000000000342f1c  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:48.910 10197  6488  6488 F DEBUG   :       #02 pc 00000000003151e8  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:48.910 10197  6488  6488 F DEBUG   :       #03 pc 0000000000412170  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:48.910 10197  6488  6488 F DEBUG   :       #04 pc 00000000003430c4  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:48.910 10197  6488  6488 F DEBUG   :       #05 pc 000000000032e59c  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:48.910 10197  6488  6488 F DEBUG   :       #06 pc 0000000000315138  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:48.910 10197  6488  6488 F DEBUG   :       #07 pc 0000000000365710  /data/app/~~fZNVEoQNfuzP5kyJ8OpDgQ==/vctsrt.cntgtj.uqfwgg-Sc1Xi3AQ-mH042IuXujrYg==/lib/arm64/libksud.so
+09-16 18:32:48.910 10197  6488  6488 F DEBUG   :       #08 pc 00000000000664cc  /apex/com.android.runtime/lib64/bionic/libc.so (__libc_init+120) (BuildId: 9d3c9a4206374b556654d838f3ec4b25)
+09-16 18:32:48.912 10197  6488  6488 E crash_dump64: AM data write failed: Broken pipe
+09-16 18:32:48.918 10197  5676  5676 D InsetsController: hide(ime())
+09-16 18:32:48.918 10197  5676  5676 I ImeTracker: vctsrt.cntgtj.uqfwgg:38f6abfe: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+09-16 18:32:48.945 10197  6493  6493 I auditd  : type=1400 audit(0.0:590): avc:  denied  { read } for  comm="toybox" name="pid_max" dev="proc" ino=72392 scontext=u:r:untrusted_app:s0:c197,c256,c512,c768 tcontext=u:object_r:proc_pid_max:s0 tclass=file permissive=0 app=vctsrt.cntgtj.uqfwgg
+09-16 18:32:48.945 10197  6493  6493 W toybox  : type=1400 audit(0.0:590): avc:  denied  { read } for  name="pid_max" dev="proc" ino=72392 scontext=u:r:untrusted_app:s0:c197,c256,c512,c768 tcontext=u:object_r:proc_pid_max:s0 tclass=file permissive=0 app=vctsrt.cntgtj.uqfwgg
+09-16 18:32:48.963 10197  6494  6494 F libc    : Fatal signal 31 (SIGSYS), code 1 (SYS_SECCOMP), syscall 116 in tid 6494 (dmesg), pid 6494 (dmesg)
+09-16 18:32:48.975 10197  6497  6497 I crash_dump64: obtaining output fd from tombstoned, type: kDebuggerdTombstoneProto
+09-16 18:32:48.976 10197  6497  6497 I crash_dump64: performing dump of process 6494 (target tid = 6494)
+09-16 18:32:48.982 10197  6497  6497 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+09-16 18:32:48.982 10197  6497  6497 F DEBUG   : LineageOS Version: '23.2-20260914-NIGHTLY-oscar'
+09-16 18:32:48.982 10197  6497  6497 F DEBUG   : Build fingerprint: 'realme/RMX3471/RE54CBL1:14/UKQ1.230924.001/S.1ca575d_5b9-11cfbb:user/release-keys'
+09-16 18:32:48.982 10197  6497  6497 F DEBUG   : Kernel Release: '5.4.302-qgki-g9aa2f2b381d7'
+09-16 18:32:48.982 10197  6497  6497 F DEBUG   : Revision: '0'
+09-16 18:32:48.982 10197  6497  6497 F DEBUG   : ABI: 'arm64'
+09-16 18:32:48.982 10197  6497  6497 F DEBUG   : Timestamp: 2026-09-16 18:32:48.977168096+0800
+09-16 18:32:48.982 10197  6497  6497 F DEBUG   : Process uptime: 1s
+09-16 18:32:48.982 10197  6497  6497 F DEBUG   : Executable: /system/bin/toybox
+09-16 18:32:48.982 10197  6497  6497 F DEBUG   : Cmdline: dmesg -r
+09-16 18:32:48.982 10197  6497  6497 F DEBUG   : pid: 6494, tid: 6494, name: dmesg  >>> dmesg <<<
+09-16 18:32:48.982 10197  6497  6497 F DEBUG   : uid: 10197
+09-16 18:32:48.982 10197  6497  6497 F DEBUG   : esr: 0000000092000006 (Data Abort Exception 0x24)
+09-16 18:32:48.982 10197  6497  6497 F DEBUG   : signal 31 (SIGSYS), code 1 (SYS_SECCOMP), fault addr --------
+09-16 18:32:48.982 10197  6497  6497 F DEBUG   : Cause: seccomp prevented call to disallowed arm64 system call 116
+09-16 18:32:48.982 10197  6497  6497 F DEBUG   :     x0  000000000000000a  x1  0000000000000000  x2  0000000000000000  x3  0000000000000000
+09-16 18:32:48.982 10197  6497  6497 F DEBUG   :     x4  0000007fe47c97f1  x5  0000000000000004  x6  0000000000000303  x7  73656e6465570038
+09-16 18:32:48.982 10197  6497  6497 F DEBUG   :     x8  0000000000000074  x9  4458b1cbdca8bb62  x10 ffffff80ffffffd0  x11 02000077cae5e040
+09-16 18:32:48.982 10197  6497  6497 F DEBUG   :     x12 ffffffffffffffff  x13 0000000000000000  x14 0000000000000000  x15 0000000000000101
+09-16 18:32:48.982 10197  6497  6497 F DEBUG   :     x16 0000005fb6c111c8  x17 000000790ed14d40  x18 000000790fd44000  x19 0000000000000008
+09-16 18:32:48.982 10197  6497  6497 F DEBUG   :     x20 0000000000000000  x21 000000790f0c7f80  x22 0000005fb6c14000  x23 000000790f0c7f80
+09-16 18:32:48.982 10197  6497  6497 F DEBUG   :     x24 0000000000000000  x25 0000005fb6c14000  x26 0000005fb6c12018  x27 0000007fe47c9960
+09-16 18:32:48.982 10197  6497  6497 F DEBUG   :     x28 0000005fb6c14000  x29 0000007fe47c9800
+09-16 18:32:48.982 10197  6497  6497 F DEBUG   :     lr  0000005fb6beace8  sp  0000007fe47c77f0  pc  000000790ed14d48  pst 0000000060001000
+09-16 18:32:48.982 10197  6497  6497 F DEBUG   :     esr 0000000092000006
+09-16 18:32:48.982 10197  6497  6497 F DEBUG   : 5 total frames
+09-16 18:32:48.982 10197  6497  6497 F DEBUG   : backtrace:
+09-16 18:32:48.982 10197  6497  6497 F DEBUG   :       #00 pc 00000000000d3d48  /apex/com.android.runtime/lib64/bionic/libc.so (klogctl+8) (BuildId: 9d3c9a4206374b556654d838f3ec4b25)
+09-16 18:32:48.982 10197  6497  6497 F DEBUG   :       #01 pc 000000000005ece4  /system/bin/toybox (dmesg_main+452) (BuildId: 7da2dc98500da8195840cd72450bc531)
+09-16 18:32:48.982 10197  6497  6497 F DEBUG   :       #02 pc 0000000000039498  /system/bin/toybox (toybox_main+644) (BuildId: 7da2dc98500da8195840cd72450bc531)
+09-16 18:32:48.982 10197  6497  6497 F DEBUG   :       #03 pc 0000000000039c54  /system/bin/toybox (main+88) (BuildId: 7da2dc98500da8195840cd72450bc531)
+09-16 18:32:48.982 10197  6497  6497 F DEBUG   :       #04 pc 00000000000664cc  /apex/com.android.runtime/lib64/bionic/libc.so (__libc_init+120) (BuildId: 9d3c9a4206374b556654d838f3ec4b25)
+09-16 18:32:48.986 10197  6497  6497 E crash_dump64: AM data write failed: Broken pipe
