@@ -1,686 +1,746 @@
 root@localhost:~/oscar# cd /root/oscar
 
-echo "=== Current reboot KSU hook ==="
-sed -n '300,335p' kernel/reboot.c                       
+echo "========== 1. WORKTREE =========="
+git status --short                                      
 echo
-echo "=== Current exec KSU hooks ==="                   sed -n '1745,1795p' fs/exec.c
-sed -n '1880,1940p' fs/exec.c
-
-echo
-echo "=== Current input KSU hook ==="                   sed -n '365,400p' drivers/input/input.c
+echo "========== 2. CURRENT KSU TREE =========="        find drivers/kernelsu -maxdepth 3 -type f | sort
 
 echo
-echo "=== SUSFS references to KSU ==="
-grep -RniE 'ksu_|CONFIG_KSU' \
-    fs/susfs.c include/linux/susfs* kernel/reboot.c \       drivers/input/input.c \
-    --exclude-dir=.git 2>/dev/null | head -150
-                                                        echo
-echo "=== Legacy manual-hook implementation ==="
-git -C KernelSU-Next show v3.2.0-legacy:kernel/hook/hook_manager.c | sed -n '1,390p'
-=== Current reboot KSU hook ===
-}
-EXPORT_SYMBOL_GPL(kernel_power_off);
+echo "========== 3. CURRENT KSU KBUILD =========="
+cat drivers/kernelsu/Kbuild 2>/dev/null || true         
+echo
+echo "========== 4. CURRENT KSU KCONFIG =========="
+cat drivers/kernelsu/Kconfig 2>/dev/null || true
 
-DEFINE_MUTEX(system_transition_mutex);
+echo                                                    echo "========== 5. CURRENT KSU CONFIG SYMBOLS =========="
+grep -RniE 'CONFIG_KSU|KSU_KPROBE|KSU_MANUAL|KSU.*HOOK' \
+    drivers/kernelsu \
+    arch/arm64/configs/vendor/holi-qgki_defconfig \
+    --exclude-dir=.git 2>/dev/null | head -200
 
-/*
- * Reboot system call: for obvious reasons only root may call it,
- * and even root needs to set up some magic numbers in the registers
- * so that some mistake won't make this reboot the whole machine.
- * You can also set the meaning of the ctrl-alt-del-key here.
- *
- * reboot doesn't sync: do that yourself before calling this.
- */
-#ifdef CONFIG_KSU_SUSFS
-extern int ksu_handle_sys_reboot(int magic1, int magic2, unsigned int cmd, void __user **arg);
-#endif
+echo
+echo "========== 6. LEGACY TREE =========="
+git -C KernelSU-Next ls-tree -r --name-only v3.2.0-legacy -- kernel | sort
 
-SYSCALL_DEFINE4(reboot, int, magic1, int, magic2, unsigned int, cmd,
-                void __user *, arg)
-{
-        struct pid_namespace *pid_ns = task_active_pid_ns(current);
-        char buffer[256];
-        int ret = 0;
-#ifdef CONFIG_KSU_SUSFS
-    if (system_state == SYSTEM_RUNNING) {
-        ksu_handle_sys_reboot(magic1, magic2, cmd, &arg);
-    }
-#endif
+echo
+echo "========== 7. LEGACY CONFIG =========="
+--exclude-dir=.git 2>/dev/null | head -200essat|stat|set
+========== 1. WORKTREE ==========
+?? KernelSU-Next/
+?? drivers/kernelsu
 
+========== 2. CURRENT KSU TREE ==========
 
-        /* We only trust the superuser with rebooting the system. */
-        if (!ns_capable(pid_ns->user_ns, CAP_SYS_BOOT))
-                return -EPERM;
+========== 3. CURRENT KSU KBUILD ==========
+kernelsu-objs := core/init.o
 
-        /* For safety, we require "magic" arguments. */
-        if (magic1 != LINUX_REBOOT_MAGIC1 ||
+kernelsu-objs += feature/kernel_umount.o
+kernelsu-objs += feature/sulog.o
+kernelsu-objs += feature/sucompat.o
 
-=== Current exec KSU hooks ===
-        return ret;
-}
+kernelsu-objs += hook/lsm_hook.o
+kernelsu-objs += hook/setuid_hook.o
+kernelsu-objs += hook/syscall_event_bridge.o
+kernelsu-objs += hook/syscall_hook_manager.o
+kernelsu-objs += hook/tp_marker.o
+ifeq ($(CONFIG_ARM64),y)
+kernelsu-objs += hook/arm64/patch_memory.o
+kernelsu-objs += hook/arm64/syscall_hook.o
+else ifeq ($(CONFIG_X86_64),y)
+kernelsu-objs += hook/x86_64/patch_memory.o
+kernelsu-objs += hook/x86_64/syscall_hook.o
+endif
+kernelsu-objs += extras.o
 
-/*
- * sys_execve() executes a new program.
- */
-#ifdef CONFIG_KSU_SUSFS
-extern struct static_key_true ksu_su_compat_enabled;
-extern struct static_key_true susfs_is_sdcard_android_data_not_decrypted;
-extern bool __ksu_is_allow_uid_for_current(uid_t uid);
-extern int ksu_handle_execveat(int *fd, struct filename **filename_ptr, void *argv,
-                        void *envp, int *flags);
-extern int ksu_handle_execveat_sucompat(int *fd, struct filename **filename_ptr, void *argv,
-                                void *envp, int *flags);
-extern int ksu_handle_post_execveat_sucompat(int *fd, struct filename **filename_ptr, void *argv,
-                        void *envp, int *flags, int *retval);
-#endif
-static int __do_execve_file(int fd, struct filename *filename,
-                            struct user_arg_ptr argv,
-                            struct user_arg_ptr envp,
-                            int flags, struct file *file)
-{
-        char *pathbuf = NULL;
-        struct linux_binprm *bprm;
-        struct files_struct *displaced;
-        int retval;
+kernelsu-objs += infra/file_wrapper.o
+kernelsu-objs += infra/event_queue.o
+kernelsu-objs += infra/seccomp_cache.o
+kernelsu-objs += infra/su_mount_ns.o
+kernelsu-objs += infra/symbol_resolver.o
 
-#ifdef CONFIG_KSU_SUSFS
-        bool is_su_session = false;
-#endif // #ifdef CONFIG_KSU_SUSFS
+ifneq ($(CONFIG_KSU_DISABLE_MANAGER),y)
+kernelsu-objs += manager/apk_sign.o
+kernelsu-objs += manager/pkg_observer.o
+kernelsu-objs += manager/throne_tracker.o
+endif
 
-        if (IS_ERR(filename))
-                return PTR_ERR(filename);
-#ifdef CONFIG_KSU_SUSFS
-        if (likely(susfs_is_current_proc_no_su()))
-                goto orig_flow;
-        if (static_branch_likely(&ksu_su_compat_enabled)) {
-                if (static_branch_unlikely(&susfs_is_sdcard_android_data_not_decrypted))
-                is_su_session = !ksu_handle_execveat(&fd, &filename, &argv, &envp, &flags);
-        else
-                is_su_session = !ksu_handle_execveat_sucompat(&fd, &filename, &argv, &envp, &flags);
-        }
-orig_flow:
-#endif
+kernelsu-objs += policy/allowlist.o
+kernelsu-objs += policy/app_profile.o
+kernelsu-objs += policy/feature.o
 
-        /*
-         * We move the actual failure in case of RLIMIT_NPROC excess from
-         * set*uid() to execve() because too many poorly written programs
-         * don't check setuid() return code.  Here we additionally recheck
-         * whether NPROC limit is still exceeded.
-         */
+kernelsu-objs += runtime/boot_event.o
+kernelsu-objs += runtime/ksud_integration.o
 
-        /*
-         * When argv is empty, add an empty string ("") as argv[0] to
-         * ensure confused userspace programs that start processing
-         * from argv[1] won't end up walking envp. See also
-         * bprm_stack_limits().
-         */
-        if (bprm->argc == 0) {
-                const char *argv[] = { "", NULL };
-                retval = copy_strings_kernel(1, argv, bprm);
-                if (retval < 0)
-                        goto out;
-                bprm->argc = 1;
-        }
+kernelsu-objs += selinux/selinux.o
+kernelsu-objs += selinux/rules.o
+kernelsu-objs += selinux/sepolicy.o
 
-        retval = exec_binprm(bprm);
-        if (retval < 0)
-                goto out;
+kernelsu-objs += sulog/event.o
+kernelsu-objs += sulog/fd.o
 
-        /* execve succeeded */
-        current->fs->in_exec = 0;
-        current->in_execve = 0;
-        rseq_execve(current);
-        acct_update_integrals(current);
-        task_numa_free(current, false);
-        free_bprm(bprm);
-        kfree(pathbuf);
-        if (filename)
-                putname(filename);
-        if (displaced)
-                put_files_struct(displaced);
-        return retval;
+kernelsu-objs += supercall/dispatch.o
+kernelsu-objs += supercall/perm.o
+kernelsu-objs += supercall/supercall.o
 
-out:
-        if (bprm->mm) {
-                acct_arg_size(bprm, 0);
-                mmput(bprm->mm);
-        }
+kernelsu-objs += feature/adb_root.o
 
-out_unmark:
-        current->fs->in_exec = 0;
-        current->in_execve = 0;
+kernelsu-objs += feature/selinux_hide.o
 
-#ifdef CONFIG_KSU_SUSFS
-        if (unlikely(is_su_session))
-                (void)ksu_handle_post_execveat_sucompat(&fd, &filename, &argv, &envp, &flags, &retval);
-#endif // #ifdef CONFIG_KSU_SUSFS
+ifdef KBUILD_EXTMOD
+ifeq ($(CONFIG_KSU_DISABLE_MANAGER),y)
+ccflags-y += -DCONFIG_KSU_DISABLE_MANAGER=1
+endif
+ifeq ($(CONFIG_KSU_DISABLE_POLICY),y)
+ccflags-y += -DCONFIG_KSU_DISABLE_POLICY=1
+endif
+ifeq ($(CONFIG_KSU_DEBUG),y)
+ccflags-y += -DCONFIG_KSU_DEBUG=1
+endif
+ifeq ($(CONFIG_KSU_X86_PATCH_SYSCALL_DISPATCHER),y)
+ccflags-y += -DCONFIG_KSU_X86_PATCH_SYSCALL_DISPATCHER=1
+endif
+endif
 
-out_free:
-        free_bprm(bprm);
-        kfree(pathbuf);
+ccflags-y += -I$(srctree)/security/selinux -I$(srctree)/security/selinux/include
+ccflags-y += -I$(objtree)/security/selinux -include $(srctree)/include/uapi/asm-generic/errno.h
 
-out_files:
-        if (displaced)
-                reset_files_struct(displaced);
-out_ret:
-        if (filename)
-                putname(filename);
-        return retval;
-}
+ifneq ($(KBUILD_EXTMOD),)
+# 6.18 exports the external module source as srcroot when M/MO are used.
+ifneq ($(srcroot),)
+KSU_KERNEL_DIR := $(srcroot)
+else
+KSU_KERNEL_DIR := $(KBUILD_EXTMOD)
+endif
+else ifeq ($(filter /%,$(src)),)
+KSU_KERNEL_DIR := $(srctree)/$(src)
+else
+KSU_KERNEL_DIR := $(src)
+endif
 
+ccflags-y += -I$(KSU_KERNEL_DIR) -I$(KSU_KERNEL_DIR)/include
 
-=== Current input KSU hook ===
-                if (value >= 0)
-                        disposition = INPUT_PASS_TO_ALL;
-                break;
+obj-$(CONFIG_KSU) += kernelsu.o
 
-        case EV_PWR:
-                disposition = INPUT_PASS_TO_ALL;
-                break;
-        }
+LPATH := /usr/bin/env PATH="$$PATH":/usr/bin:/usr/local/bin
+MDIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
-        *pval = value;
-        return disposition;
-}
+# Check if this is a git repository
+# Try to detect Git repo intelligently
+GIT_ROOT := $(shell cd $(MDIR) && $(LPATH) git rev-parse --show-toplevel 2>/dev/null)
+ifneq ($(GIT_ROOT),)
+KERNEL_GIT_ROOT := $(shell cd $(srctree) && $(LPATH) git rev-parse --show-toplevel 2>/dev/null)
+ifneq ($(GIT_ROOT),$(KERNEL_GIT_ROOT))
+# Only set version if it's a different repo from kernel
+$(shell cd $(GIT_ROOT) && [ -f .git/shallow ] && $(LPATH) git fetch --unshallow 2>/dev/null || true)
+KSU_GIT_VERSION := $(shell cd $(GIT_ROOT) && $(LPATH) git rev-list --count HEAD 2>/dev/null)
+KSU_GIT_TAG := $(shell cd $(GIT_ROOT) && $(LPATH) git describe --tags --abbrev=0 2>/dev/null)
+KSU_GIT_VERSION_VALID := 1
+$(info -- KernelSU-Next Git repo detected at: $(GIT_ROOT))
+endif
+endif
 
-#ifdef CONFIG_KSU
-extern struct static_key_true ksu_is_input_hook_enabled;
-extern int ksu_handle_input_handle_event(unsigned int *type, unsigned int *code, int *value);
-#endif
+# Calculate version if git version is available
+ifdef KSU_GIT_VERSION_VALID
+# ksu_version: major * 30000 + git version for historical reasons
+$(eval KSU_VERSION=$(shell expr 30000 + $(KSU_GIT_VERSION)))
+$(info -- KernelSU-Next version: $(KSU_VERSION))
+ccflags-y += -DKSU_VERSION=$(KSU_VERSION)
+else
+# If there is no .git directory, use default version
+$(warning "KSU_GIT_VERSION not defined! It is better to make KernelSU-Next a git repository!")
+KSU_VERSION_FALLBACK := 1
+$(info -- KernelSU-Next version fallback: $(KSU_VERSION_FALLBACK))
+ccflags-y += -DKSU_VERSION=$(KSU_VERSION_FALLBACK)
+endif
 
-static void input_handle_event(struct input_dev *dev,
-                               unsigned int type, unsigned int code, int value)
-{
-        int disposition = input_get_disposition(dev, type, code, &value);
-#ifdef CONFIG_KSU_SUSFS
-        if (static_branch_unlikely(&ksu_is_input_hook_enabled))
-                ksu_handle_input_handle_event(&type, &code, &value);
-#endif
+ifdef KSU_GIT_VERSION_VALID
+$(eval KSU_VERSION_TAG=$(KSU_GIT_TAG))
+$(info -- KernelSU-Next tag: $(KSU_VERSION_TAG))
+ccflags-y += -DKSU_VERSION_TAG=\"$(KSU_VERSION_TAG)\"
+else
+$(warning "KSU_VERSION_TAG not defined! It is better to make KernelSU-Next a git submodule!")
+KSU_VERSION_TAG_FALLBACK := v0.0.1
+$(info -- KernelSU-Next tag fallback: $(KSU_VERSION_TAG_FALLBACK))
+ccflags-y += -DKSU_VERSION_TAG=\"$(KSU_VERSION_TAG_FALLBACK)\"
+endif
 
+KSU_NEW_DCACHE_FLUSH := $(shell grep -q __flush_dcache_area $(srctree)/arch/arm64/include/asm/cacheflush.h ; echo $$?)
+$(info -- KernelSU-Next new DCACHE flush: $(KSU_NEW_DCACHE_FLUSH))
 
-        if (disposition != INPUT_IGNORE_EVENT && type != EV_SYN)
-                add_input_randomness(type, code, value);
+ifndef KSU_NEXT_MANAGER_SIZE
+KSU_NEXT_MANAGER_SIZE := 0x3e6
+endif
 
-        if ((disposition & INPUT_PASS_TO_DEVICE) && dev->event)
-                dev->event(dev, type, code, value);
+ifndef KSU_NEXT_MANAGER_HASH
+KSU_NEXT_MANAGER_HASH := 79e590113c4c4c0c222978e413a5faa801666957b1212a328e46c00c69821bf7
+endif
 
-        if (!dev->vals)
-                return;
+ifdef KSU_MANAGER_PACKAGE
+ccflags-y += -DKSU_MANAGER_PACKAGE=\"$(KSU_MANAGER_PACKAGE)\"
+$(info -- KernelSU-Next Manager package name: $(KSU_MANAGER_PACKAGE))
+endif
 
-=== SUSFS references to KSU ===
-fs/susfs.c:29:extern bool susfs_is_current_ksu_domain(void);
-fs/susfs.c:31:extern struct cred *ksu_cred;
-fs/susfs.c:35:#ifdef CONFIG_KSU_SUSFS_ENABLE_LOG
-fs/susfs.c:45:#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-fs/susfs.c:143: const struct cred *saved = override_creds(ksu_cred);
-fs/susfs.c:241:#endif // #ifdef CONFIG_KSU_SUSFS_SUS_PATH
-fs/susfs.c:244:#ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-fs/susfs.c:271:#endif // #ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-fs/susfs.c:274:#ifdef CONFIG_KSU_SUSFS_SUS_KSTAT
-fs/susfs.c:719:#endif // #ifdef CONFIG_KSU_SUSFS_SUS_KSTAT
-fs/susfs.c:722:#ifdef CONFIG_KSU_SUSFS_SPOOF_UNAME
-fs/susfs.c:776:#endif // #ifdef CONFIG_KSU_SUSFS_SPOOF_UNAME
-fs/susfs.c:779:#ifdef CONFIG_KSU_SUSFS_ENABLE_LOG
-fs/susfs.c:803:#endif // #ifdef CONFIG_KSU_SUSFS_ENABLE_LOG
-fs/susfs.c:806:#ifdef CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG
-fs/susfs.c:875:#ifdef CONFIG_KSU_SUSFS_OPEN_REDIRECT
-fs/susfs.c:1055:                                       if (current_uid().val == 0 && !susfs_is_current_ksu_domain())
-fs/susfs.c:1059:                                       if (!susfs_is_current_ksu_domain())
-fs/susfs.c:1160:#endif // #ifdef CONFIG_KSU_SUSFS_OPEN_REDIRECT
-fs/susfs.c:1163:#ifdef CONFIG_KSU_SUSFS_SUS_MAP
-fs/susfs.c:1197:#endif // #ifdef CONFIG_KSU_SUSFS_SUS_MAP
-fs/susfs.c:1256:#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-fs/susfs.c:1257:        info->err = copy_config_to_buf("CONFIG_KSU_SUSFS_SUS_PATH\n", buf_ptr, &copied_size, SUSFS_ENABLED_FEATURES_SIZE);
-fs/susfs.c:1261:#ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-fs/susfs.c:1262:        info->err = copy_config_to_buf("CONFIG_KSU_SUSFS_SUS_MOUNT\n", buf_ptr, &copied_size, SUSFS_ENABLED_FEATURES_SIZE);
-fs/susfs.c:1265:#endif // #ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-fs/susfs.c:1266:#ifdef CONFIG_KSU_SUSFS_SUS_KSTAT
-fs/susfs.c:1267:        info->err = copy_config_to_buf("CONFIG_KSU_SUSFS_SUS_KSTAT\n", buf_ptr, &copied_size, SUSFS_ENABLED_FEATURES_SIZE);
-fs/susfs.c:1271:#ifdef CONFIG_KSU_SUSFS_SPOOF_UNAME
-fs/susfs.c:1272:        info->err = copy_config_to_buf("CONFIG_KSU_SUSFS_SPOOF_UNAME\n", buf_ptr, &copied_size, SUSFS_ENABLED_FEATURES_SIZE);
-fs/susfs.c:1276:#ifdef CONFIG_KSU_SUSFS_ENABLE_LOG
-fs/susfs.c:1277:        info->err = copy_config_to_buf("CONFIG_KSU_SUSFS_ENABLE_LOG\n", buf_ptr, &copied_size, SUSFS_ENABLED_FEATURES_SIZE);
-fs/susfs.c:1281:#ifdef CONFIG_KSU_SUSFS_HIDE_KSU_SUSFS_SYMBOLS
-fs/susfs.c:1282:        info->err = copy_config_to_buf("CONFIG_KSU_SUSFS_HIDE_KSU_SUSFS_SYMBOLS\n", buf_ptr, &copied_size, SUSFS_ENABLED_FEATURES_SIZE);
-fs/susfs.c:1286:#ifdef CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG
-fs/susfs.c:1287:        info->err = copy_config_to_buf("CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG\n", buf_ptr, &copied_size, SUSFS_ENABLED_FEATURES_SIZE);
-fs/susfs.c:1291:#ifdef CONFIG_KSU_SUSFS_OPEN_REDIRECT
-fs/susfs.c:1292:        info->err = copy_config_to_buf("CONFIG_KSU_SUSFS_OPEN_REDIRECT\n", buf_ptr, &copied_size, SUSFS_ENABLED_FEATURES_SIZE);
-fs/susfs.c:1296:#ifdef CONFIG_KSU_SUSFS_SUS_MAP
-fs/susfs.c:1297:        info->err = copy_config_to_buf("CONFIG_KSU_SUSFS_SUS_MAP\n", buf_ptr, &copied_size, SUSFS_ENABLED_FEATURES_SIZE);
-fs/susfs.c:1506:        if (!susfs_is_current_ksu_domain()) {
-fs/susfs.c:1541:// - defer extra susfs works to workqueue after do_umount in ksu_handle_setresuid()
-fs/susfs.c:1545:        if (!ksu_cred)
-fs/susfs.c:1547:#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-fs/susfs.c:1549:#endif // #ifdef CONFIG_KSU_SUSFS_SUS_PATH
-include/linux/susfs.h:1:#ifndef KSU_SUSFS_H
-include/linux/susfs.h:2:#define KSU_SUSFS_H
-include/linux/susfs.h:40:#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-include/linux/susfs.h:54:#ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-include/linux/susfs.h:59:#endif // #ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-include/linux/susfs.h:62:#ifdef CONFIG_KSU_SUSFS_SUS_KSTAT
-include/linux/susfs.h:108:#ifdef CONFIG_KSU_SUSFS_SPOOF_UNAME
-include/linux/susfs.h:117:#ifdef CONFIG_KSU_SUSFS_ENABLE_LOG
-include/linux/susfs.h:125:#ifdef CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG
-include/linux/susfs.h:133:#ifdef CONFIG_KSU_SUSFS_OPEN_REDIRECT
-include/linux/susfs.h:155:#ifdef CONFIG_KSU_SUSFS_SUS_MAP
-include/linux/susfs.h:190:#ifdef CONFIG_KSU_SUSFS_SUS_PATH
-include/linux/susfs.h:196:#ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-include/linux/susfs.h:198:#endif // #ifdef CONFIG_KSU_SUSFS_SUS_MOUNT
-include/linux/susfs.h:201:#ifdef CONFIG_KSU_SUSFS_SUS_KSTAT
-include/linux/susfs.h:207:#ifdef CONFIG_KSU_SUSFS_SPOOF_UNAME
-include/linux/susfs.h:213:#ifdef CONFIG_KSU_SUSFS_ENABLE_LOG
-include/linux/susfs.h:218:#ifdef CONFIG_KSU_SUSFS_SPOOF_CMDLINE_OR_BOOTCONFIG
-include/linux/susfs.h:223:#ifdef CONFIG_KSU_SUSFS_OPEN_REDIRECT
-include/linux/susfs.h:228:#ifdef CONFIG_KSU_SUSFS_SUS_MAP
-include/linux/susfs_def.h:1:#ifndef KSU_SUSFS_DEF_H
-include/linux/susfs_def.h:2:#define KSU_SUSFS_DEF_H
-include/linux/susfs_def.h:23:/* shared with userspace ksu_susfs tool */
-include/linux/susfs_def.h:58:#define DEFAULT_KSU_MNT_ID 2000000000 /* used for mounts created or single cloned by ksu process */
-include/linux/susfs_def.h:59:#define DEFAULT_KSU_MNT_GROUP_ID 200000 /* used by mount->mnt_group_id */
-include/linux/susfs_def.h:60:#define DEFAULT_KSU_MNT_MINOR_DEV (1 << 12) /* should be way enough, here minor(dev) begins with 4097 */
-include/linux/susfs_def.h:75:#define VFSMOUNT_MNT_FLAGS_KSU_UNSHARED_MNT 0x80000000 /* used for mounts that are unshared by ksu process */
-include/linux/susfs_def.h:219:#endif // #ifndef KSU_SUSFS_DEF_H
-kernel/reboot.c:313:#ifdef CONFIG_KSU_SUSFS
+$(info -- KernelSU-Next Manager signature size: $(KSU_NEXT_MANAGER_SIZE))
+$(info -- KernelSU-Next Manager signature hash: $(KSU_NEXT_MANAGER_HASH))
+
+ccflags-y += -DEXPECTED_MANAGER_SIZE=$(KSU_NEXT_MANAGER_SIZE)
+ccflags-y += -DEXPECTED_MANAGER_HASH=\"$(KSU_NEXT_MANAGER_HASH)\"
+
+ccflags-y += -DKSU_NEW_DCACHE_FLUSH=$(KSU_NEW_DCACHE_FLUSH)
+
+ccflags-y += -Wno-strict-prototypes -Wno-int-conversion -Wno-gcc-compat -Wno-missing-prototypes -Wno-missing-declarations
+ccflags-y += -Wno-declaration-after-statement -Wno-unused-function -Wno-unused-variable
+
+# Keep a new line here!! Because someone may append config
+
+========== 4. CURRENT KSU KCONFIG ==========
+menu "KernelSU"
+
+config KSU
+        tristate "KernelSU function support"
+        depends on KPROBES && EXT4_FS
+        default y
+        help
+          Enable kernel-level root privileges on Android System.
+          Requires CONFIG_KPROBES for kernel hooking support.
+          Requires CONFIG_EXT4_FS for `ext4_unregister_sysfs`.
+          To compile as a module, choose M here: the
+          module will be called kernelsu.
+
+config KSU_DEBUG
+        bool "KernelSU debug mode"
+        depends on KSU
+        default n
+        help
+          Enable KernelSU debug mode.
+
+config KSU_DISABLE_MANAGER
+        bool "Disable KernelSU manager integration"
+        depends on KSU
+        default n
+        help
+          Disable manager APK detection and manager-specific handling.
+          Root will be used in place of manager-only functionality.
+
+config KSU_DISABLE_POLICY
+        bool "Disable KernelSU policy profiles"
+        depends on KSU
+        default n
+        help
+          Disable per-app root/non-root profile customization.
+          Escalation will always use the default full root profile, and
+          non-root handling will follow the global umount policy only.
+
+config KSU_X86_PATCH_SYSCALL_DISPATCHER
+        bool "Dynamically patch x64's hardened syscall dispatcher to support syscall hooks"
+        depends on KSU && X86_64
+        default n
+        help
+          Dynamically patch x64's hardened syscall dispatcher to support syscall hooks. This is a
+          replacement for a kernel source code patch, and is useful for x86_64 LKM mode.
+
+endmenu
+
+========== 5. CURRENT KSU CONFIG SYMBOLS ==========
+drivers/kernelsu/Kbuild:27:ifneq ($(CONFIG_KSU_DISABLE_MANAGER),y)
+drivers/kernelsu/Kbuild:56:ifeq ($(CONFIG_KSU_DISABLE_MANAGER),y)
+drivers/kernelsu/Kbuild:57:ccflags-y += -DCONFIG_KSU_DISABLE_MANAGER=1
+drivers/kernelsu/Kbuild:59:ifeq ($(CONFIG_KSU_DISABLE_POLICY),y)
+drivers/kernelsu/Kbuild:60:ccflags-y += -DCONFIG_KSU_DISABLE_POLICY=1
+drivers/kernelsu/Kbuild:62:ifeq ($(CONFIG_KSU_DEBUG),y)
+drivers/kernelsu/Kbuild:63:ccflags-y += -DCONFIG_KSU_DEBUG=1
+drivers/kernelsu/Kbuild:65:ifeq ($(CONFIG_KSU_X86_PATCH_SYSCALL_DISPATCHER),y)
+drivers/kernelsu/Kbuild:66:ccflags-y += -DCONFIG_KSU_X86_PATCH_SYSCALL_DISPATCHER=1
+drivers/kernelsu/Kbuild:88:obj-$(CONFIG_KSU) += kernelsu.o
+drivers/kernelsu/build-all-x64.sh:58:        make -C "$KDIR" "M=$MDIR" "MO=$ODIR" compile_commands.json modules CONFIG_KSU=m CONFIG_KSU_X86_PATCH_SYSCALL_DISPATCHER=y
+drivers/kernelsu/build-all-x64.sh:60:        make -C "$KDIR" "M=$ODIR" "src=$MDIR" compile_commands.json modules CONFIG_KSU=m CONFIG_KSU_X86_PATCH_SYSCALL_DISPATCHER=y
+drivers/kernelsu/build-all.sh:18:    if ddk build "$kmi" "ODIR=$ODIR" -e CONFIG_KSU=m; then
+drivers/kernelsu/core/init.c:29:#if defined(__x86_64__) && !defined(CONFIG_KSU_X86_PATCH_SYSCALL_DISPATCHER)
+drivers/kernelsu/core/init.c:77:#ifdef CONFIG_KSU_DEBUG
+drivers/kernelsu/core/init.c:94:#if defined(__x86_64__) && !defined(CONFIG_KSU_X86_PATCH_SYSCALL_DISPATCHER)
+drivers/kernelsu/core/init.c:116:#ifdef CONFIG_KSU_DEBUG
+drivers/kernelsu/core/init.c:136:       ksu_syscall_hook_init();
+drivers/kernelsu/core/init.c:141:       ksu_lsm_hook_init();
+drivers/kernelsu/core/init.c:162:               ksu_syscall_hook_manager_init();
+drivers/kernelsu/core/init.c:177:               ksu_syscall_hook_manager_init();
+drivers/kernelsu/core/init.c:189:#ifndef CONFIG_KSU_DEBUG
+drivers/kernelsu/core/init.c:199:       ksu_syscall_hook_manager_exit();
+drivers/kernelsu/core/init.c:218:       ksu_lsm_hook_exit();
+drivers/kernelsu/feature/selinux_hide.c:202:struct ksu_lsm_hook selinux_setprocattr_hook = KSU_LSM_HOOK_INIT(setprocattr, "selinux_setprocattr", my_setprocattr, 0);
+drivers/kernelsu/feature/selinux_hide.c:322:static void ksu_selinux_hide_unhook();
+drivers/kernelsu/feature/selinux_hide.c:372:    ret = ksu_lsm_hook(&selinux_setprocattr_hook);
+drivers/kernelsu/feature/selinux_hide.c:381:    ksu_selinux_hide_unhook();
+drivers/kernelsu/feature/selinux_hide.c:385:static void ksu_selinux_hide_unhook()
+drivers/kernelsu/feature/selinux_hide.c:411:    ksu_lsm_unhook(&selinux_setprocattr_hook);
+drivers/kernelsu/feature/selinux_hide.c:417:    ksu_selinux_hide_unhook();
+drivers/kernelsu/hook/arm64/syscall_hook.c:18:static ksu_syscall_hook_fn syscall_hooks[__NR_syscalls];
+drivers/kernelsu/hook/arm64/syscall_hook.c:52:void ksu_syscall_table_hook(int nr, syscall_fn_t fn, syscall_fn_t *old)
+drivers/kernelsu/hook/arm64/syscall_hook.c:94:void ksu_syscall_table_unhook(int nr)
+drivers/kernelsu/hook/arm64/syscall_hook.c:128:    ni_syscall = (unsigned long)ksu_resolve_symbol_for_functable_hook("__arm64_sys_ni_syscall");
+drivers/kernelsu/hook/arm64/syscall_hook.c:163:        ksu_syscall_hook_fn fn = READ_ONCE(syscall_hooks[orig_nr]);
+drivers/kernelsu/hook/arm64/syscall_hook.c:173:int ksu_register_syscall_hook(int nr, ksu_syscall_hook_fn fn)
+drivers/kernelsu/hook/arm64/syscall_hook.c:188:void ksu_unregister_syscall_hook(int nr)
+drivers/kernelsu/hook/arm64/syscall_hook.c:196:bool ksu_has_syscall_hook(int nr)
+drivers/kernelsu/hook/arm64/syscall_hook.c:203:void __init ksu_syscall_hook_init(void)
+drivers/kernelsu/hook/arm64/syscall_hook.c:209:    ksu_syscall_table = (syscall_fn_t *)ksu_resolve_symbol_for_functable_hook("sys_call_table");
+drivers/kernelsu/hook/arm64/syscall_hook.c:222:    ksu_syscall_table_hook(ksu_dispatcher_nr,
+drivers/kernelsu/hook/arm64/syscall_hook.c:227:void __exit ksu_syscall_hook_exit(void)
+drivers/kernelsu/hook/arm64/syscall_hook.c:253:    // (done by ksu_syscall_hook_manager_exit before calling us), so no new
+drivers/kernelsu/hook/lsm_hook.c:17:struct ksu_lsm_hook_entry {
+drivers/kernelsu/hook/lsm_hook.c:18:    struct ksu_lsm_hook *hook;
+drivers/kernelsu/hook/lsm_hook.c:21:static DEFINE_MUTEX(ksu_lsm_hook_lock);
+drivers/kernelsu/hook/lsm_hook.c:22:static struct ksu_lsm_hook_entry ksu_lsm_hook_entries[16];
+drivers/kernelsu/hook/lsm_hook.c:23:static int ksu_lsm_hook_count;
+drivers/kernelsu/hook/lsm_hook.c:25:static bool ksu_lsm_hook_is_tracked(struct ksu_lsm_hook *hook)
+drivers/kernelsu/hook/lsm_hook.c:29:    for (i = 0; i < ksu_lsm_hook_count; i++) {
+drivers/kernelsu/hook/lsm_hook.c:30:        if (ksu_lsm_hook_entries[i].hook == hook)
+drivers/kernelsu/hook/lsm_hook.c:37:static int ksu_lsm_hook_track(struct ksu_lsm_hook *hook)
+drivers/kernelsu/hook/lsm_hook.c:39:    if (ksu_lsm_hook_is_tracked(hook))
+drivers/kernelsu/hook/lsm_hook.c:42:    if (ksu_lsm_hook_count >= ARRAY_SIZE(ksu_lsm_hook_entries)) {
+drivers/kernelsu/hook/lsm_hook.c:47:    ksu_lsm_hook_entries[ksu_lsm_hook_count++].hook = hook;
+drivers/kernelsu/hook/lsm_hook.c:51:static void ksu_lsm_hook_untrack(struct ksu_lsm_hook *hook)
+drivers/kernelsu/hook/lsm_hook.c:55:    for (i = 0; i < ksu_lsm_hook_count; i++) {
+drivers/kernelsu/hook/lsm_hook.c:56:        if (ksu_lsm_hook_entries[i].hook != hook)
+drivers/kernelsu/hook/lsm_hook.c:59:        ksu_lsm_hook_entries[i] = ksu_lsm_hook_entries[--ksu_lsm_hook_count];
+drivers/kernelsu/hook/lsm_hook.c:64:static int ksu_lsm_hook_patch_slot(void **slot, void *value)
+drivers/kernelsu/hook/lsm_hook.c:79:static int ksu_lsm_hook_update_scall(struct lsm_static_call *scall, void *value)
+drivers/kernelsu/hook/lsm_hook.c:87:int ksu_lsm_hook(struct ksu_lsm_hook *hook)
+drivers/kernelsu/hook/lsm_hook.c:114:    mutex_lock(&ksu_lsm_hook_lock);
+drivers/kernelsu/hook/lsm_hook.c:130:        target = ksu_resolve_symbol_for_functable_hook(target_name);
+drivers/kernelsu/hook/lsm_hook.c:193:        for (j = 0; j < ksu_lsm_hook_count; j++) {
+drivers/kernelsu/hook/lsm_hook.c:194:            if (ksu_lsm_hook_entries[j].hook->replacement == current_origin) {
+drivers/kernelsu/hook/lsm_hook.c:195:                current_origin = ksu_lsm_hook_entries[j].hook->original;
+drivers/kernelsu/hook/lsm_hook.c:251:    ret = ksu_lsm_hook_track(hook);
+drivers/kernelsu/hook/lsm_hook.c:257:    if (ksu_lsm_hook_patch_slot(selected_slot, hook->replacement)) {
+drivers/kernelsu/hook/lsm_hook.c:263:    if (ksu_lsm_hook_update_scall(selected_scall, hook->replacement)) {
+drivers/kernelsu/hook/lsm_hook.c:264:        if (ksu_lsm_hook_patch_slot(selected_slot, selected_origin)) {
+drivers/kernelsu/hook/lsm_hook.c:301:            for (j = 0; j < ksu_lsm_hook_count; j++) {
+drivers/kernelsu/hook/lsm_hook.c:302:                if (ksu_lsm_hook_entries[j].hook->replacement == current_origin) {
+drivers/kernelsu/hook/lsm_hook.c:303:                    current_origin = ksu_lsm_hook_entries[j].hook->original;
+drivers/kernelsu/hook/lsm_hook.c:367:    ret = ksu_lsm_hook_track(hook);
+drivers/kernelsu/hook/lsm_hook.c:375:        ret = ksu_lsm_hook_patch_slot(selected_slot, hook->replacement);
+drivers/kernelsu/hook/lsm_hook.c:378:        ret = ksu_lsm_hook_patch_slot(selected_slot, &hook->list);
+drivers/kernelsu/hook/lsm_hook.c:394:    ksu_lsm_hook_untrack(hook);
+drivers/kernelsu/hook/lsm_hook.c:397:    mutex_unlock(&ksu_lsm_hook_lock);
+drivers/kernelsu/hook/lsm_hook.c:401:void ksu_lsm_unhook(struct ksu_lsm_hook *hook)
+drivers/kernelsu/hook/lsm_hook.c:404:    mutex_lock(&ksu_lsm_hook_lock);
+drivers/kernelsu/hook/lsm_hook.c:411:        mutex_unlock(&ksu_lsm_hook_lock);
+drivers/kernelsu/hook/lsm_hook.c:426:    if (ksu_lsm_hook_patch_slot(slot, hook->original)) {
+drivers/kernelsu/hook/lsm_hook.c:428:        mutex_unlock(&ksu_lsm_hook_lock);
+drivers/kernelsu/hook/lsm_hook.c:433:    if (ksu_lsm_hook_update_scall(hook->scall, hook->original)) {
+drivers/kernelsu/hook/lsm_hook.c:434:        if (ksu_lsm_hook_patch_slot(slot, hook->replacement))
+drivers/kernelsu/hook/lsm_hook.c:436:        mutex_unlock(&ksu_lsm_hook_lock);
+drivers/kernelsu/hook/lsm_hook.c:443:    ksu_lsm_hook_untrack(hook);
+drivers/kernelsu/hook/lsm_hook.c:448:    mutex_unlock(&ksu_lsm_hook_lock);
+drivers/kernelsu/hook/lsm_hook.c:451:int ksu_register_lsm_hook(struct ksu_lsm_hook *hook)
+drivers/kernelsu/hook/lsm_hook.c:453:    return ksu_lsm_hook(hook);
+drivers/kernelsu/hook/lsm_hook.c:456:void ksu_unregister_lsm_hook(struct ksu_lsm_hook *hook)
+drivers/kernelsu/hook/lsm_hook.c:458:    ksu_lsm_unhook(hook);
+drivers/kernelsu/hook/lsm_hook.c:461:void __init ksu_lsm_hook_init(void)
+drivers/kernelsu/hook/lsm_hook.c:463:    pr_info("lsm_hook: init, tracked hooks=%d\n", READ_ONCE(ksu_lsm_hook_count));
+drivers/kernelsu/hook/lsm_hook.c:466:void __exit ksu_lsm_hook_exit(void)
+drivers/kernelsu/hook/lsm_hook.c:468:    struct ksu_lsm_hook *hooks[ARRAY_SIZE(ksu_lsm_hook_entries)];
+drivers/kernelsu/hook/lsm_hook.c:472:    mutex_lock(&ksu_lsm_hook_lock);
+drivers/kernelsu/hook/lsm_hook.c:473:    count = ksu_lsm_hook_count;
+drivers/kernelsu/hook/lsm_hook.c:475:        hooks[i] = ksu_lsm_hook_entries[i].hook;
+drivers/kernelsu/hook/lsm_hook.c:476:    mutex_unlock(&ksu_lsm_hook_lock);
+drivers/kernelsu/hook/lsm_hook.c:479:        ksu_lsm_unhook(hooks[i]);
+drivers/kernelsu/hook/lsm_hook.h:1:#ifndef __KSU_H_LSM_HOOK
+drivers/kernelsu/hook/lsm_hook.h:2:#define __KSU_H_LSM_HOOK
+drivers/kernelsu/hook/lsm_hook.h:9:#define KSU_LSM_HOOK_HEADS_TYPE struct lsm_static_calls_table
+drivers/kernelsu/hook/lsm_hook.h:11:#define KSU_LSM_HOOK_HEADS_TYPE struct security_hook_heads
+drivers/kernelsu/hook/lsm_hook.h:14:struct ksu_lsm_hook {
+drivers/kernelsu/hook/lsm_hook.h:35:#define KSU_LSM_HOOK_INIT(member, target_symbol, replacement_fn, off)                                                  \
+drivers/kernelsu/hook/lsm_hook.h:39:        .head_offset = offsetof(KSU_LSM_HOOK_HEADS_TYPE, member),                                                      \
+drivers/kernelsu/hook/lsm_hook.h:57:// for restoration by ksu_lsm_unhook() or the global ksu_lsm_hook_exit().
+drivers/kernelsu/hook/lsm_hook.h:58:int ksu_lsm_hook(struct ksu_lsm_hook *hook);
+drivers/kernelsu/hook/lsm_hook.h:60:// Restore the LSM hook entry previously patched by ksu_lsm_hook() back to the
+drivers/kernelsu/hook/lsm_hook.h:62:void ksu_lsm_unhook(struct ksu_lsm_hook *hook);
+drivers/kernelsu/hook/lsm_hook.h:69:int ksu_register_lsm_hook(struct ksu_lsm_hook *hook);
+drivers/kernelsu/hook/lsm_hook.h:71:// Undo ksu_register_lsm_hook() and restore the original BPF LSM handler.
+drivers/kernelsu/hook/lsm_hook.h:72:void ksu_unregister_lsm_hook(struct ksu_lsm_hook *hook);
+drivers/kernelsu/hook/lsm_hook.h:77:void ksu_lsm_hook_init(void);
+drivers/kernelsu/hook/lsm_hook.h:82:void ksu_lsm_hook_exit(void);
+drivers/kernelsu/hook/setuid_hook.c:59:void __init ksu_setuid_hook_init(void)
+drivers/kernelsu/hook/setuid_hook.c:64:void __exit ksu_setuid_hook_exit(void)
+drivers/kernelsu/hook/setuid_hook.h:7:void ksu_setuid_hook_init(void);
+drivers/kernelsu/hook/setuid_hook.h:8:void ksu_setuid_hook_exit(void);
+drivers/kernelsu/hook/syscall_event_bridge.c:51:long __nocfi ksu_hook_newfstatat(int orig_nr, const struct pt_regs *regs)
+drivers/kernelsu/hook/syscall_event_bridge.c:59:long __nocfi ksu_hook_faccessat(int orig_nr, const struct pt_regs *regs)
+drivers/kernelsu/hook/syscall_event_bridge.c:69:void ksu_stop_ksud_execve_hook()
+drivers/kernelsu/hook/syscall_event_bridge.c:74:static long __nocfi ksu_hook_execve_common(int orig_nr, const struct pt_regs *regs, bool execveat)
+drivers/kernelsu/hook/syscall_event_bridge.c:86:            ksu_execveat_hook_ksud(regs);
+drivers/kernelsu/hook/syscall_event_bridge.c:88:            ksu_execve_hook_ksud(regs);
+drivers/kernelsu/hook/syscall_event_bridge.c:114:long __nocfi ksu_hook_execve(int orig_nr, const struct pt_regs *regs)
+drivers/kernelsu/hook/syscall_event_bridge.c:116:    return ksu_hook_execve_common(orig_nr, regs, false);
+drivers/kernelsu/hook/syscall_event_bridge.c:119:long __nocfi ksu_hook_execveat(int orig_nr, const struct pt_regs *regs)
+drivers/kernelsu/hook/syscall_event_bridge.c:121:    return ksu_hook_execve_common(orig_nr, regs, true);
+drivers/kernelsu/hook/syscall_event_bridge.c:124:long __nocfi ksu_hook_setresuid(int orig_nr, const struct pt_regs *regs)
+drivers/kernelsu/hook/syscall_event_bridge.h:6:long ksu_hook_newfstatat(int orig_nr, const struct pt_regs *regs);
+drivers/kernelsu/hook/syscall_event_bridge.h:7:long ksu_hook_faccessat(int orig_nr, const struct pt_regs *regs);
+drivers/kernelsu/hook/syscall_event_bridge.h:8:long ksu_hook_execve(int orig_nr, const struct pt_regs *regs);
+drivers/kernelsu/hook/syscall_event_bridge.h:9:long ksu_hook_execveat(int orig_nr, const struct pt_regs *regs);
+drivers/kernelsu/hook/syscall_event_bridge.h:10:long ksu_hook_setresuid(int orig_nr, const struct pt_regs *regs);
+drivers/kernelsu/hook/syscall_event_bridge.h:12:void ksu_stop_ksud_execve_hook(void);
+drivers/kernelsu/hook/syscall_hook.h:1:#ifndef __KSU_H_KSU_SYSCALL_HOOK
+drivers/kernelsu/hook/syscall_hook.h:2:#define __KSU_H_KSU_SYSCALL_HOOK
+drivers/kernelsu/hook/syscall_hook.h:18:typedef long (*ksu_syscall_hook_fn)(int orig_nr, const struct pt_regs *regs);
+drivers/kernelsu/hook/syscall_hook.h:26:int ksu_register_syscall_hook(int nr, ksu_syscall_hook_fn fn);
+drivers/kernelsu/hook/syscall_hook.h:30:void ksu_unregister_syscall_hook(int nr);
+drivers/kernelsu/hook/syscall_hook.h:33:bool ksu_has_syscall_hook(int nr);
+drivers/kernelsu/hook/syscall_hook.h:39:// a real syscall entry (e.g. ksud hooking __NR_execve/__NR_read/__NR_fstat).
+drivers/kernelsu/hook/syscall_hook.h:40:void ksu_syscall_table_hook(int nr, syscall_fn_t fn, syscall_fn_t *old);
+drivers/kernelsu/hook/syscall_hook.h:43:// ksu_syscall_table_hook(), and remove the entry from the tracking list.
+drivers/kernelsu/hook/syscall_hook.h:45:// (e.g. ksud unhooking __NR_read after init.rc injection is done).
+drivers/kernelsu/hook/syscall_hook.h:46:void ksu_syscall_table_unhook(int nr);
+drivers/kernelsu/hook/syscall_hook.h:48:void ksu_syscall_hook_init(void);
+drivers/kernelsu/hook/syscall_hook.h:49:void ksu_syscall_hook_exit(void);
+drivers/kernelsu/hook/syscall_hook_manager.c:108:    if (ksu_has_syscall_hook(id)) {
+drivers/kernelsu/hook/syscall_hook_manager.c:124:void __init ksu_syscall_hook_manager_init(void)
+drivers/kernelsu/hook/syscall_hook_manager.c:127:    pr_info("hook_manager: ksu_hook_manager_init called\n");
+drivers/kernelsu/hook/syscall_hook_manager.c:135:    ksu_register_syscall_hook(__NR_setresuid, ksu_hook_setresuid);
+drivers/kernelsu/hook/syscall_hook_manager.c:136:    ksu_register_syscall_hook(__NR_execve, ksu_hook_execve);
+drivers/kernelsu/hook/syscall_hook_manager.c:137:    ksu_register_syscall_hook(__NR_execveat, ksu_hook_execveat);
+drivers/kernelsu/hook/syscall_hook_manager.c:138:    ksu_register_syscall_hook(__NR_newfstatat, ksu_hook_newfstatat);
+drivers/kernelsu/hook/syscall_hook_manager.c:139:    ksu_register_syscall_hook(__NR_faccessat, ksu_hook_faccessat);
+drivers/kernelsu/hook/syscall_hook_manager.c:153:    ksu_setuid_hook_init();
+drivers/kernelsu/hook/syscall_hook_manager.c:158:void __exit ksu_syscall_hook_manager_exit(void)
+drivers/kernelsu/hook/syscall_hook_manager.c:160:    pr_info("hook_manager: ksu_hook_manager_exit called\n");
+drivers/kernelsu/hook/syscall_hook_manager.c:172:    ksu_unregister_syscall_hook(__NR_setresuid);
+drivers/kernelsu/hook/syscall_hook_manager.c:173:    ksu_unregister_syscall_hook(__NR_execve);
+drivers/kernelsu/hook/syscall_hook_manager.c:174:    ksu_unregister_syscall_hook(__NR_execveat);
+drivers/kernelsu/hook/syscall_hook_manager.c:175:    ksu_unregister_syscall_hook(__NR_newfstatat);
+drivers/kernelsu/hook/syscall_hook_manager.c:176:    ksu_unregister_syscall_hook(__NR_faccessat);
+drivers/kernelsu/hook/syscall_hook_manager.c:178:    ksu_syscall_hook_exit();
+drivers/kernelsu/hook/syscall_hook_manager.c:181:    ksu_setuid_hook_exit();
+drivers/kernelsu/hook/syscall_hook_manager.h:1:#ifndef __KSU_H_HOOK_MANAGER
+drivers/kernelsu/hook/syscall_hook_manager.h:2:#define __KSU_H_HOOK_MANAGER
+drivers/kernelsu/hook/syscall_hook_manager.h:7:void ksu_syscall_hook_manager_init(void);
+drivers/kernelsu/hook/syscall_hook_manager.h:8:void ksu_syscall_hook_manager_exit(void);
+drivers/kernelsu/hook/x86_64/syscall_hook.c:23:static ksu_syscall_hook_fn syscall_hooks[__NR_syscalls];
+drivers/kernelsu/hook/x86_64/syscall_hook.c:57:void ksu_syscall_table_hook(int nr, sys_call_ptr_t fn, sys_call_ptr_t *old)
+drivers/kernelsu/hook/x86_64/syscall_hook.c:99:void ksu_syscall_table_unhook(int nr)
+drivers/kernelsu/hook/x86_64/syscall_hook.c:133:    ni_syscall = (unsigned long)ksu_resolve_symbol_for_functable_hook("__x64_sys_ni_syscall");
+drivers/kernelsu/hook/x86_64/syscall_hook.c:169:        ksu_syscall_hook_fn fn = READ_ONCE(syscall_hooks[orig_nr]);
+drivers/kernelsu/hook/x86_64/syscall_hook.c:179:int ksu_register_syscall_hook(int nr, ksu_syscall_hook_fn fn)
+drivers/kernelsu/hook/x86_64/syscall_hook.c:194:void ksu_unregister_syscall_hook(int nr)
+drivers/kernelsu/hook/x86_64/syscall_hook.c:202:bool ksu_has_syscall_hook(int nr)
+drivers/kernelsu/hook/x86_64/syscall_hook.c:212:#ifdef CONFIG_KSU_X86_PATCH_SYSCALL_DISPATCHER
+drivers/kernelsu/hook/x86_64/syscall_hook.c:298:void __init __nocfi ksu_syscall_hook_init(void)
+drivers/kernelsu/hook/x86_64/syscall_hook.c:304:    ksu_syscall_table = (sys_call_ptr_t *)ksu_resolve_symbol_for_functable_hook("sys_call_table");
+drivers/kernelsu/hook/x86_64/syscall_hook.c:310:#ifdef CONFIG_KSU_X86_PATCH_SYSCALL_DISPATCHER
+drivers/kernelsu/hook/x86_64/syscall_hook.c:330:    ksu_syscall_table_hook(ksu_dispatcher_nr,
+drivers/kernelsu/hook/x86_64/syscall_hook.c:335:void __exit ksu_syscall_hook_exit(void)
+drivers/kernelsu/hook/x86_64/syscall_hook.c:339:#ifdef CONFIG_KSU_X86_PATCH_SYSCALL_DISPATCHER
+drivers/kernelsu/hook/x86_64/syscall_hook.c:382:    // (done by ksu_syscall_hook_manager_exit before calling us), so no new
+drivers/kernelsu/include/uapi/supercall.h:139:struct ksu_get_hook_mode_cmd {
+drivers/kernelsu/include/uapi/supercall.h:198:static const __u32 KSU_IOCTL_GET_HOOK_MODE = _IOC(_IOC_READ, 'K', 98, 0);
+drivers/kernelsu/infra/symbol_resolver.c:141:void *ksu_resolve_symbol_for_functable_hook(const char *symbol_name)
+drivers/kernelsu/infra/symbol_resolver.h:4:void *ksu_resolve_symbol_for_functable_hook(const char *symbol_name);
+drivers/kernelsu/manager/apk_sign.c:8:#ifdef CONFIG_KSU_DEBUG
+drivers/kernelsu/manager/apk_sign.c:258:#ifdef CONFIG_KSU_DEBUG
+drivers/kernelsu/manager/apk_sign.c:267:#ifdef CONFIG_KSU_DEBUG
+drivers/kernelsu/manager/apk_sign.c:283:#ifdef CONFIG_KSU_DEBUG
+drivers/kernelsu/manager/manager_identity.h:10:#ifdef CONFIG_KSU_DISABLE_MANAGER
+
+========== 6. LEGACY TREE ==========
+kernel/.clang-format
+kernel/.clangd
+kernel/.gitignore
+kernel/.vscode/c_cpp_properties.json
+kernel/.vscode/generate_compdb.py
+kernel/.vscode/tasks.json
+kernel/Kbuild
+kernel/Kconfig
+kernel/LICENSE
+kernel/Makefile
+kernel/compat/kernel_compat.c
+kernel/compat/kernel_compat.h
+kernel/core/init.c
+kernel/extras.c
+kernel/feature/kernel_umount.c
+kernel/feature/kernel_umount.h
+kernel/feature/sucompat.c
+kernel/feature/sucompat.h
+kernel/hook/hook_manager.c
+kernel/hook/hook_manager.h
+kernel/hook/lsm_hooks.c
+kernel/hook/setuid_hook.c
+kernel/hook/setuid_hook.h
+kernel/include/arch.h
+kernel/include/klog.h
+kernel/include/ksu.h
+kernel/include/uapi
+kernel/infra/file_wrapper.c
+kernel/infra/file_wrapper.h
+kernel/infra/seccomp_cache.c
+kernel/infra/seccomp_cache.h
+kernel/infra/su_mount_ns.c
+kernel/infra/su_mount_ns.h
+kernel/manager/apk_sign.c
+kernel/manager/apk_sign.h
+kernel/manager/manager_identity.h
+kernel/manager/manager_observer.h
+kernel/manager/pkg_observer.c
+kernel/manager/pkg_observer_defs.h
+kernel/manager/throne_tracker.c
+kernel/manager/throne_tracker.h
+kernel/policy/allowlist.c
+kernel/policy/allowlist.h
+kernel/policy/app_profile.c
+kernel/policy/app_profile.h
+kernel/policy/feature.c
+kernel/policy/feature.h
+kernel/runtime/boot_event.c
+kernel/runtime/ksud.h
+kernel/runtime/ksud_boot.h
+kernel/runtime/ksud_integration.c
+kernel/selinux/Makefile
+kernel/selinux/rules.c
+kernel/selinux/selinux.c
+kernel/selinux/selinux.h
+kernel/selinux/sepolicy.c
+kernel/selinux/sepolicy.h
+kernel/setup.sh
+kernel/supercall/dispatch.c
+kernel/supercall/internal.h
+kernel/supercall/perm.c
+kernel/supercall/supercall.c
+kernel/supercall/supercall.h
+kernel/tiny_sulog.c
+kernel/tiny_sulog.h
+kernel/tools/check_symbol.c
+
+========== 7. LEGACY CONFIG ==========
+menu "KernelSU"
+
+config KSU
+        tristate "KernelSU function support"
+        default y
+        help
+          Enable kernel-level root privileges on Android System.
+          Requires CONFIG_KPROBES for kernel hooking support.
+          To compile as a module, choose M here: the
+          module will be called kernelsu.
+
+config KSU_DEBUG
+        bool "KernelSU debug mode"
+        depends on KSU
+        default n
+        help
+          Enable KernelSU debug mode.
+
+config KSU_DISABLE_MANAGER
+        bool "Disable KernelSU manager integration"
+        depends on KSU
+        default n
+        help
+          Disable manager APK detection and manager-specific handling.
+          Root will be used in place of manager-only functionality.
+
+config KSU_DISABLE_POLICY
+        bool "Disable KernelSU policy profiles"
+:...skipping...
+menu "KernelSU"
+
+config KSU
+        tristate "KernelSU function support"
+        default y
+        help
+          Enable kernel-level root privileges on Android System.
+          Requires CONFIG_KPROBES for kernel hooking support.
+          To compile as a module, choose M here: the
+          module will be called kernelsu.
+
+config KSU_DEBUG
+        bool "KernelSU debug mode"
+        depends on KSU
+        default n
+        help
+          Enable KernelSU debug mode.
+menu "KernelSU"
+
+config KSU
+        tristate "KernelSU function support"
+        default y
+        help
+          Enable kernel-level root privileges on Android System.
+          Requires CONFIG_KPROBES for kernel hooking support.
+          To compile as a module, choose M here: the
+          module will be called kernelsu.
+
+config KSU_DEBUG
+        bool "KernelSU debug mode"
+        depends on KSU
+        default n                                               help
+          Enable KernelSU debug mode.                   
+config KSU_DISABLE_MANAGER                                      bool "Disable KernelSU manager integration"
+        depends on KSU
+        default n
+        help
+          Disable manager APK detection and manager-specific handling.
+          Root will be used in place of manager-only functionality.
+
+config KSU_DISABLE_POLICY
+        bool "Disable KernelSU policy profiles"
+        depends on KSU
+        default n
+        help
+          Disable per-app root/non-root profile customization.
+          Escalation will always use the default full root profile, and
+          non-root handling will follow the global umount policy only.
+
+config KSU_ALLOWLIST_WORKAROUND
+        bool "KernelSU allowlist workaround"
+        depends on KSU
+        default n
+        help
+          Enable workaround for broken allowlist save
+
+# For easier extern ifdef handling
+config KSU_MANUAL_HOOK
+        bool "KernelSU manual hook mode."
+        depends on KSU && KSU != m
+        default y if !KPROBES
+        default n
+        help
+          Enable manual hook support.
+
+config KSU_KPROBES_HOOK
+        bool "KernelSU tracepoint+kretprobe hook"
+        depends on KSU && !KSU_MANUAL_HOOK
+        depends on KRETPROBES && KPROBES && HAVE_SYSCALL_TRACEPOINTS
+        default y if KPROBES && KRETPROBES && HAVE_SYSCALL_TRACEPOINTS
+        default y if !KSU_MANUAL_HOOK
+        help
+          Enable KPROBES, KRETPROBES and TRACEPOINT hook for KernelSU core.
+          This should not be used on kernel below 5.10.
+
+endmenu
+
+========== 8. LEGACY BUILD HOOK LOGIC ==========
+ifndef KSU_NEXT_MANAGER_HASH
+KSU_NEXT_MANAGER_HASH := 79e590113c4c4c0c222978e413a5faa801666957b1212a328e46c00c69821bf7
+endif
+
+ifdef KSU_MANAGER_PACKAGE
+ccflags-y += -DKSU_MANAGER_PACKAGE=\"$(KSU_MANAGER_PACKAGE)\"
+$(info -- KernelSU-Next Manager package name: $(KSU_MANAGER_PACKAGE))
+endif
+
+$(info -- KernelSU-Next Manager signature size: $(KSU_NEXT_MANAGER_SIZE))
+$(info -- KernelSU-Next Manager signature hash: $(KSU_NEXT_MANAGER_HASH))
+
+# RKSU: checks for available hook
+## Logic flipped for HAVE_KSU_HOOK: 0 is success, 1 is failure
+HAVE_KSU_HOOK ?= 1
+
+# Checks hooks state
+ifeq ($(CONFIG_KSU_KPROBES_HOOK), y)
+$(info -- KernelSU-Next: Hook mode: Kprobes)
+ccflags-y += -DKSU_KPROBES_HOOK
+# Let's make it 0, so it would pass.
+HAVE_KSU_HOOK := 0
+endif
+
+ifeq ($(CONFIG_KSU_MANUAL_HOOK), y)
+HAVE_KSU_HOOK := $(shell grep -q "ksu_handle_sys_reboot" $(srctree)/kernel/reboot.c && echo 0 || echo 1)
+ifeq ($(HAVE_KSU_HOOK),0)
+$(info -- KernelSU-Next: Hook mode: Manual)
+endif
+endif
+
+ifneq ($(HAVE_KSU_HOOK),0)
+$(error -- KernelSU-Next: No hooks were defined, please integrate manual hooks in your kernel!)
+endif
+
+# some backports
+ifneq ($(shell grep -Eq "^static int can_umount" $(srctree)/fs/namespace.c; echo $$?),0)
+$(info -- KSU_NEXT: adding function 'static int can_umount(const struct path *path, int flags);' to $(srctree)/fs/namespace.c)
+CAN_UMOUNT = static int can_umount(const struct path *path, int flags)\n\
+{\n\t\
+        struct mount *mnt = real_mount(path->mnt);\n\t\
+        if (flags & ~(MNT_FORCE | MNT_DETACH | MNT_EXPIRE | UMOUNT_NOFOLLOW))\n\t\t\
+                return -EINVAL;\n\t\
+        if (!may_mount())\n\t\t\
+                return -EPERM;\n\t\
+        if (path->dentry != path->mnt->mnt_root)\n\t\t\
+
+========== 9. LEGACY MANUAL HOOK SYMBOLS ==========
+v3.2.0-legacy:kernel/Kbuild:135:HAVE_KSU_HOOK := $(shell grep -q "ksu_handle_sys_reboot" $(srctree)/kernel/reboot.c && echo 0 || echo 1)
+v3.2.0-legacy:kernel/core/init.c:24:extern int ksu_handle_execveat_sucompat(int *fd, struct filename **filename_ptr,
+v3.2.0-legacy:kernel/core/init.c:26:extern int ksu_handle_execveat_ksud(int *fd, struct filename **filename_ptr,
+v3.2.0-legacy:kernel/core/init.c:28:int ksu_handle_execveat(int *fd, struct filename **filename_ptr, void *argv,
+v3.2.0-legacy:kernel/core/init.c:31:    ksu_handle_execveat_ksud(fd, filename_ptr, argv, envp, flags);
+v3.2.0-legacy:kernel/core/init.c:32:    return ksu_handle_execveat_sucompat(fd, filename_ptr, argv, envp,
+v3.2.0-legacy:kernel/feature/sucompat.c:89:int ksu_handle_faccessat(int *dfd, const char __user **filename_user,
+v3.2.0-legacy:kernel/feature/sucompat.c:111:int ksu_handle_stat(int *dfd, const char __user **filename_user, int *flags)
+v3.2.0-legacy:kernel/feature/sucompat.c:137:long ksu_handle_execve_sucompat(const char __user **filename_user, int orig_nr, const struct pt_regs *regs)
+v3.2.0-legacy:kernel/feature/sucompat.c:195:int ksu_handle_execveat_sucompat(int *fd, struct filename **filename_ptr,
+v3.2.0-legacy:kernel/feature/sucompat.h:11:int ksu_handle_faccessat(int *dfd, const char __user **filename_user,
+v3.2.0-legacy:kernel/feature/sucompat.h:13:int ksu_handle_stat(int *dfd, const char __user **filename_user, int *flags);
+v3.2.0-legacy:kernel/feature/sucompat.h:14:long ksu_handle_execve_sucompat(const char __user **filename_user, int orig_nr, const struct pt_regs *regs);
+v3.2.0-legacy:kernel/hook/hook_manager.c:318:                           ksu_handle_stat(dfd, filename_user, flags);
+v3.2.0-legacy:kernel/hook/hook_manager.c:328:                           ksu_handle_faccessat(dfd, filename_user, mode, NULL);
+v3.2.0-legacy:kernel/hook/hook_manager.c:343:                                   ksu_handle_execve_sucompat(filename_user, NULL, NULL);
+v3.2.0-legacy:kernel/hook/hook_manager.c:354:                   ksu_handle_setresuid(ruid, euid, suid);
+v3.2.0-legacy:kernel/hook/lsm_hooks.c:108:      return ksu_handle_setresuid((uid_t)new_uid.val, (uid_t)new_euid.val,
+v3.2.0-legacy:kernel/hook/setuid_hook.c:38:int ksu_handle_setresuid(uid_t ruid, uid_t euid, uid_t suid)
+v3.2.0-legacy:kernel/hook/setuid_hook.h:11:int ksu_handle_setresuid(uid_t ruid, uid_t euid, uid_t suid);
+v3.2.0-legacy:kernel/runtime/ksud_integration.c:186:int ksu_handle_execveat_ksud(int *fd, struct filename **filename_ptr,
+v3.2.0-legacy:kernel/runtime/ksud_integration.c:466:void ksu_handle_sys_read(unsigned int fd)
+v3.2.0-legacy:kernel/runtime/ksud_integration.c:485:int ksu_handle_input_handle_event(unsigned int *type, unsigned int *code,
+v3.2.0-legacy:kernel/runtime/ksud_integration.c:571:    return ksu_handle_execveat_ksud(AT_FDCWD, &filename_p, &argv, NULL, NULL);
+v3.2.0-legacy:kernel/runtime/ksud_integration.c:579:    ksu_handle_sys_read(fd);
+v3.2.0-legacy:kernel/runtime/ksud_integration.c:658:    return ksu_handle_input_handle_event(type, code, value);
+v3.2.0-legacy:kernel/runtime/ksud_integration.c:719:    // this is because ksu_handle_execveat_ksud calls it filename->name
+v3.2.0-legacy:kernel/runtime/ksud_integration.c:723:    return ksu_handle_execveat_ksud(AT_FDCWD, &filename_p, argv, NULL,
+v3.2.0-legacy:kernel/runtime/ksud_integration.c:728:ksu_handle_execve_ksud(const char __user *filename_user,
+v3.2.0-legacy:kernel/runtime/ksud_integration.c:745:int __maybe_unused ksu_handle_vfs_read(struct file **file_ptr, char __user **buf_ptr,
+v3.2.0-legacy:kernel/supercall/supercall.c:71:int ksu_handle_sys_reboot(int magic1, int magic2, unsigned int cmd,
+v3.2.0-legacy:kernel/supercall/supercall.c:238: return ksu_handle_sys_reboot(magic1, magic2, cmd, (void __user **)&arg4);
+
+========== 10. CURRENT KSU HANDLE SYMBOLS ==========
 kernel/reboot.c:314:extern int ksu_handle_sys_reboot(int magic1, int magic2, unsigned int cmd, void __user **arg);
-kernel/reboot.c:323:#ifdef CONFIG_KSU_SUSFS
 kernel/reboot.c:325:        ksu_handle_sys_reboot(magic1, magic2, cmd, &arg);
-drivers/input/input.c:378:#ifdef CONFIG_KSU
-drivers/input/input.c:379:extern struct static_key_true ksu_is_input_hook_enabled;
+kernel/sys.c:691:extern int ksu_handle_setresuid(uid_t ruid, uid_t euid, uid_t suid);
+kernel/sys.c:697:       if (ksu_handle_setresuid(ruid, euid, suid)) {
+kernel/sys.c:698:               pr_info("Something wrong with ksu_handle_setresuid()\\n");
+fs/exec.c:1755:extern int ksu_handle_execveat(int *fd, struct filename **filename_ptr, void *argv,
+fs/exec.c:1757:extern int ksu_handle_execveat_sucompat(int *fd, struct filename **filename_ptr, void *argv,
+fs/exec.c:1783:         is_su_session = !ksu_handle_execveat(&fd, &filename, &argv, &envp, &flags);
+fs/exec.c:1785:         is_su_session = !ksu_handle_execveat_sucompat(&fd, &filename, &argv, &envp, &flags);
+fs/open.c:354:extern int ksu_handle_faccessat(int *dfd, struct filename **filename, int *mode,
+fs/open.c:419:                  ksu_handle_faccessat(&dfd, &fname, &mode, NULL);
+fs/read_write.c:597:extern __attribute__((cold)) int ksu_handle_sys_read(unsigned int fd);
+fs/read_write.c:603:            ksu_handle_sys_read(fd);
+fs/stat.c:36:extern int ksu_handle_stat(int *dfd, struct filename **filename, int *flags);
+fs/stat.c:269:                  ksu_handle_stat(&dfd, &fname, &flags);
+fs/susfs.c:1541:// - defer extra susfs works to workqueue after do_umount in ksu_handle_setresuid()
 drivers/input/input.c:380:extern int ksu_handle_input_handle_event(unsigned int *type, unsigned int *code, int *value);
-drivers/input/input.c:387:#ifdef CONFIG_KSU_SUSFS
-drivers/input/input.c:388:      if (static_branch_unlikely(&ksu_is_input_hook_enabled))
 drivers/input/input.c:389:              ksu_handle_input_handle_event(&type, &code, &value);
-
-=== Legacy manual-hook implementation ===
-#ifdef KSU_KPROBES_HOOK
-#include "linux/printk.h"
-#include <linux/spinlock.h>
-#include <linux/kprobes.h>
-#include <linux/tracepoint.h>
-#include <asm/syscall.h>
-#include <linux/ptrace.h>
-#include <linux/slab.h>
-#include <trace/events/syscalls.h>
-
-#include "policy/allowlist.h"
-#include "arch.h"
-#include "klog.h" // IWYU pragma: keep
-#include "hook_manager.h"
-#include "feature/sucompat.h"
-#include "setuid_hook.h"
-#include "selinux/selinux.h"
-#include "compat/kernel_compat.h"
-#include "runtime/ksud.h"
-
-// Tracepoint registration count management
-// == 1: just us
-// >  1: someone else is also using syscall tracepoint e.g. ftrace
-static int tracepoint_reg_count = 0;
-static DEFINE_SPINLOCK(tracepoint_reg_lock);
-
-void ksu_clear_task_tracepoint_flag_if_needed(struct task_struct *t)
-{
-        unsigned long flags;
-        spin_lock_irqsave(&tracepoint_reg_lock, flags);
-        if (tracepoint_reg_count <= 1) {
-                ksu_clear_task_tracepoint_flag(t);
-        }
-        spin_unlock_irqrestore(&tracepoint_reg_lock, flags);
-}
-
-// Process marking management
-static void handle_process_mark(bool mark)
-{
-        struct task_struct *p, *t;
-        read_lock(&tasklist_lock);
-        for_each_process_thread(p, t) {
-                if (mark)
-                        ksu_set_task_tracepoint_flag(t);
-                else
-                        ksu_clear_task_tracepoint_flag(t);
-        }
-        read_unlock(&tasklist_lock);
-}
-
-void ksu_mark_all_process(void)
-{
-        handle_process_mark(true);
-        pr_info("hook_manager: mark all user process done!\n");
-}
-
-void ksu_unmark_all_process(void)
-{
-        handle_process_mark(false);
-        pr_info("hook_manager: unmark all user process done!\n");
-}
-
-static void ksu_mark_running_process_locked()
-{
-        struct task_struct *p, *t;
-        read_lock(&tasklist_lock);
-        for_each_process_thread (p, t) {
-                if (t->pid != 1 && !t->mm) {
-            // skip kernel threads, but always allow pid 1
-                        continue;
-                }
-                int uid = task_uid(t).val;
-                const struct cred *cred = get_task_cred(t);
-                bool ksu_root_process =
-                        uid == 0 && is_task_ksu_domain(cred);
-                bool is_zygote_process = is_zygote(cred);
-                bool is_shell = uid == 2000;
-                // before boot completed, we shall mark init for marking zygote
-                bool is_init = t->pid == 1;
-                if (ksu_root_process || is_zygote_process  || is_shell || is_init
-                        || ksu_is_allow_uid(uid)) {
-                        ksu_set_task_tracepoint_flag(t);
-                        pr_info("hook_manager: mark process: pid:%d, uid: %d, comm:%s\n",
-                                        t->pid, uid, t->comm);
-                } else {
-                        ksu_clear_task_tracepoint_flag(t);
-                        pr_info("hook_manager: unmark process: pid:%d, uid: %d, comm:%s\n",
-                                        t->pid, uid, t->comm);
-                }
-                put_cred(cred);
-        }
-        read_unlock(&tasklist_lock);
-}
-
-void ksu_mark_running_process()
-{
-        unsigned long flags;
-        bool should_mark = false;
-
-        spin_lock_irqsave(&tracepoint_reg_lock, flags);
-        if (tracepoint_reg_count <= 1) {
-                should_mark = true;
-        } else {
-                pr_info("hook_manager: not mark running process since syscall tracepoint is in use\n");
-        }
-        spin_unlock_irqrestore(&tracepoint_reg_lock, flags);
-
-        // Call this outside of tracepoint_reg_lock
-        if (should_mark) {
-                ksu_mark_running_process_locked();
-        }
-}
-
-// Get task mark status
-// Returns: 1 if marked, 0 if not marked, -ESRCH if task not found
-int ksu_get_task_mark(pid_t pid)
-{
-        struct task_struct *task;
-        int marked = -ESRCH;
-
-        rcu_read_lock();
-        task = find_task_by_vpid(pid);
-        if (task) {
-                get_task_struct(task);
-                rcu_read_unlock();
-#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 11, 0)
-                marked = test_task_syscall_work(task, SYSCALL_TRACEPOINT) ? 1 : 0;
-#else
-                marked = test_tsk_thread_flag(task, TIF_SYSCALL_TRACEPOINT) ? 1 : 0;
-#endif
-                put_task_struct(task);
-        } else {
-                rcu_read_unlock();
-        }
-
-        return marked;
-}
-
-// Set task mark status
-// Returns: 0 on success, -ESRCH if task not found
-int ksu_set_task_mark(pid_t pid, bool mark)
-{
-        struct task_struct *task;
-        int ret = -ESRCH;
-
-        rcu_read_lock();
-        task = find_task_by_vpid(pid);
-        if (task) {
-                get_task_struct(task);
-                rcu_read_unlock();
-                if (mark) {
-                        ksu_set_task_tracepoint_flag(task);
-                        pr_info("hook_manager: marked task pid=%d comm=%s\n", pid, task->comm);
-                } else {
-                        ksu_clear_task_tracepoint_flag(task);
-                        pr_info("hook_manager: unmarked task pid=%d comm=%s\n", pid, task->comm);
-                }
-                put_task_struct(task);
-                ret = 0;
-        } else {
-                rcu_read_unlock();
-        }
-
-        return ret;
-}
-
-#ifdef CONFIG_KRETPROBES
-
-static struct kretprobe *init_kretprobe(const char *name,
-                                                       kretprobe_handler_t handler)
-{
-        struct kretprobe *rp = kzalloc(sizeof(struct kretprobe), GFP_KERNEL);
-        if (!rp)
-                return NULL;
-        rp->kp.symbol_name = name;
-        rp->handler = handler;
-        rp->data_size = 0;
-        rp->maxactive = 0;
-
-        int ret = register_kretprobe(rp);
-        pr_info("hook_manager: register_%s kretprobe: %d\n", name, ret);
-        if (ret) {
-                kfree(rp);
-                return NULL;
-        }
-
-        return rp;
-}
-
-static void destroy_kretprobe(struct kretprobe **rp_ptr)
-{
-        struct kretprobe *rp = *rp_ptr;
-        if (!rp)
-                return;
-        unregister_kretprobe(rp);
-        synchronize_rcu();
-        kfree(rp);
-        *rp_ptr = NULL;
-}
-
-static int syscall_regfunc_handler(struct kretprobe_instance *ri, struct pt_regs *regs)
-{
-        unsigned long flags;
-        int count;
-
-        spin_lock_irqsave(&tracepoint_reg_lock, flags);
-        count = tracepoint_reg_count;
-        tracepoint_reg_count++;
-        spin_unlock_irqrestore(&tracepoint_reg_lock, flags);
-
-        // Execute marking logic outside the spinlock
-        if (count < 1) {
-                ksu_mark_running_process_locked();
-        } else if (count == 1) {
-                ksu_mark_all_process();
-        }
-        return 0;
-}
-
-static int syscall_unregfunc_handler(struct kretprobe_instance *ri, struct pt_regs *regs)
-{
-        unsigned long flags;
-        int count;
-
-        spin_lock_irqsave(&tracepoint_reg_lock, flags);
-        tracepoint_reg_count--;
-        count = tracepoint_reg_count;
-        spin_unlock_irqrestore(&tracepoint_reg_lock, flags);
-
-        // Execute marking logic outside the spinlock
-        if (count <= 0) {
-                ksu_unmark_all_process();
-        } else if (count == 1) {
-                ksu_mark_running_process_locked();
-        }
-        return 0;
-}
-
-static struct kretprobe *syscall_regfunc_rp = NULL;
-static struct kretprobe *syscall_unregfunc_rp = NULL;
-#endif
-
-static inline bool check_syscall_fastpath(int nr)
-{
-        switch (nr) {
-        case __NR_newfstatat:
-#ifdef __NR_fstatat64
-        case __NR_fstatat64:
-#endif
-        case __NR_faccessat:
-        case __NR_execve:
-#ifdef __NR_execveat
-        case __NR_execveat:
-#endif
-        case __NR_setresuid:
-                return true;
-        default:
-                return false;
-        }
-}
-
-// Unmark init's child that are not zygote, adbd or ksud
-int ksu_handle_init_mark_tracker(const char __user **filename_user)
-{
-        char path[64];
-        unsigned long addr;
-        const char __user *fn;
-        long ret;
-
-        if (unlikely(!filename_user))
-                return 0;
-
-        addr = untagged_addr((unsigned long)*filename_user);
-        fn = (const char __user *)addr;
-
-        memset(path, 0, sizeof(path));
-
-        // Safe no-fault reading, no try_set_access_flag hacks!
-        ret = strncpy_from_user_nofault(path, fn, sizeof(path));
-        if (ret < 0 && preempt_count()) {
-                preempt_enable_no_resched_notrace();
-                ret = strncpy_from_user(path, fn, sizeof(path));
-                preempt_disable_notrace();
-        }
-
-        if (ret < 0) {
-        // unreadable path; keep mark to avoid wrongly unmarking zygote
-        return 0;
-        }
-
-        if (unlikely(strcmp(path, KSUD_PATH) == 0)) {
-                pr_info("hook_manager: escape to root for init executing ksud: %d\n", current->pid);
-                escape_to_root_for_init();
-        } else if (likely(strstr(path, "/app_process") == NULL && strstr(path, "/adbd") == NULL)) {
-                pr_info("hook_manager: unmark %d exec %s\n", current->pid, path);
-                ksu_clear_task_tracepoint_flag_if_needed(current);
-        }
-
-        return 0;
-}
-
-#ifdef CONFIG_HAVE_SYSCALL_TRACEPOINTS
-// Generic sys_enter handler that dispatches to specific handlers
-static void ksu_sys_enter_handler(void *data, struct pt_regs *regs, long id)
-{
-        if (unlikely(check_syscall_fastpath(id))) {
-                if (ksu_su_compat_enabled) {
-                        // Handle newfstatat (y compatibilidad con arquitecturas híbridas)
-#ifdef __NR_fstatat64
-                        if (id == __NR_newfstatat || id == __NR_fstatat64) {
-#else
-                        if (id == __NR_newfstatat) {
-#endif
-                                int *dfd = (int *)&PT_REGS_PARM1(regs);
-                                const char __user **filename_user =
-                                        (const char __user **)&PT_REGS_PARM2(regs);
-                                int *flags = (int *)&PT_REGS_SYSCALL_PARM4(regs);
-                                ksu_handle_stat(dfd, filename_user, flags);
-                                return;
-                        }
-
-                        // Handle faccessat
-                        if (id == __NR_faccessat) {
-                                int *dfd = (int *)&PT_REGS_PARM1(regs);
-                                const char __user **filename_user =
-                                        (const char __user **)&PT_REGS_PARM2(regs);
-                                int *mode = (int *)&PT_REGS_PARM3(regs);
-                                ksu_handle_faccessat(dfd, filename_user, mode, NULL);
-                                return;
-                        }
-
-                        // Handle execve (y compatibilidad con arquitecturas híbridas)
-#ifdef __NR_execveat
-                        if (id == __NR_execve || id == __NR_execveat) {
-#else
-                        if (id == __NR_execve) {
-#endif
-                                const char __user **filename_user =
-                                        (const char __user **)&PT_REGS_PARM1(regs);
-                                if (current->pid != 1 && is_init(current_cred())) {
-                                        ksu_handle_init_mark_tracker(filename_user);
-                                } else {
-                                        ksu_handle_execve_sucompat(filename_user, NULL, NULL);
-                                }
-                                return;
-                        }
-                }
-
-                // Handle setresuid
-                if (id == __NR_setresuid) {
-                        uid_t ruid = (uid_t)PT_REGS_PARM1(regs);
-                        uid_t euid = (uid_t)PT_REGS_PARM2(regs);
-                        uid_t suid = (uid_t)PT_REGS_PARM3(regs);
-                        ksu_handle_setresuid(ruid, euid, suid);
-                        return;
-                }
-        }
-}
-#endif
-
-void __init ksu_syscall_hook_manager_init(void)
-{
-        int ret;
-        pr_info("hook_manager: ksu_hook_manager_init called\n");
-
-#ifdef CONFIG_KRETPROBES
-        // Register kretprobe for syscall_regfunc
-        syscall_regfunc_rp = init_kretprobe("syscall_regfunc", syscall_regfunc_handler);
-        // Register kretprobe for syscall_unregfunc
-        syscall_unregfunc_rp = init_kretprobe("syscall_unregfunc", syscall_unregfunc_handler);
-#endif
-
-#ifdef CONFIG_HAVE_SYSCALL_TRACEPOINTS
-        ret = register_trace_sys_enter(ksu_sys_enter_handler, NULL);
-#ifndef CONFIG_KRETPROBES
-        ksu_mark_running_process_locked();
-#endif
-        if (ret) {
-                pr_err("hook_manager: failed to register sys_enter tracepoint: %d\n", ret);
-        } else {
-                pr_info("hook_manager: sys_enter tracepoint registered\n");
-        }
-#endif
-
-        ksu_setuid_hook_init();
-        ksu_sucompat_init();
-        ksu_avc_spoof_init();
-}
-
-void __exit ksu_syscall_hook_manager_exit(void)
+drivers/kernelsu/feature/sucompat.c:91:long ksu_handle_faccessat_sucompat(int orig_nr, struct pt_regs *regs)
+drivers/kernelsu/feature/sucompat.c:127:long ksu_handle_stat_sucompat(int orig_nr, struct pt_regs *regs)
+drivers/kernelsu/feature/sucompat.c:163:static long ksu_handle_execve_sucompat_common(const char __user **filename_user,
+drivers/kernelsu/feature/sucompat.c:261:long ksu_handle_execve_sucompat(const char __user **filename_user, int orig_nr, struct pt_regs *regs)
+drivers/kernelsu/feature/sucompat.c:263:        return ksu_handle_execve_sucompat_common(filename_user, (const char __user *const __user *)PT_REGS_PARM2(regs),
+drivers/kernelsu/feature/sucompat.c:267:long ksu_handle_execveat_sucompat(const char __user **filename_user, int orig_nr, struct pt_regs *regs)
+drivers/kernelsu/feature/sucompat.c:269:        return ksu_handle_execve_sucompat_common(filename_user, (const char __user *const __user *)PT_REGS_PARM3(regs),
+drivers/kernelsu/feature/sucompat.h:12:long ksu_handle_faccessat_sucompat(int orig_nr, struct pt_regs *regs);
+drivers/kernelsu/feature/sucompat.h:13:long ksu_handle_stat_sucompat(int orig_nr, struct pt_regs *regs);
+drivers/kernelsu/feature/sucompat.h:14:long ksu_handle_execve_sucompat(const char __user **filename_user, int orig_nr, struct pt_regs *regs);
+drivers/kernelsu/feature/sucompat.h:15:long ksu_handle_execveat_sucompat(const char __user **filename_user, int orig_nr, struct pt_regs *regs);
+drivers/kernelsu/hook/setuid_hook.c:24:int ksu_handle_setresuid(uid_t old_uid, uid_t new_uid)
+drivers/kernelsu/hook/setuid_hook.h:11:int ksu_handle_setresuid(uid_t old_uid, uid_t new_uid);
+drivers/kernelsu/hook/syscall_event_bridge.c:56:    return ksu_handle_stat_sucompat(orig_nr, (struct pt_regs *)regs);
+drivers/kernelsu/hook/syscall_event_bridge.c:64:    return ksu_handle_faccessat_sucompat(orig_nr, (struct pt_regs *)regs);
+drivers/kernelsu/hook/syscall_event_bridge.c:103:        ret = execveat ? ksu_handle_execveat_sucompat(filename_user, orig_nr, (struct pt_regs *)regs) :
+drivers/kernelsu/hook/syscall_event_bridge.c:104:                         ksu_handle_execve_sucompat(filename_user, orig_nr, (struct pt_regs *)regs);
+drivers/kernelsu/hook/syscall_event_bridge.c:132:    ksu_handle_setresuid(old_uid, current_uid().val);
+drivers/kernelsu/runtime/ksud_integration.c:149:void ksu_handle_execveat_ksud(const char *path, struct user_arg_ptr *argv)
+drivers/kernelsu/runtime/ksud_integration.c:462:static void ksu_handle_sys_read(unsigned int fd, char __user **buf_ptr, size_t *count_ptr)
+drivers/kernelsu/runtime/ksud_integration.c:479:int ksu_handle_input_handle_event(unsigned int *type, unsigned int *code, int *value)
+drivers/kernelsu/runtime/ksud_integration.c:543:    ksu_handle_execveat_ksud(path, &argv);
+drivers/kernelsu/runtime/ksud_integration.c:569:    ksu_handle_sys_read(fd, buf_ptr, count_ptr);
+drivers/kernelsu/runtime/ksud_integration.c:618:    return ksu_handle_input_handle_event(type, code, value);
 root@localhost:~/oscar#
